@@ -1,1 +1,130 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import "~bootstrap/scss/bootstrap";
+
+// Sizes
+$header_toolname_height: 61;
+$header_links_height: 46;
+$header_height: $header_links_height + $header_toolname_height + 3 + px;
+
+html,
+body {
+  height: 100%;
+  background: #f2f2f2;
+}
+
+// APPLICATION MAIN LAYOUT
+.page-container-layout {
+  display: grid;
+  grid-template-columns: [page-content] 1fr;
+  grid-template-rows: [content-row] auto;
+}
+
+%page-container {
+  height: 100%;
+  width: 100%;
+}
+
+.page-container-pad {
+  @extend %page-container;
+  padding-top: $header_height;
+}
+
+.page-content {
+  grid-column: page-content;
+  grid-row: content-row;
+  overflow: auto;
+}
+
+.pointer {
+  cursor: pointer;
+}
+.full-height {
+  height: 100%;
+}
+
+.p-20 {
+  padding: 20px;
+}
+
+
+.bg-white {
+  background: white;
+  border: 1px solid #bce8f1;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+
+
+
+ 
+// Entity Badge Colors
+$ig_color: #b6006a;
+$group_color: #3dc43d;
+$segment_color: #001aff;
+$field_color: #ff9e1e;
+$component_color: #ffd900;
+$subcomponent_color: #87abf5;
+$datatype_color: rgb(240, 10, 10);
+$valueset_color: rgb(255, 0, 200);
+$comformance_profile_color: rgb(167, 90, 1);
+
+
+
+.entity-badge-ig {
+  background-color: $ig_color !important;
+}
+
+.entity-badge-group {
+  background-color: $group_color !important;
+}
+
+.entity-badge-segment {
+  background-color: $segment_color !important;
+}
+
+.entity-badge-field {
+  background-color: $field_color !important;
+}
+
+.entity-badge-component {
+  background-color: $component_color !important;
+}
+
+.entity-badge-subcomponent {
+  background-color: $subcomponent_color !important;
+}
+
+.entity-badge-datatype {
+  background-color: $datatype_color !important;
+}
+
+.entity-badge-valueset {
+  background-color: $valueset_color !important;
+}
+
+.entity-badge-conformance-profile {
+  background-color: $comformance_profile_color !important;
+}
+
+
+
+
+
+.added {
+  background: #3dc43d;
+}
+
+.changed {
+  background: #ff9e1e;
+}
+
+.deleted {
+  background: #b6006a;
+}
+
+.p-dialog .p-dialog-content {
+  height: 100%;
+}

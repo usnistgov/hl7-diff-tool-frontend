@@ -1,0 +1,14 @@
+<p-panel header="Header" [toggleable]="true">
+  <div class="profiles-container bg-white">
+    <div
+      *ngFor="let profile of profiles"
+      class="profile-item "
+      (click)="selectProfile(profile)"
+    >
+    <div [ngClass]="{'active-profile': profile.data.id === selectedProfile?.data.id}">
+        {{ profile.data.name }}
+
+    </div>
+    </div>
+  </div>
+</p-panel>

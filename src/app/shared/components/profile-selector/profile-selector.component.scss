@@ -1,0 +1,32 @@
+.profile-item {
+    // white-space: nowrap;
+    cursor: pointer;
+    padding: 15px 0 2px 35px;
+    font-size: 12px;
+    width: 200%;
+}
+
+
+.profiles-container{
+    font-size: 15px;
+    text-align: left;
+    overflow: scroll;
+    // background: white;
+    height: 450px;
+}
+
+:host ::ng-deep .p-panel-header {
+
+    color: #3a87ad;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    padding: 10px;
+}
+
+.active-profile {
+    background: #ffef8f;
+    color: #363636;
+}
+:host ::ng-deep .p-panel .p-panel-content {
+    padding: 0px !important;
+  }

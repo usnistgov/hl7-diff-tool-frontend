@@ -1,0 +1,208 @@
+<p-panel [header]="profile.data.name" [toggleable]="true">
+  <div class="row">
+    <div class="col-md-5 offset-md-7">
+      <div class="data-dd">
+        <!-- <h4 style="line-height: 40px;padding-right: 15px;">Data</h4> -->
+
+        <p-dropdown
+          [options]="results.configuration"
+          [(ngModel)]="selectedConfiguration"
+          optionLabel="label"
+        ></p-dropdown>
+      </div>
+    </div>
+  </div>
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+    <li [ngbNavItem]="1">
+      <a ngbNavLink>Full</a>
+      <ng-template ngbNavContent>
+        <div>
+          <div>
+            <p-treeTable [value]="profile.children">
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th style="width: 380px;"></th>
+                  <th style="width: 120px;">{{ results.srcIg.title }}</th>
+                  <th
+                    style="width: 240px;"
+                    colspan="2"
+                    *ngFor="let derivedIg of igs"
+                  >
+                    {{ derivedIg.title }}
+                  </th>
+                </tr>
+                <tr>
+                  <th style="width: 380px;">Name</th>
+                  <th style="width: 120px;">Value</th>
+                  <ng-container *ngFor="let derivedIg of igs">
+                    <th style="width: 120px;">Value</th>
+                    <th style="width: 120px;">Reason</th>
+                  </ng-container>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                <tr>
+                  <td style="width: 380px;">
+                    <p-treeTableToggler
+                      [rowNode]="rowNode"
+                    ></p-treeTableToggler>
+                    <app-data-badge [type]="rowData.type"></app-data-badge>
+                    {{ rowData.position }}.
+                    <ng-container *ngIf="rowData.type === 'segmentRef'">
+                      {{ rowData.ref }}
+                    </ng-container>
+                    <ng-container
+                      *ngIf="
+                        rowData.type === 'group' ||
+                        rowData.type === 'field' ||
+                        rowData.type === 'component' ||
+                        rowData.type === 'subcomponent'
+                      "
+                    >
+                      {{ rowData.name }}
+                    </ng-container>
+                  </td>
+                  <td *ngIf="selectedConfiguration.name !== 'valueset'">
+                    {{ rowData[selectedConfiguration.name]?.src.value }}
+                  </td>
+                  <td *ngIf="selectedConfiguration.name === 'valueset'">
+                    <!-- {{ rowData[selectedConfiguration.name]?.src.value }} -->
+                    <div *ngIf="rowData.bindings">
+                      <div *ngFor="let binding of rowData.bindings">
+                        <app-valueset-table
+                          [valueset]="binding.data"
+                          [source]="true"
+                        ></app-valueset-table>
+                      </div>
+                    </div>
+                  </td>
+
+                  <ng-container *ngFor="let derivedIg of igs">
+                    <ng-container
+                      *ngIf="selectedConfiguration.name !== 'valueset'"
+                    >
+                      <td>
+                        {{
+                          rowData[selectedConfiguration.name]?.derived
+                            ? (rowData[selectedConfiguration.name]?.derived)[
+                                derivedIg.id
+                              ]?.value
+                            : ""
+                        }}
+                      </td>
+                      <td>
+                        {{
+                          rowData[selectedConfiguration.name]?.derived
+                            ? (rowData[selectedConfiguration.name]?.derived)[
+                                derivedIg.id
+                              ]?.reason
+                            : ""
+                        }}
+                      </td>
+                    </ng-container>
+                    <ng-container
+                      *ngIf="selectedConfiguration.name === 'valueset'"
+                    >
+                      <td>
+                        <!-- {{rowData.bindings | json}} -->
+                        <div *ngIf="rowData.bindings">
+                          <div *ngFor="let binding of rowData.bindings">
+                            <div *ngIf="binding.changed">
+                                <app-valueset-table
+                                [valueset]="binding.data"
+                                [changed]="true"
+                                [source]="false"
+                                [igId]="derivedIg.id"
+                              ></app-valueset-table>
+                            </div>
+                        
+
+                            <!-- {{
+                              binding.data.strength?.derived
+                                ? (binding.data.strength?.derived)[derivedIg.id]
+                                    ?.value
+                                : ""
+                            }} -->
+                          </div>
+                        </div>
+                      </td>
+                      <td></td>
+                    </ng-container>
+                  </ng-container>
+                </tr>
+              </ng-template>
+            </p-treeTable>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+
+    <li
+      *ngFor="let segment of profile.segmentRefs"
+      [ngbNavItem]="segment.data.ref"
+    >
+      <a ngbNavLink>{{ segment.data.ref }}</a>
+      <ng-template ngbNavContent>
+        <div>
+          <p-treeTable [value]="segment.children">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th style="width: 380px;"></th>
+                <th>
+                  {{ segment.data.label.src.value }} From
+                  {{ results.srcIg.title }}
+                </th>
+                <th colspan="2" *ngFor="let derivedIg of igs">
+                  {{ segment.data.label.derived[derivedIg.id].value }} From
+                  {{ derivedIg.title }}
+                </th>
+              </tr>
+              <tr>
+                <th style="width: 380px;">Name</th>
+                <th>Value</th>
+                <ng-container *ngFor="let derivedIg of igs">
+                  <th>Value</th>
+                  <th>Reason</th>
+                </ng-container>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+              <tr>
+                <td class="table-td" style="width: 380px;">
+                  <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                  <app-data-badge [type]="rowData.type"></app-data-badge>
+
+                  {{ rowData.position }}.
+                  {{ rowData.name }}
+                </td>
+                <td>{{ rowData[selectedConfiguration.name]?.src.value }}</td>
+                <ng-container *ngFor="let derivedIg of igs">
+                  <td>
+                    {{
+                      rowData[selectedConfiguration.name]?.derived
+                        ? (rowData[selectedConfiguration.name]?.derived)[
+                            derivedIg.id
+                          ]?.value
+                        : ""
+                    }}
+                  </td>
+                  <td>
+                    {{
+                      rowData[selectedConfiguration.name]?.derived
+                        ? (rowData[selectedConfiguration.name]?.derived)[
+                            derivedIg.id
+                          ]?.reason
+                        : ""
+                    }}
+                  </td>
+                </ng-container>
+              </tr>
+            </ng-template>
+          </p-treeTable>
+        </div>
+      </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav"></div>
+</p-panel>

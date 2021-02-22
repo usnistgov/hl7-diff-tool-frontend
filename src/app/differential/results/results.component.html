@@ -1,0 +1,50 @@
+<div class="full-height">
+  <!-- <div>
+    <button
+      type="button"
+      class="btn btn-primary update-btn"
+      (click)="updateConfig()"
+    >
+      Update configuration
+    </button>
+  </div> -->
+  <div *ngIf="results" class="options-wrapper">
+    <div class="row">
+      <div class="col-md-5">
+        <div style="display: flex;">
+          <h4 style="line-height: 40px;padding-right: 15px;">Derived IGs</h4>
+          <p-multiSelect
+            display="chip"
+            [options]="results.derivedIgs"
+            [(ngModel)]="selectedIgs"
+            optionLabel="title"
+          ></p-multiSelect>
+        </div>
+      </div>
+      <div class="col-md-7 text-right" style="padding-right: 40px;">
+        <div >
+          <button type="button" class="btn btn-primary" (click)="save()">
+            Save Report
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row full-height results-container" *ngIf="results">
+    <div class="col-3 left-container">
+      <app-profile-selector
+        [profiles]="results.profiles"
+        (onClick)="selectProfile($event)"
+      ></app-profile-selector>
+    </div>
+    <div class="col-9 right-container">
+      <div *ngIf="selectedProfile" class="bg-white">
+        <app-results-wrapper
+          [profile]="selectedProfile"
+          [igs]="selectedIgs"
+          [results]="results"
+        ></app-results-wrapper>
+      </div>
+    </div>
+  </div>
+</div>
