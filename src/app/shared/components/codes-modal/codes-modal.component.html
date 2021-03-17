@@ -1,29 +1,30 @@
 <div>
   <div class="row">
     <div class="col-6">
+      <h4>Source Bindings</h4>
+    </div>
+    <div class="col-6">
+      <h4>Derived Bindings</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
       <div>
         <p-dropdown
           [options]="srcValuesets"
           [(ngModel)]="selectedSrc"
-          optionLabel="label"
-          optionValue="value"
+          optionLabel="bindingIdentifier"
+          optionValue="bindingIdentifier"
+          (ngModelChange)="srcChanged($event)"
           placeholder="Value set"
         ></p-dropdown>
       </div>
-      <div *ngIf="selectedSrc && selectedSrc.value">
-        <ng-container
-          *ngIf="
-            !config.data.valueset.codes[selectedSrc.value].src.value ||
-            config.data.valueset.codes[selectedSrc.value].src.value.length === 0
-          "
-        >
+      <div *ngIf="selectedSrc">
+        <ng-container *ngIf="selectedSrc.codes.length === 0">
           <div>No codes</div>
         </ng-container>
         <table
-          *ngIf="
-            config.data.valueset.codes[selectedSrc.value].src.value &&
-            config.data.valueset.codes[selectedSrc.value].src.value.length > 0
-          "
+          *ngIf="selectedSrc.codes.length > 0"
           class="table table-striped table-sm table-bordered"
           style="text-align: center; margin-bottom: 0;"
         >
@@ -34,12 +35,7 @@
             <th>Usage</th>
             <th>Comments</th>
           </tr>
-          <tr
-            *ngFor="
-              let item of config.data.valueset.codes[selectedSrc.value].src
-                .value
-            "
-          >
+          <tr *ngFor="let item of selectedSrc.codes">
             <td>{{ item.value }}</td>
             <td>{{ item.description }}</td>
             <td>{{ item.codeSystem }}</td>
@@ -54,33 +50,18 @@
         <p-dropdown
           [options]="derivedValuesets"
           [(ngModel)]="selectedDerived"
-          optionLabel="label"
-          optionValue="value"
+          optionLabel="bindingIdentifier"
+          optionValue="bindingIdentifier"
+          (ngModelChange)="derivedChanged($event)"
           placeholder="Value set"
         ></p-dropdown>
       </div>
-      <div *ngIf="selectedDerived && selectedDerived.value">
-        <ng-container
-          *ngIf="
-            !config.data.valueset.codes[selectedDerived.value].derived[
-              config.data.igId
-            ] ||
-            config.data.valueset.codes[selectedDerived.value].derived[
-              config.data.igId
-            ].length === 0
-          "
-        >
+      <div *ngIf="selectedDerived">
+        <ng-container *ngIf="comparedCodes.length === 0">
           <div>No codes</div>
         </ng-container>
         <table
-          *ngIf="
-            config.data.valueset.codes[selectedDerived.value].derived[
-              config.data.igId
-            ] &&
-            config.data.valueset.codes[selectedDerived.value].derived[
-              config.data.igId
-            ].length > 0
-          "
+          *ngIf="comparedCodes.length > 0"
           class="table table-striped table-sm table-bordered"
           style="text-align: center; margin-bottom: 0;"
         >
@@ -91,89 +72,48 @@
             <th>Usage</th>
             <th>Comments</th>
           </tr>
-          <tr
-            *ngFor="
-              let item of config.data.valueset.codes[selectedDerived.value]
-                .derived[config.data.igId];
-              index as i
-            "
-          >
+          <tr *ngFor="let item of comparedCodes; index as i">
             <td
               [ngClass]="{
-                changed:
-                  selectedSrc &&
-                  config.data.valueset.codes[selectedSrc.value].src.value &&
-                  config.data.valueset.codes[selectedSrc.value].src.value[i] &&
-                  config.data.valueset.codes[selectedSrc.value].src.value[i]
-                    .value !== item.value,
-                added:
-                  selectedSrc &&
-                  (!config.data.valueset.codes[selectedSrc.value].src.value ||
-                    !config.data.valueset.codes[selectedSrc.value].src.value[i])
+                added: item.status === 'added'
               }"
             >
               {{ item.value }}
             </td>
             <td
               [ngClass]="{
-                changed:
-                  selectedSrc &&
-                  config.data.valueset.codes[selectedSrc.value].src.value &&
-                  config.data.valueset.codes[selectedSrc.value].src.value[i] &&
-                  config.data.valueset.codes[selectedSrc.value].src.value[i]
-                    .description !== item.description,
-                added:
-                  selectedSrc &&
-                  (!config.data.valueset.codes[selectedSrc.value].src.value ||
-                    !config.data.valueset.codes[selectedSrc.value].src.value[i])
+                changed: item.description.status === 'changed',
+                added: item.status === 'added'
               }"
             >
               {{ item.description }}
             </td>
             <td
               [ngClass]="{
-                changed:
-                  selectedSrc &&
-                  config.data.valueset.codes[selectedSrc.value].src.value &&
-                  config.data.valueset.codes[selectedSrc.value].src.value[i] &&
-                  config.data.valueset.codes[selectedSrc.value].src.value[i]
-                    .codeSystem !== item.codeSystem,
-                added:
-                  selectedSrc &&
-                  (!config.data.valueset.codes[selectedSrc.value].src.value ||
-                    !config.data.valueset.codes[selectedSrc.value].src.value[i])
+                added: item.status === 'added'
               }"
             >
               {{ item.codeSystem }}
             </td>
             <td
               [ngClass]="{
-                changed:
-                  selectedSrc &&
-                  config.data.valueset.codes[selectedSrc.value].src.value &&
-                  config.data.valueset.codes[selectedSrc.value].src.value[i] &&
-                  config.data.valueset.codes[selectedSrc.value].src.value[i]
-                    .usage !== item.usage,
-                added:
-                  selectedSrc &&
-                  (!config.data.valueset.codes[selectedSrc.value].src.value ||
-                    !config.data.valueset.codes[selectedSrc.value].src.value[i])
+                changed: item.usage.status === 'changed',
+                added: item.status === 'added'
               }"
             >
-              {{ item.usage }}
+            <ng-container *ngIf="item.usage.value">
+                {{ item.usage.value}} 
+
+            </ng-container>
+            <ng-container *ngIf="!item.usage.value">
+                {{ item.usage }}
+
+            </ng-container>
             </td>
             <td
               [ngClass]="{
-                changed:
-                  selectedSrc &&
-                  config.data.valueset.codes[selectedSrc.value].src.value &&
-                  config.data.valueset.codes[selectedSrc.value].src.value[i] &&
-                  config.data.valueset.codes[selectedSrc.value].src.value[i]
-                    .comment !== item.comment,
-                added:
-                  selectedSrc &&
-                  (!config.data.valueset.codes[selectedSrc.value].src.value ||
-                    !config.data.valueset.codes[selectedSrc.value].src.value[i])
+                changed: item.comment.status === 'changed',
+                added: item.status === 'added'
               }"
             >
               {{ item.comment }}

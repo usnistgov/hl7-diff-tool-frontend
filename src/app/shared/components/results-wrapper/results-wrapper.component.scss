@@ -32,6 +32,10 @@
 .data-dd {
     display: flex;
     text-align: right;
-    float: right;
-    padding: 5px 20px 0 0;
+    padding: 5px 20px 0 20px;
+}
+
+.check-label {
+  padding: 8px 10px 0px 0;
+  font-weight: 500;
 }

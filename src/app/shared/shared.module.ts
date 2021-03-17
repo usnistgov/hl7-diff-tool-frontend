@@ -18,6 +18,8 @@ import { ResultsWrapperComponent } from './components/results-wrapper/results-wr
 import { DataBadgeComponent } from './components/data-badge/data-badge.component';
 import { ValuesetTableComponent } from './components/valueset-table/valueset-table.component';
 import { CodesModalComponent } from './components/codes-modal/codes-modal.component';
+import {TooltipModule} from 'primeng/tooltip';
+import {ToggleButtonModule} from 'primeng/togglebutton';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { CodesModalComponent } from './components/codes-modal/codes-modal.compon
     DropdownModule,
     PanelModule,
     FormsModule,
-    DynamicDialogModule
+    DynamicDialogModule,
+    TooltipModule,
+    ToggleButtonModule
   ],
   exports: [
     CommonModule,
@@ -61,7 +65,9 @@ import { CodesModalComponent } from './components/codes-modal/codes-modal.compon
     DataBadgeComponent,
     ValuesetTableComponent,
     CodesModalComponent,
-    DynamicDialogModule
+    DynamicDialogModule,
+    TooltipModule,
+    ToggleButtonModule
 
   ]
 })

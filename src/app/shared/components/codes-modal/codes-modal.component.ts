@@ -13,6 +13,7 @@ export class CodesModalComponent implements OnInit {
   derivedValuesets = [];
   selectedSrc;
   selectedDerived;
+  comparedCodes = [];
 
   constructor(
     public dialogService: DialogService,
@@ -22,26 +23,61 @@ export class CodesModalComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.config.data.valueset);
     if (this.config.data.valueset) {
-      this.srcValuesets = this.config.data.valueset.valuesets.src.value.map(
-        v => {
-          return { label: v, value: v };
-        }
-      );
-      if (this.config.data.valueset.valuesets.derived[this.config.data.igId]){
-        this.derivedValuesets = this.config.data.valueset.valuesets.derived[
-          this.config.data.igId
-        ].value.map(v => {
-          return { label: v, value: v };
-        });
-      } else {
-        this.derivedValuesets = this.config.data.valueset.valuesets.src.value.map(
-          v => {
-            return { label: v, value: v };
-          }
-        );
-      }
-     
+      this.srcValuesets = this.config.data.valueset.valuesets.src.value;
+      this.derivedValuesets = this.config.data.valueset.valuesets.derived[
+        this.config.data.igId
+      ].value;
+
       console.log(this.srcValuesets, this.derivedValuesets);
     }
+  }
+
+  srcChanged(event) {
+    console.log(event);
+    if (this.selectedDerived) {
+      this.comparedCodes = this.compareCodes(
+        this.selectedSrc.codes,
+        this.selectedDerived.codes
+      );
+    }
+  }
+  derivedChanged(event) {
+    console.log(event);
+    if (this.selectedSrc) {
+      this.comparedCodes = this.compareCodes(
+        this.selectedSrc.codes,
+        this.selectedDerived.codes
+      );
+    } else {
+      this.comparedCodes = this.selectedDerived.codes;
+    }
+  }
+  compareCodes(srcCodes, derivedCodes) {
+    let codes = [];
+    if (derivedCodes) {
+      derivedCodes.forEach(derivedCode => {
+        const srcCode = srcCodes.find(
+          code =>
+            code.value === derivedCode.value &&
+            code.codeSystem === derivedCode.codeSystem
+        );
+        if (srcCode) {
+          let code = Object.assign({}, derivedCode);
+          if (srcCode.usage !== derivedCode.usage) {
+            code.usage = {
+              value: derivedCode.usage,
+              status: "changed"
+            };
+          }
+
+          codes.push(code);
+        } else {
+          //code added
+          codes.push({ ...derivedCode, status: "added" });
+        }
+      });
+    }
+
+    return codes;
   }
 }

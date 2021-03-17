@@ -4,6 +4,7 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Router } from '@angular/router';
 import { TreeNode } from 'primeng/api';
+import {parse, stringify} from 'flatted';
 
 @Component({
   selector: "app-configuration",
@@ -81,7 +82,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     let formData: FormData = new FormData();
     let self = this;
     if(this.report){
-      const data = JSON.parse(this.report.data)
+      const data = parse(this.report.data)
       self.differentialService.differentialResults = <TreeNode[]>data;
       self.router.navigate(['/differential']);
     } 
@@ -95,6 +96,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         .calculateDifferential(formData)
         .pipe(takeUntil(this.destroy$))
         .subscribe((data: any) => {
+          console.log(data)
           if (data.success) {
             self.differentialService.differentialResults = <TreeNode[]>data.data;
             self.router.navigate(['/differential']);

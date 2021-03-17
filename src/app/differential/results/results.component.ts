@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { DifferentialService } from "../../shared/services/differential.service";
 import { Router } from "@angular/router";
 import { saveAs } from 'file-saver';
+import {parse, stringify} from 'flatted';
 
 @Component({
   selector: "app-results",
@@ -37,8 +38,13 @@ export class ResultsComponent implements OnInit {
   updateConfig() {}
 
   save(){
+    console.log(this.results)
+    // const blob = new Blob(
+    //   [JSON.stringify(this.results)],
+    //   { type: "text/json" }
+    // );
     const blob = new Blob(
-      [JSON.stringify(this.results)],
+      [stringify(this.results)],
       { type: "text/json" }
     );
     saveAs(blob, 'IACT_report.json');

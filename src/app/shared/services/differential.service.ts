@@ -11,7 +11,6 @@ export class DifferentialService {
 
   calculateDifferential(formData) {
     let headers = new HttpHeaders();
-    /** In Angular 5, including the header Content-Type can invalidate your request */
     headers.append("Content-Type", "multipart/form-data");
     headers.append("Accept", "application/json");
     let options = { headers: headers };

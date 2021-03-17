@@ -18,6 +18,7 @@ export class ResultsWrapperComponent implements OnInit {
   @Input() igs;
   active = 1;
   selectedConfiguration;
+  showReason = false;
   @Output() onClick = new EventEmitter();
   constructor() {}
 
@@ -39,5 +40,9 @@ export class ResultsWrapperComponent implements OnInit {
 
   getBinding(data){
     console.log(data)
+  }
+
+  reasonChanged(event){
+    console.log(event)
   }
 }
