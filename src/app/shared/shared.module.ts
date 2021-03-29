@@ -20,6 +20,7 @@ import { ValuesetTableComponent } from './components/valueset-table/valueset-tab
 import { CodesModalComponent } from './components/codes-modal/codes-modal.component';
 import {TooltipModule} from 'primeng/tooltip';
 import {ToggleButtonModule} from 'primeng/togglebutton';
+import { BindingBadgeComponent } from './components/binding-badge/binding-badge.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
     ResultsWrapperComponent,
     DataBadgeComponent,
     ValuesetTableComponent,
-    CodesModalComponent
+    CodesModalComponent,
+    BindingBadgeComponent
   ],
   entryComponents: [],
   providers: [
@@ -67,7 +69,8 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
     CodesModalComponent,
     DynamicDialogModule,
     TooltipModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    BindingBadgeComponent
 
   ]
 })

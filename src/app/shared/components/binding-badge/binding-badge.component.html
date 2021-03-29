@@ -1,0 +1,31 @@
+<ng-container [ngSwitch]="context">
+  <ng-container *ngSwitchCase="'profile'">
+    <div
+      pTooltip="Message"
+      tooltipPosition="top"
+      class="binding profile-vs"
+    ></div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'segment'">
+    <div
+      pTooltip="Segment"
+      tooltipPosition="top"
+      class="binding segment-vs"
+    ></div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'datatype_field'">
+    <div
+      pTooltip="Datatype (field)"
+      tooltipPosition="top"
+      class="binding datatype-field-vs"
+    ></div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'datatype_component'">
+    <div
+      pTooltip="Datatype (component)"
+      tooltipPosition="top"
+      class="binding datatype-component-vs"
+    ></div>
+  </ng-container>
+
+</ng-container>

@@ -1,4 +1,16 @@
 <p-panel [header]="profile.data.name" [toggleable]="true">
+  <div style="padding: 5px 10px;">
+    <strong>Binding Context Legend : </strong>
+    <div style="display: flex; flex-direction: row; align-items: center;">
+      <div
+        *ngFor="let item of legend"
+        style="display: flex; flex-direction: row; align-items: center; margin-right: 5px;"
+      >
+        <app-binding-badge [context]="item.context"></app-binding-badge>
+        <span style="margin-left: 5px;">{{ item.label }}</span>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-12" style="display: flex;padding: 5px 40px;">
       <div class="data-dd">
@@ -11,9 +23,14 @@
       </div>
 
       <div class="data-dd">
-        <p-toggleButton onLabel="Hide Reason" offLabel="Show reason"
-        onIcon="pi pi-eye-slash" offIcon="pi pi-eye" [(ngModel)]="showReason" inputId="reason"></p-toggleButton>
-
+        <p-toggleButton
+          onLabel="Hide Reason"
+          offLabel="Show reason"
+          onIcon="pi pi-eye-slash"
+          offIcon="pi pi-eye"
+          [(ngModel)]="showReason"
+          inputId="reason"
+        ></p-toggleButton>
       </div>
     </div>
   </div>
@@ -30,7 +47,6 @@
                   <th style="width: 200px;">{{ results.srcIg.title }}</th>
                   <th
                     [attr.style]="showReason ? 'width: 400px' : 'width: 200px'"
-
                     [attr.colspan]="showReason ? 2 : 1"
                     *ngFor="let derivedIg of igs"
                   >
@@ -158,7 +174,10 @@
                   {{ segment.data.label.src.value }} From
                   {{ results.srcIg.title }}
                 </th>
-                <th [attr.colspan]="showReason ? 2 : 1" *ngFor="let derivedIg of igs">
+                <th
+                  [attr.colspan]="showReason ? 2 : 1"
+                  *ngFor="let derivedIg of igs"
+                >
                   {{ segment.data.label.derived[derivedIg.id].value }} From
                   {{ derivedIg.title }}
                 </th>

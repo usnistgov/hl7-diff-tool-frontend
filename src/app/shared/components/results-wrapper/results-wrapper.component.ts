@@ -20,6 +20,24 @@ export class ResultsWrapperComponent implements OnInit {
   selectedConfiguration;
   showReason = false;
   @Output() onClick = new EventEmitter();
+  legend = [
+    {
+      context: "profile",
+      label: "Conformance Profile"
+    },
+    {
+      context: "segment",
+      label: "Segment"
+    },
+    {
+      context: "datatype_field",
+      label: "Datatype (FIELD)"
+    },
+    {
+      context: "datatype_component",
+      label: "Datatype (COMPONENT)"
+    }
+  ]
   constructor() {}
 
   ngOnInit(): void {

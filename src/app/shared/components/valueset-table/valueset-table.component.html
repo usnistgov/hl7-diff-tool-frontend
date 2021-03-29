@@ -1,16 +1,20 @@
 <div *ngIf="source">
+  
   <table
     class="table table-striped table-sm table-bordered"
     style="text-align: center; margin-bottom: 0;"
+    
+    *ngIf="valueset.valuesets.src.value "
   >
     <tr>
       <td
-        [attr.rowspan]="valueset.valuesets.src.value.length + 1"
+        [attr.rowspan]="valueset.valuesets.src.value?.length + 1"
         style="width: 10px;"
+        [ngClass]="{'valueset': valueset.type === 'valueset', 'single-code': valueset.type === 'single_code'}"
         class="binding-vs"
       ></td>
       <td style="vertical-align: middle; width: 25px;">
-        <!-- <app-binding-badge [context]="ctx"></app-binding-badge> -->
+        <app-binding-badge [context]="valueset.context.src?.value"></app-binding-badge>
       </td>
       <td [pTooltip]="valueset.strength.src.value" tooltipPosition="top">
         <ng-container [ngSwitch]="valueset.strength.src.value">
@@ -20,7 +24,7 @@
         </ng-container>
       </td>
       <td pTooltip="Binding Locations" tooltipPosition="top">
-        <strong>{{valueset.locations.src.value.length > 0 ? (valueset.locations.src.value | json) : '.'}}</strong>
+        <strong>{{valueset.locations.src.value?.length > 0 ? (valueset.locations.src.value | json) : '.'}}</strong>
       </td>
     </tr>
     <tr *ngFor="let item of valueset.valuesets.src.value">
@@ -36,10 +40,11 @@
     </tr>
   </table>
 </div>
-<div *ngIf="!source ">
+<div *ngIf="!source">
   <table
     class="table table-striped table-sm table-bordered"
     style="text-align: center; margin-bottom: 0;"
+    [ngClass]="{'added': valueset.status === 'added'}"
   >
     <tr>
       <ng-container *ngIf="valueset.valuesets.derived[igId]">
@@ -47,6 +52,7 @@
           [attr.rowspan]="valueset.valuesets.derived[igId]?.value.length + 1"
           style="width: 10px;"
           class="binding-vs"
+          [ngClass]="{'valueset': valueset.type === 'valueset', 'single-code': valueset.type === 'single_code'}"
         ></td>
       </ng-container>
       <ng-container *ngIf="!valueset.valuesets.derived[igId]">
@@ -54,14 +60,18 @@
           [attr.rowspan]="valueset.valuesets.src.value.length + 1"
           style="width: 10px;"
           class="binding-vs"
+          [ngClass]="{'valueset': valueset.type === 'valueset', 'single-code': valueset.type === 'single_code'}"
         ></td>
       </ng-container>
 
       <td style="vertical-align: middle; width: 25px;">
-        <!-- <app-binding-badge [context]="ctx"></app-binding-badge> -->
+        <app-binding-badge [context]="valueset.context.derived[igId]?.value"></app-binding-badge>
       </td>
       <ng-container *ngIf="valueset.strength.derived[igId]">
-        <td [pTooltip]="valueset.strength.derived[igId]?.value" tooltipPosition="top" class="changed">
+        <td [pTooltip]="valueset.strength.derived[igId]?.value" tooltipPosition="top"
+        [ngClass]="{'changed': valueset.status !== 'added' &&  valueset.strength.src.value && valueset.strength.derived[igId]?.value !== valueset.strength.src.value,
+      'added': !valueset.strength.src.value}"
+         >
           <ng-container [ngSwitch]="valueset.strength.derived[igId]?.value">
             <strong *ngSwitchCase="'Suggested'">S</strong>
             <strong *ngSwitchCase="'Required'">R</strong>
@@ -81,20 +91,21 @@
 
 
       <ng-container *ngIf="valueset.locations.derived[igId]">
-          <td pTooltip="Binding Locations" tooltipPosition="top" class="changed">
+          <td pTooltip="Binding Locations" tooltipPosition="top" [ngClass]="{'changed':valueset.status !== 'added' &&  valueset.locations.src.value && valueset.locations.derived[igId]?.value !== valueset.locations.src.value,
+          'added': !valueset.locations.src.value}">
               <strong>{{valueset.locations.derived[igId]?.value.length > 0 ? (valueset.locations.derived[igId]?.value | json) : '.'}}</strong>
           </td>
         </ng-container>
         <ng-container *ngIf="!valueset.locations.derived[igId]">
           <td pTooltip="Binding Locations" tooltipPosition="top">
-              <strong>{{valueset.locations.src.value.length > 0 ? (valueset.locations.src.value | json) : '.'}}</strong>
+              <strong>{{valueset.locations.src?.value?.length > 0 ? (valueset.locations.src.value | json) : '.'}}</strong>
           </td>
         </ng-container>
     </tr>
     <ng-container *ngIf="valueset.valuesets.derived[igId]">
       <tr
         *ngFor="let item of valueset.valuesets.derived[igId]?.value"
-        [ngClass]="{'changed': item.status === 'changed', 'added': item.status === 'added'}"
+        [ngClass]="{'changed': item.status === 'changed', 'added': item.status === 'added' || !valueset.valuesets.src.value}"
       >
         <td colspan="3">
           <div
