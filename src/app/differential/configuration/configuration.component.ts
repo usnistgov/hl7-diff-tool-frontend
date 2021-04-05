@@ -97,10 +97,10 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe((data: any) => {
           console.log(data)
-          // if (data.success) {
-          //   self.differentialService.differentialResults = <TreeNode[]>data.data;
-          //   self.router.navigate(['/differential']);
-          // }
+          if (data.success) {
+            self.differentialService.differentialResults = <TreeNode[]>data.data;
+            self.router.navigate(['/differential']);
+          }
         });
     }
    

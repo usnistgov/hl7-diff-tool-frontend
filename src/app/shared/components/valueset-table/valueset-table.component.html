@@ -48,6 +48,7 @@
   >
     <tr>
       <ng-container *ngIf="valueset.valuesets.derived[igId]">
+        
         <td
           [attr.rowspan]="valueset.valuesets.derived[igId]?.value.length + 1"
           style="width: 10px;"
@@ -91,8 +92,10 @@
 
 
       <ng-container *ngIf="valueset.locations.derived[igId]">
-          <td pTooltip="Binding Locations" tooltipPosition="top" [ngClass]="{'changed':valueset.status !== 'added' &&  valueset.locations.src.value && valueset.locations.derived[igId]?.value !== valueset.locations.src.value,
+          <td pTooltip="Binding Locations" tooltipPosition="top" 
+          [ngClass]="{'changed':valueset.status !== 'added' &&  valueset.locations.src.value && valueset.locations.derived[igId]?.value.length > 0 && valueset.locations.derived[igId]?.value !== valueset.locations.src.value,
           'added': !valueset.locations.src.value}">
+      
               <strong>{{valueset.locations.derived[igId]?.value.length > 0 ? (valueset.locations.derived[igId]?.value | json) : '.'}}</strong>
           </td>
         </ng-container>
