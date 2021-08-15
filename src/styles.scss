@@ -48,7 +48,6 @@ body {
   padding: 20px;
 }
 
-
 .bg-white {
   background: white;
   border: 1px solid #bce8f1;
@@ -57,9 +56,6 @@ body {
   margin-top: 20px;
 }
 
-
-
- 
 // Entity Badge Colors
 $ig_color: #b6006a;
 $group_color: #3dc43d;
@@ -70,8 +66,6 @@ $subcomponent_color: #87abf5;
 $datatype_color: rgb(240, 10, 10);
 $valueset_color: rgb(255, 0, 200);
 $comformance_profile_color: rgb(167, 90, 1);
-
-
 
 .entity-badge-ig {
   background-color: $ig_color !important;
@@ -109,10 +103,6 @@ $comformance_profile_color: rgb(167, 90, 1);
   background-color: $comformance_profile_color !important;
 }
 
-
-
-
-
 .added {
   background: #3dc43d !important;
 }
@@ -127,4 +117,42 @@ $comformance_profile_color: rgb(167, 90, 1);
 
 .p-dialog .p-dialog-content {
   height: 100%;
+}
+
+.warning {
+  &.p-card {
+    background: #ffeb9c !important;
+  }
+  background: #ffeb9c !important;
+}
+.info {
+  &.p-card {
+    background: #c5f0cd !important;;
+  }
+  background: #c5f0cd !important;;
+}
+.error {
+  &.p-card {
+    background: #ffc6cd !important;;
+  }
+  background: #ffc6cd !important;;
+}
+table{
+  width: 100%
+}
+
+th {
+  padding: 0.571em 0.857em;
+  border: 1px solid #c8c8c8;
+  font-weight: 700;
+  color: #333;
+  background-color: #f4f4f4;
+  font-size: 14px;
+}
+
+td {
+  padding: 0.571em 0.857em;
+  background-color: inherit;
+  border: 1px solid #c8c8c8;
+  text-align: left;
 }

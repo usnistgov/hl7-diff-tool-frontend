@@ -20,4 +20,14 @@ export class DifferentialService {
       options
     );
   }
+  sort(list, selectedSort) {
+    return list.sort((a, b) => {
+      if (typeof a[selectedSort] === "string") {
+        return a[selectedSort].localeCompare(b[selectedSort]);
+      }
+      if (typeof a[selectedSort] === "number") {
+        return b[selectedSort] - a[selectedSort];
+      }
+    });
+  }
 }

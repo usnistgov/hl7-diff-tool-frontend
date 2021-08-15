@@ -16,6 +16,7 @@ import {
   faTrash,
   faEye
 } from "@fortawesome/free-solid-svg-icons";
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +26,8 @@ import {
     HttpClientModule,
     SharedModule,
     BrowserAnimationsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ToastrModule.forRoot(), 
   ],
   providers: [],
   bootstrap: [AppComponent]

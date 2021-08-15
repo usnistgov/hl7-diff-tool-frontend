@@ -1,0 +1,35 @@
+<div>
+  <table *ngIf="percentage.binding && percentage.binding.total > 0">
+      <tr>
+          <th></th>
+          <th>Count</th>
+          <th>%</th>
+      </tr>
+      <ng-container *ngFor="let key of Object.keys(percentage.binding)">
+        <ng-container *ngIf="percentage.binding[key] > 0 ">
+            <tr>
+                <td>
+             
+                    <div [ngSwitch]="key">
+                            <div *ngSwitchCase="'strength'">Binding strength</div>
+                            <div *ngSwitchCase="'vs'">Vocabulary binding</div>
+                            <div *ngSwitchCase="'location'">Binding location</div>
+                            <div *ngSwitchCase="'codes'">Code set</div>
+                            <div *ngSwitchCase="'total'">Total</div>
+
+
+                        </div>
+                </td>
+                <td>
+                    {{percentage.binding[key]}}
+                </td>
+                <td>
+                    {{(percentage.binding[key]/ percentage.binding.total)*100 | number:'1.0-1'}}%
+                </td>
+            </tr>
+        </ng-container>
+      </ng-container>
+      <tr></tr>
+  </table>
+  
+</div>

@@ -21,19 +21,16 @@ export class CodesModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.config.data.valueset);
     if (this.config.data.valueset) {
       this.srcValuesets = this.config.data.valueset.valuesets.src.value;
       this.derivedValuesets = this.config.data.valueset.valuesets.derived[
         this.config.data.igId
       ].value;
 
-      console.log(this.srcValuesets, this.derivedValuesets);
     }
   }
 
   srcChanged(event) {
-    console.log(event);
     if (this.selectedDerived) {
       this.comparedCodes = this.compareCodes(
         this.selectedSrc.codes,
@@ -42,7 +39,6 @@ export class CodesModalComponent implements OnInit {
     }
   }
   derivedChanged(event) {
-    console.log(event);
     if (this.selectedSrc) {
       this.comparedCodes = this.compareCodes(
         this.selectedSrc.codes,

@@ -16,7 +16,6 @@ export class ValuesetTableComponent implements OnInit {
   constructor(public dialogService: DialogService) {}
 
   ngOnInit(): void {
-    console.log(this.valueset);
   }
 
   codeViewer() {

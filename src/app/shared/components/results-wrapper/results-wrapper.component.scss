@@ -39,3 +39,41 @@
   padding: 8px 10px 0px 0;
   font-weight: 500;
 }
+
+
+.comment-badge {
+  position: absolute;
+  right: -12px;
+  display: flex;
+  top: -6px;
+  background: #037bfe;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 13px;
+  text-align: center;
+}
+
+.derived-pill {
+  font-size: 10px;
+  color: white;
+  padding: 0px 5px;
+  border-radius: 10px;
+  width: 75px;
+  text-align: center;
+}
+.derived {
+  background: green;
+}
+.not-derived {
+  background: red;
+}
+.reference{
+  background: blue;
+}
+
+.grayed{
+  background-color: #c8c8c8 !important;
+  color: #c8c8c8 !important;
+}

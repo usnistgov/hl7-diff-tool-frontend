@@ -16,7 +16,7 @@
               accept="text/xml, text/plain"
             />
             <div>
-              Upload source IG
+              Upload source Profile
             </div>
           </div>
           <div
@@ -25,7 +25,7 @@
             style="text-align: left"
           >
             <div>
-              <strong>Source IG: </strong>
+              <strong>Source Profile: </strong>
               {{ sourceIg.name }}
             </div>
             <div class="remove-source pointer" (click)="removeSourceIg()">
@@ -50,14 +50,14 @@
               accept="text/xml, text/plain"
             />
             <div>
-              Upload derived IG(s)
+              Upload derived Profile(s)
             </div>
           </div>
         </div>
         <div class="derived-upload" *ngIf="derivedIgs.length > 0">
           <div class="upload-container">
             <div style="text-align: left;">
-              <strong>Derived IG(s): </strong>
+              <strong>Derived Profile(s): </strong>
               <ul>
                 <li
                   *ngFor="let ig of derivedIgs; let i = index"
@@ -88,7 +88,7 @@
                 style="display:none;"
                 accept="text/xml, text/plain"
               />
-              Add IG(s)
+              Add Profile(s)
             </button>
           </div>
         </div>
@@ -97,7 +97,7 @@
         <div>
           <h3>Configuration</h3>
           <div>
-            <h5>Metrics</h5>
+            <h5>Compliance</h5>
             <div class="form-check">
               <input
                 class="form-check-input"

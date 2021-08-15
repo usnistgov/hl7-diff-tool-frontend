@@ -27,5 +27,26 @@
       class="binding datatype-component-vs"
     ></div>
   </ng-container>
-
+  <ng-container *ngSwitchCase="'warning'">
+    <div
+      pTooltip="Potentially not allowable and needs moderate follow-up."
+      tooltipPosition="top"
+      class="binding warning"
+    ></div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'error'">
+    <div
+      pTooltip="Not allowable and needs intensive follow-up."
+      tooltipPosition="top"
+      class="binding error"
+    ></div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'informational'">
+    <div
+      pTooltip="Different than what’s in the guide, but is allowable."
+      tooltipPosition="top"
+      class="binding info"
+    ></div>
+  </ng-container>
 </ng-container>
+ 

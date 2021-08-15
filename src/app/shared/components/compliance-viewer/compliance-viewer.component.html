@@ -1,0 +1,173 @@
+<p-panel header="Compliance" [toggleable]="true">
+  <div style="padding: 5px 10px;">
+    <strong>Legend : </strong>
+    <div style="display: flex; flex-direction: row; align-items: center;">
+      <div
+        *ngFor="let item of legend"
+        style="display: flex; flex-direction: row; align-items: center; margin-right: 5px;"
+      >
+        <app-binding-badge [context]="item.context"></app-binding-badge>
+
+        <span style="margin-left: 5px;">{{ item.label }}</span>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="profiles">
+    <div  *ngFor="let profile of profiles">
+        <div  class="ig-metric">
+            <h4>All profiles</h4>
+            <div class="row">
+              <div class="col-4">
+                <p-card styleClass="metric-card error">
+                  <ul class="metric-list">
+                    <li class="metric-item">
+                      Usage:
+                      <strong>{{
+                        profile.totalCompliance.usage
+                          ? profile.totalCompliance.usage.error
+                          : 0
+                      }}</strong>
+                    </li>
+                    <li class="metric-item">
+                      Total:
+                      <strong>{{
+                        profile.totalCompliance.total
+                          ? profile.totalCompliance.total.error
+                          : 0
+                      }}</strong>
+                    </li>
+                  </ul>
+                </p-card>
+              </div>
+              <div class="col-4">
+                <p-card styleClass="metric-card warning">
+                  <ul class="metric-list">
+                    <li class="metric-item">
+                      Usage:
+                      <strong>{{
+                        profile.totalCompliance.usage
+                          ? profile.totalCompliance.usage.warning
+                          : 0
+                      }}</strong>
+                    </li>
+                    <li class="metric-item">
+                      Total:
+                      <strong>
+                        {{
+                          profile.totalCompliance.total
+                            ? profile.totalCompliance.total.warning
+                            : 0
+                        }}</strong
+                      >
+                    </li>
+                  </ul>
+                </p-card>
+              </div>
+              <div class="col-4">
+                <p-card styleClass="metric-card info">
+                  <ul class="metric-list">
+                    <li class="metric-item">
+                      Usage:
+                      <strong>
+                        {{
+                          profile.totalCompliance.usage
+                            ? profile.totalCompliance.usage.info
+                            : 0
+                        }}</strong
+                      >
+                    </li>
+                    <li class="metric-item">
+                      Total:
+                      <strong>
+                        {{
+                          profile.totalCompliance.total
+                            ? profile.totalCompliance.total.info
+                            : 0
+                        }}</strong
+                      >
+                    </li>
+                  </ul>
+                </p-card>
+              </div>
+            </div>
+          </div>
+      <div *ngFor="let ig of igs" class="ig-metric">
+        <h4>{{ ig.title }}</h4>
+        <div class="row">
+          <div class="col-4">
+            <p-card styleClass="metric-card error">
+              <ul class="metric-list">
+                <li class="metric-item">
+                  Usage:
+                  <strong>{{
+                    profile.compliance[ig.id]?.usage
+                      ? profile.compliance[ig.id]?.usage.error
+                      : 0
+                  }}</strong>
+                </li>
+                <li class="metric-item">
+                  Total:
+                  <strong>{{
+                    profile.compliance[ig.id]?.total
+                      ? profile.compliance[ig.id]?.total.error
+                      : 0
+                  }}</strong>
+                </li>
+              </ul>
+            </p-card>
+          </div>
+          <div class="col-4">
+            <p-card styleClass="metric-card warning">
+              <ul class="metric-list">
+                <li class="metric-item">
+                  Usage:
+                  <strong>{{
+                    profile.compliance[ig.id]?.usage
+                      ? profile.compliance[ig.id]?.usage.warning
+                      : 0
+                  }}</strong>
+                </li>
+                <li class="metric-item">
+                  Total:
+                  <strong>
+                    {{
+                      profile.compliance[ig.id]?.total
+                        ? profile.compliance[ig.id]?.total.warning
+                        : 0
+                    }}</strong
+                  >
+                </li>
+              </ul>
+            </p-card>
+          </div>
+          <div class="col-4">
+            <p-card styleClass="metric-card info">
+              <ul class="metric-list">
+                <li class="metric-item">
+                  Usage:
+                  <strong>
+                    {{
+                      profile.compliance[ig.id]?.usage
+                        ? profile.compliance[ig.id]?.usage.info
+                        : 0
+                    }}</strong
+                  >
+                </li>
+                <li class="metric-item">
+                  Total:
+                  <strong>
+                    {{
+                      profile.compliance[ig.id]?.total
+                        ? profile.compliance[ig.id]?.total.info
+                        : 0
+                    }}</strong
+                  >
+                </li>
+              </ul>
+            </p-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</p-panel>

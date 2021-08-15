@@ -1,0 +1,49 @@
+<div>
+  <table>
+      <tr>
+          <th>Usage</th>
+          <th>Count</th>
+          <th>%</th>
+      </tr>
+      <ng-container *ngFor="let key of Object.keys(percentage.usage)">
+        <ng-container *ngIf="percentage.usage[key] > 0 ">
+            <tr>
+                <td>
+             
+                    <div [ngSwitch]="key">
+                            <div *ngSwitchCase="'rc'">R to C</div>
+                            <div *ngSwitchCase="'cr'">C to R</div>
+                            <div *ngSwitchCase="'cre'">C to RE</div>
+                            <div *ngSwitchCase="'co'">C to O</div>
+                            <div *ngSwitchCase="'cx'">C to X</div>
+                            <div *ngSwitchCase="'rre'">R to RE</div>
+                            <div *ngSwitchCase="'ro'">R to O</div>
+                            <div *ngSwitchCase="'rx'">R to X</div>
+                            <div *ngSwitchCase="'rec'">RE to C</div>
+                            <div *ngSwitchCase="'rer'">RE to R</div>
+                            <div *ngSwitchCase="'reo'">RE to O</div>
+                            <div *ngSwitchCase="'rex'">RE to X</div>
+                            <div *ngSwitchCase="'oc'">O to C</div>
+                            <div *ngSwitchCase="'or'">O to R</div>
+                            <div *ngSwitchCase="'ore'">O to RE</div>
+                            <div *ngSwitchCase="'ox'">O to X</div>
+                            <div *ngSwitchCase="'xc'">X to C</div>
+                            <div *ngSwitchCase="'xr'">X to R</div>
+                            <div *ngSwitchCase="'xre'">X to RE</div>
+                            <div *ngSwitchCase="'xo'">X to O</div>
+                            <div *ngSwitchCase="'total'">Total</div>
+
+                        </div>
+                </td>
+                <td>
+                    {{percentage.usage[key]}}
+                </td>
+                <td>
+                    {{(percentage.usage[key]/ percentage.usage.total)*100 | number:'1.0-1'}}%
+                </td>
+            </tr>
+        </ng-container>
+      </ng-container>
+      <tr></tr>
+  </table>
+</div>

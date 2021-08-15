@@ -6,11 +6,14 @@ import {
   EventEmitter,
   SimpleChanges
 } from "@angular/core";
+import { DialogService } from "primeng/dynamicdialog";
+import { CommentsModalComponent } from "../comments-modal/comments-modal.component";
 
 @Component({
   selector: "app-results-wrapper",
   templateUrl: "./results-wrapper.component.html",
-  styleUrls: ["./results-wrapper.component.scss"]
+  styleUrls: ["./results-wrapper.component.scss"],
+  providers: [DialogService]
 })
 export class ResultsWrapperComponent implements OnInit {
   @Input() profile;
@@ -19,6 +22,8 @@ export class ResultsWrapperComponent implements OnInit {
   active = 1;
   selectedConfiguration;
   showReason = false;
+  compliance = false;
+  removeReason = false;
   @Output() onClick = new EventEmitter();
   legend = [
     {
@@ -37,30 +42,64 @@ export class ResultsWrapperComponent implements OnInit {
       context: "datatype_component",
       label: "Datatype (COMPONENT)"
     }
-  ]
-  constructor() {}
+  ];
+  constructor(public dialogService: DialogService) {}
 
   ngOnInit(): void {
     this.active = 1;
-    this.selectedConfiguration = this.results.configuration[0]
+    this.selectedConfiguration = this.results.configuration[0];
     console.log(this.results);
-
-    console.log(this.profile);
   }
   ngOnChanges(changes: SimpleChanges) {
     this.active = 1;
-
+    const self = this;
+    const derivedProfiles = this.igs.filter(ig => self.results.srcIg.profileId === ig.profileOrigin && ig.derived) 
+    if(derivedProfiles && derivedProfiles.length > 0){
+      this.removeReason = false;
+    } else {
+      this.removeReason = true;
+    }
   }
 
   selectProfile(profile) {
     this.onClick.emit(profile);
   }
 
-  getBinding(data){
-    console.log(data)
-  }
+  getBinding(data) {}
 
-  reasonChanged(event){
-    console.log(event)
+  reasonChanged(event) {}
+  comment(rowData, param, igId) {
+    const ref = this.dialogService.open(CommentsModalComponent, {
+      header: "Comments",
+      width: "100%",
+      height: "600px",
+      data: {
+        comments: rowData[param].derived[igId].comments
+      }
+    });
+    ref.onClose.subscribe(c => {
+      if (c) {
+        rowData[param].derived[igId].comments = c;
+      }
+    });
+  }
+  commentVs(rowData, igId) {
+    console.log(rowData);
+    if (!rowData.bindingsComments) {
+      rowData.bindingsComments = {};
+    }
+    const ref = this.dialogService.open(CommentsModalComponent, {
+      header: "Comments",
+      width: "100%",
+      height: "600px",
+      data: {
+        comments: rowData.bindingsComments[igId]
+      }
+    });
+    ref.onClose.subscribe(c => {
+      if (c) {
+        rowData.bindingsComments[igId] = c;
+      }
+    });
   }
 }

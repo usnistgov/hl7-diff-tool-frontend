@@ -5,10 +5,57 @@
       class="profile-item "
       (click)="selectProfile(profile)"
     >
-    <div [ngClass]="{'active-profile': profile.data.id === selectedProfile?.data.id}">
-        {{ profile.data.name }}
-
+      <div
+        style="padding-left: 10px;"
+        [ngClass]="{
+          'active-profile':
+            selectedItem === 'profile' &&
+            profile.data.id === selectedProfile?.data.id
+        }"
+      >
+        <!-- {{ profile.data.name }} -->
+        Profile
+      </div>
     </div>
+    <div class="profile-item">
+      <div
+        style="padding-left: 10px;"
+        (click)="select('compliance')"
+        [ngClass]="{
+          'active-profile': selectedItem === 'compliance'
+        }"
+      >
+        Compliance
+      </div>
+    </div>
+    <div class="profile-item">
+      <div
+        style="padding-left: 10px;"
+        (click)="select('summaries-overview')"
+        [ngClass]="{
+          'active-profile': selectedItem.startsWith('summaries')
+        }"
+      >
+        Summaries
+      </div>
+      <div
+        style="padding: 5px 0px 5px 30px;"
+        (click)="select('summaries-overview')"
+        [ngClass]="{
+          'active-profile': selectedItem.startsWith('summaries-overview')
+        }"
+      >
+        Overview
+      </div>
+      <div
+        style="padding: 5px 0px 5px 30px;"
+        (click)="select('summaries-details')"
+        [ngClass]="{
+          'active-profile': selectedItem.startsWith('summaries-details')
+        }"
+      >
+        Details
+      </div>
     </div>
   </div>
 </p-panel>

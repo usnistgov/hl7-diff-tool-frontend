@@ -1,0 +1,74 @@
+<div>
+  <div class="p-fluid p-grid">
+    <div class="p-field p-col-12" style="padding: 5px 10px;">
+      <h5>Author</h5>
+      <input id="author" type="text" pInputText [(ngModel)]="author" />
+    </div>
+    <div class="p-field p-col-12" style="padding: 5px 10px;">
+      <h5>Comment</h5>
+      <textarea id="comment" pInputTextarea [(ngModel)]="comment"></textarea>
+    </div>
+    <div style="padding: 5px 10px;height: 50px;">
+      <button
+        [disabled]="!comment"
+        pButton
+        type="button"
+        label="Publish"
+        (click)="submit()"
+        style="width: 100px;float: right;"
+      ></button>
+    </div>
+  </div>
+
+  <div>
+    <div class="row" *ngFor="let comment of comments; let i = index">
+      <div class="col-md-12" style="border: 1px solid #8080808f;padding: 7px;" *ngIf="editingComment !== i">
+        <div>
+          {{ comment.comment }}
+        </div>
+        <div style="font-weight: 800;font-size: 12px;text-align: right;">
+          <div>
+            {{ comment.author }}
+          </div>
+          <div>
+            {{ comment.date | date: "short" }}
+          </div>
+        </div>
+        <div style="position: absolute;right: 10px;top: 5px;">
+          <i
+            class="pi pi-pencil"
+            style="font-size: 20px;cursor: pointer;padding:0 5px;"
+            (click)="editComment(i)"
+          ></i>
+          <i
+          class="pi pi-trash"
+          style="font-size: 20px;cursor: pointer;padding:0 5px;color: red;"
+          (click)="deleteComment(i)"
+        ></i>
+        </div>
+      </div>
+      <div class="col-md-12" style="border: 1px solid #8080808f;padding: 7px;" *ngIf="editingComment === i">
+          <div class="p-fluid p-grid">
+              <div class="p-field p-col-12" style="padding: 5px 10px;">
+                <h5>Author</h5>
+                <input id="author" type="text" pInputText [(ngModel)]="editingCommentObj.author" />
+              </div>
+              <div class="p-field p-col-12" style="padding: 5px 10px;">
+                <h5>Comment</h5>
+                <textarea id="comment" pInputTextarea [(ngModel)]="editingCommentObj.comment"></textarea>
+              </div>
+              <div style="padding: 5px 10px;height: 50px;">
+                <button
+                  [disabled]="!comment"
+                  pButton
+                  type="button"
+                  label="Save"
+                  (click)="saveComment()"
+                  style="width: 100px;float: right;"
+                ></button>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

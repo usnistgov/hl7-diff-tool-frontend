@@ -1,0 +1,251 @@
+<!-- <div style="padding: 5px 10px;">
+    <strong>Legend : </strong>
+    <div style="display: flex; flex-direction: row; align-items: center;">
+      <div
+        *ngFor="let item of legend"
+        style="display: flex; flex-direction: row; align-items: center; margin-right: 5px;"
+      >
+        <app-binding-badge [context]="item.context"></app-binding-badge>
+
+        <span style="margin-left: 5px;">{{ item.label }}</span>
+      </div>
+    </div>
+  </div> -->
+<div style="margin: 5px;">
+  <p-panel header="All profiles" [toggleable]="true" [collapsed]="true">
+    <ng-container *ngIf="profiles">
+      <div *ngFor="let profile of profiles" style="padding: 10px;">
+        <div style="margin: 5px;">
+          <p-panel header="Usage" [toggleable]="true">
+            <app-usage-percentage
+              [percentage]="profile.totalPercentage"
+            ></app-usage-percentage>
+          </p-panel>
+        </div>
+        <div style="margin: 5px;">
+          <p-panel header="Cardinality" [toggleable]="true">
+            <app-cardinality-percentage
+              [percentage]="profile.totalPercentage"
+            ></app-cardinality-percentage>
+          </p-panel>
+        </div>
+        <div style="margin: 5px;">
+          <p-panel header="Value set binding" [toggleable]="true">
+            <app-binding-percentage
+              [percentage]="profile.totalPercentage"
+            ></app-binding-percentage>
+          </p-panel>
+        </div>
+        <div style="margin: 5px;">
+          <p-panel header="Profiles changes table" [toggleable]="true">
+            <div style="display: flex;padding: 10px 5px;">
+              <div style="margin: 0 10px;">
+                <div>Sort By</div>
+                <div>
+                  <p-dropdown
+                    [options]="sortingList"
+                    [(ngModel)]="selectedSort"
+                    optionLabel="label"
+                    (ngModelChange)="sortChanged($event)"
+                  ></p-dropdown>
+                </div>
+              </div>
+              <div>
+                <div>Filter By</div>
+                <div>
+                  <p-multiSelect
+                    display="chip"
+                    [options]="filterList"
+                    [(ngModel)]="selectedFilter"
+                    (ngModelChange)="filterChanged($event)"
+                    optionValue="value"
+                    optionLabel="label"
+                  ></p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <table>
+              <tr>
+                <th></th>
+                <th *ngFor="let ig of igs">{{ ig.title }}</th>
+              </tr>
+              <ng-container *ngFor="let item of totalChangesTable">
+                <tr *ngIf="validateFilter(item)">
+                  <td>
+                    <div style="display: flex">
+                      <app-data-badge [type]="item.type"></app-data-badge>
+                      <div style="padding: 2px 6px;">
+                        {{ item.path }}.{{ item.name }}
+                      </div>
+                    </div>
+                  </td>
+                  <td *ngFor="let ig of igs">
+                    {{ item[ig.id] ? item[ig.id] : 0 }}
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
+          </p-panel>
+        </div>
+        <div style="margin: 5px;">
+          <p-panel header="Changes table" [toggleable]="true">
+            <div style="display: flex;padding: 10px 5px;">
+              <div style="margin: 0 10px;">
+                <div>Sort By</div>
+                <div>
+                  <p-dropdown
+                    [options]="sortingList"
+                    [(ngModel)]="selectedSort"
+                    optionLabel="label"
+                    (ngModelChange)="sortChanged($event)"
+                  ></p-dropdown>
+                </div>
+              </div>
+              <div>
+                <div>Filter By</div>
+                <div>
+                  <p-multiSelect
+                    display="chip"
+                    [options]="filterList"
+                    [(ngModel)]="selectedFilter"
+                    (ngModelChange)="filterChanged($event)"
+                    optionValue="value"
+                    optionLabel="label"
+                  ></p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <table>
+              <tr>
+                <th></th>
+                <th>Total</th>
+                <th>Usage</th>
+                <th>Cardinality</th>
+                <th>Data type</th>
+              </tr>
+              <ng-container *ngFor="let item of totalChangesTable">
+                <tr *ngIf="validateFilter(item)">
+                  <td>
+                    <div style="display: flex">
+                      <app-data-badge [type]="item.type"></app-data-badge>
+                      <div style="padding: 2px 6px;">
+                        {{ item.path }}.{{ item.name }}
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    {{ item.total ? item.total : 0 }}
+                  </td>
+                  <td>
+                    {{ item.usage ? item.usage : 0 }}
+                  </td>
+                  <td>
+                    {{ item.cardinality ? item.cardinality : 0 }}
+                  </td>
+                  <td>
+                    {{ item.datatype ? item.datatype : 0 }}
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
+          </p-panel>
+        </div>
+      </div>
+    </ng-container>
+  </p-panel>
+</div>
+
+<div *ngFor="let ig of igs" style="margin: 5px;">
+  <p-panel [header]="ig.title" [toggleable]="true" [collapsed]="true">
+    <div style="margin: 5px;">
+      <p-panel header="Usage" [toggleable]="true">
+        <app-usage-percentage
+          [percentage]="profiles[0].percentage[ig.id]"
+        ></app-usage-percentage>
+      </p-panel>
+    </div>
+    <div style="margin: 5px;">
+      <p-panel header="Cardinality" [toggleable]="true">
+        <app-cardinality-percentage
+          [percentage]="profiles[0].percentage[ig.id]"
+        ></app-cardinality-percentage>
+      </p-panel>
+    </div>
+    <div style="margin: 5px;">
+      <p-panel header="Value set binding" [toggleable]="true">
+        <app-binding-percentage
+          [percentage]="profiles[0].percentage[ig.id]"
+        ></app-binding-percentage>
+      </p-panel>
+    </div>
+    <div style="margin: 5px;">
+      <p-panel header="Changes table" [toggleable]="true">
+        <div style="padding: 10px 5px;">
+          <div style="display: flex;padding: 10px 5px;">
+            <div style="margin: 0 10px;">
+              <div>Sort By</div>
+              <div>
+                <p-dropdown
+                  [options]="sortingList"
+                  [(ngModel)]="selectedSort"
+                  optionLabel="label"
+                  (ngModelChange)="sortChanged($event)"
+                ></p-dropdown>
+              </div>
+            </div>
+            <div>
+              <div>Filter By</div>
+              <div>
+                <p-multiSelect
+                  display="chip"
+                  [options]="filterList"
+                  [(ngModel)]="selectedFilter"
+                  (ngModelChange)="filterChanged($event)"
+                  optionValue="value"
+                  optionLabel="label"
+                ></p-multiSelect>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <table>
+            <tr>
+              <th></th>
+              <th>Total</th>
+              <th>Usage</th>
+              <th>Cardinality</th>
+              <th>Data type</th>
+            </tr>
+            <ng-container *ngFor="let item of profilesChangesTable[ig.id]">
+              <tr *ngIf="validateFilter(item)">
+                <td>
+                  <div style="display: flex">
+                    <app-data-badge [type]="item.type"></app-data-badge>
+                    <div style="padding: 2px 6px;">
+                      {{ item.path }}.{{ item.name }}
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  {{ item.total ? item.total : 0 }}
+                </td>
+                <td>
+                  {{ item.usage ? item.usage : 0 }}
+                </td>
+                <td>
+                  {{ item.cardinality ? item.cardinality : 0 }}
+                </td>
+                <td>
+                  {{ item.datatype ? item.datatype : 0 }}
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+        </div>
+      </p-panel>
+    </div>
+  </p-panel>
+</div>

@@ -1,0 +1,62 @@
+<div>
+  <table *ngIf="percentage.cardinality.min.total > 0">
+      <tr>
+          <th>Min. Cardinality</th>
+          <th>Count</th>
+          <th>%</th>
+      </tr>
+      <ng-container *ngFor="let key of Object.keys(percentage.cardinality.min)">
+        <ng-container *ngIf="percentage.cardinality.min[key] > 0 ">
+            <tr>
+                <td>
+             
+                    <div [ngSwitch]="key">
+                            <div *ngSwitchCase="'0x'">0 to n</div>
+                            <div *ngSwitchCase="'x0'">m to 0</div>
+                            <div *ngSwitchCase="'xx'">m to n</div>
+                            <div *ngSwitchCase="'total'">Total</div>
+
+                        </div>
+                </td>
+                <td>
+                    {{percentage.cardinality.min[key]}}
+                </td>
+                <td>
+                    {{(percentage.cardinality.min[key]/ percentage.cardinality.min.total)*100 | number:'1.0-1'}}%
+                </td>
+            </tr>
+        </ng-container>
+      </ng-container>
+      <tr></tr>
+  </table>
+  <table *ngIf="percentage.cardinality.max.total > 0">
+        <tr>
+            <th>Max. Cardinality</th>
+            <th>Count</th>
+            <th>%</th>
+        </tr>
+        <ng-container *ngFor="let key of Object.keys(percentage.cardinality.max)">
+          <ng-container *ngIf="percentage.cardinality.max[key] > 0 ">
+              <tr>
+                  <td>
+               
+                      <div [ngSwitch]="key">
+                              <div *ngSwitchCase="'x*'">m to *</div>
+                              <div *ngSwitchCase="'*x'">* to n</div>
+                              <div *ngSwitchCase="'xx'">m to n</div>
+                              <div *ngSwitchCase="'total'">Total</div>
+  
+                          </div>
+                  </td>
+                  <td>
+                      {{percentage.cardinality.max[key]}}
+                  </td>
+                  <td>
+                      {{(percentage.cardinality.max[key]/ percentage.cardinality.max.total)*100 | number:'1.0-1'}}%
+                  </td>
+              </tr>
+          </ng-container>
+        </ng-container>
+        <tr></tr>
+    </table>
+</div>

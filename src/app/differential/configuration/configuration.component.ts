@@ -5,6 +5,8 @@ import { takeUntil } from "rxjs/operators";
 import { Router } from '@angular/router';
 import { TreeNode } from 'primeng/api';
 import {parse, stringify} from 'flatted';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: "app-configuration",
@@ -25,7 +27,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   }
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private differentialService: DifferentialService, private router: Router) {}
+  constructor(private spinner: NgxSpinnerService, private toastr: ToastrService, private differentialService: DifferentialService, private router: Router) {}
 
   ngOnInit() {}
   ngOnDestroy() {
@@ -79,11 +81,14 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     this.derivedIgs.splice(i, 1);
   }
   analyze() {
+    this.spinner.show();
+
     let formData: FormData = new FormData();
     let self = this;
     if(this.report){
       const data = parse(this.report.data)
       self.differentialService.differentialResults = <TreeNode[]>data;
+      self.spinner.hide();
       self.router.navigate(['/differential']);
     } 
     if (this.sourceIg && this.derivedIgs.length > 0) {
@@ -96,12 +101,16 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         .calculateDifferential(formData)
         .pipe(takeUntil(this.destroy$))
         .subscribe((data: any) => {
-          console.log(data)
           if (data.success) {
             self.differentialService.differentialResults = <TreeNode[]>data.data;
+            console.log(self.differentialService.differentialResults)
+            self.spinner.hide();
             self.router.navigate(['/differential']);
           }
-        });
+        }, error => {
+          self.spinner.hide();
+          this.toastr.error("Error while calculating. Please check profiles structure")
+        },);
     }
    
   }

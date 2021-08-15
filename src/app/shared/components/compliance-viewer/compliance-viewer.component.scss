@@ -1,0 +1,64 @@
+:host ::ng-deep .p-panel-header {
+  color: #3a87ad;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  padding: 10px;
+}
+
+:host ::ng-deep .p-panel .p-panel-content {
+  padding: 0px;
+}
+
+:host ::ng-deep .p-treetable .p-treetable-tbody > tr > td {
+  padding: 0.571em 0.857em;
+  background-color: inherit;
+  border: 1px solid #c8c8c8;
+}
+:host ::ng-deep .p-treetable .p-treetable-thead > tr > th {
+  padding: 0.571em 0.857em;
+  border: 1px solid #c8c8c8;
+  font-weight: 700;
+  color: #333;
+  background-color: #f4f4f4;
+  font-size: 14px;
+}
+
+:host ::ng-deep .p-panel .p-panel-content {
+  overflow: scroll;
+}
+
+.data-dd {
+  display: flex;
+  text-align: right;
+  padding: 5px 20px 0 20px;
+}
+
+.check-label {
+  padding: 8px 10px 0px 0;
+  font-weight: 500;
+}
+
+.metric-list {
+  list-style: none;
+  padding-left: 0;
+}
+.metric-item {
+  font-size: 20px;
+}
+:host ::ng-deep .p-card {
+  width: 200px;
+  height: 100px;
+}
+:host ::ng-deep .p-card-body {
+  padding: 0px;
+}
+
+:host ::ng-deep .p-card-content {
+  padding: 10px;
+}
+
+
+.ig-metric{
+  padding: 20px 10px;
+  border-bottom: 1px solid;
+}
