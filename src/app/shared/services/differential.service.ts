@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
   providedIn: "root"
 })
 export class DifferentialService {
-  apiEndPoint = "http://localhost:3000/api";
+  apiEndPoint = "https://hit-dev.nist.gov:8085/api";
   differentialResults;
   constructor(private http: HttpClient) {}
 

@@ -2,92 +2,117 @@
   <p-panel header="Total changes" [toggleable]="true">
     <ng-container *ngIf="profiles">
       <div *ngFor="let profile of profiles" style="padding: 10px;">
-          <table>
-              <tr>
-                <th>Profile</th>
-                <th>Total</th>
-                <th>Usage</th>
-                <th>Cardinality</th>
-                <th>Data type</th>
-              </tr>
-              <tr *ngFor="let ig of igs">
-                <td>
-                  <div style="display: flex">
-                    {{ ig.title }}
-                  </div>
-                </td>
-                <td>
-                  {{ profile.summaries.overview[ig.id].total ? profile.summaries.overview[ig.id].total : 0 }}
-                </td>
-                <td>
-                  {{ profile.summaries.overview[ig.id].usage ? profile.summaries.overview[ig.id].usage : 0 }}
-                </td>
-                <td>
-                    {{ profile.summaries.overview[ig.id].cardinality ? profile.summaries.overview[ig.id].cardinality  : 0}}                  
-                </td>
-                <td>
-                    {{ profile.summaries.overview[ig.id].datatype ? profile.summaries.overview[ig.id].datatype : 0 }}
-                </td>
-              </tr>
-            </table>
+        <table>
+          <tr>
+            <th>Profile</th>
+            <th>Total</th>
+            <th>Usage</th>
+            <th>Cardinality</th>
+            <th>Data type</th>
+          </tr>
+          <tr *ngFor="let ig of igs">
+            <td>
+              <div style="display: flex">
+                {{ ig.title }}
+              </div>
+            </td>
+            <td>
+              {{
+                profile.summaries.overview[ig.id].total
+                  ? profile.summaries.overview[ig.id].total
+                  : 0
+              }}
+            </td>
+            <td>
+              {{
+                profile.summaries.overview[ig.id].usage
+                  ? profile.summaries.overview[ig.id].usage
+                  : 0
+              }}
+            </td>
+            <td>
+              {{
+                profile.summaries.overview[ig.id].cardinality
+                  ? profile.summaries.overview[ig.id].cardinality
+                  : 0
+              }}
+            </td>
+            <td>
+              {{
+                profile.summaries.overview[ig.id].datatype
+                  ? profile.summaries.overview[ig.id].datatype
+                  : 0
+              }}
+            </td>
+          </tr>
+        </table>
       </div>
     </ng-container>
   </p-panel>
 </div>
 
 <div style="margin: 5px;">
-    <p-panel header="Usage" [toggleable]="true">
-      <div style="display: flex;padding: 10px 5px;">
-        <div style="margin: 0 10px;">
-          <div>Sort By</div>
-          <div>
-            <p-dropdown
-              [options]="sortingList"
-              [(ngModel)]="selectedSort"
-              optionLabel="label"
-              (ngModelChange)="sortChanged($event)"
-            ></p-dropdown>
-          </div>
-        </div>
+  <p-panel header="Usage" [toggleable]="true">
+    <div style="display: flex;padding: 10px 5px;">
+      <div style="margin: 0 10px;">
+        <div>Sort By</div>
         <div>
-          <div>Filter By</div>
-          <div>
-            <p-multiSelect
-              display="chip"
-              [options]="filterList"
-              [(ngModel)]="selectedFilter"
-              optionValue="value"
-              optionLabel="label"
-            ></p-multiSelect>
-          </div>
+          <p-dropdown
+            [options]="sortingList"
+            [(ngModel)]="selectedSort"
+            optionLabel="label"
+            (ngModelChange)="sortChanged($event)"
+          ></p-dropdown>
         </div>
       </div>
+      <div>
+        <div>Filter By</div>
+        <div>
+          <p-multiSelect
+            display="chip"
+            [options]="filterList"
+            [(ngModel)]="selectedFilter"
+            optionValue="value"
+            optionLabel="label"
+          ></p-multiSelect>
+        </div>
+      </div>
+      <div style="padding: 0px 10px;">
+        <div>Search</div>
+        <div>
+          <input
+            type="text"
+            pInputText
+            [(ngModel)]="usageSearch"
+          />
+        </div>
+      </div>
+    </div>
 
-      <table>
-        <tr>
-          <th></th>
-          <th>{{ srcIg }}</th>
-          <th *ngFor="let ig of igs">{{ ig.title }}</th>
-        </tr>
-        <ng-container *ngFor="let item of usageChangesTable">
-          <tr *ngIf="validateFilter(item)">
-            <td>
-              <div style="display: flex">
-                <app-data-badge [type]="item.type"></app-data-badge>
-                <div style="padding: 2px 6px;">
-                  {{ item.path }}.{{ item.name }}
-                </div>
+    <table>
+      <tr>
+        <th></th>
+        <th>{{ srcIg }}</th>
+        <th *ngFor="let ig of igs">{{ ig.title }}</th>
+      </tr>
+      <ng-container *ngFor="let item of usageChangesTable">
+        <tr *ngIf="validateFilter(item)">
+          <td>
+            <div style="display: flex">
+              <app-data-badge [type]="item.type"></app-data-badge>
+              <div style="padding: 2px 6px;">
+                {{ item.path }}.{{ item.name }}
               </div>
-            </td>
-            <td >
-                {{ item.src }}
-              </td>
-            <td *ngFor="let ig of igs">
-              {{ item[ig.id] ? item[ig.id] : '' }}
-            </td>
-          </tr>
-        </ng-container>
-      </table>
-    </p-panel>
-  </div>
-
+            </div>
+          </td>
+          <td>
+            {{ item.src }}
+          </td>
+          <td *ngFor="let ig of igs">
+            {{ item[ig.id] ? item[ig.id] : "" }}
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+  </p-panel>
+</div>

@@ -55,7 +55,10 @@ export class SummariesViewerComponent implements OnInit {
 
   ];
   selectedSort = this.sortingList[1];
-  selectedFilter = this.filterList
+  selectedFilter = this.filterList;
+  allProfileSearch;
+  allSearch;
+  profileSearch;
   constructor(private differentialService: DifferentialService,) {}
 
   ngOnInit(): void {}
@@ -100,8 +103,14 @@ export class SummariesViewerComponent implements OnInit {
     });
 
   }
-  validateFilter(item) {
-    return this.selectedFilter.find(x => x.value === item.type);
+  validateAllProfileFilter(item) {
+    return this.selectedFilter.find(x => x.value === item.type && (this.allProfileSearch ? item.name.toLowerCase().includes(this.allProfileSearch.toLowerCase()) : true));
+  }
+  validateAllFilter(item) {
+    return this.selectedFilter.find(x => x.value === item.type  && (this.allSearch ? item.name.toLowerCase().includes(this.allSearch.toLowerCase()) : true));
+  }
+  validateProfileFilter(item) {
+    return this.selectedFilter.find(x => x.value === item.type  && (this.profileSearch ? item.name.toLowerCase().includes(this.profileSearch.toLowerCase()) : true));
   }
   filterChanged(event) {
     console.log(event);

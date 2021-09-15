@@ -55,7 +55,8 @@ export class SummariesOverviewViewerComponent implements OnInit {
 
   ];
   selectedSort = this.sortingList[1];
-  selectedFilter = this.filterList
+  selectedFilter = this.filterList;
+  usageSearch;
   constructor(private differentialService: DifferentialService) {}
 
   ngOnInit(): void {
@@ -67,14 +68,9 @@ export class SummariesOverviewViewerComponent implements OnInit {
         profile.summaries.usageChangesOverview
       ).map(key => profile.summaries.usageChangesOverview[key]);
       this.usageChangesTable = this.differentialService.sort(this.usageChangesTable, this.selectedSort.value);
-        console.log(this.usageChangesTable)
-
-      console.log(this.profilesChangesTable)
-
     });
   }
   sortChanged(event) {
-    console.log(event);
     this.usageChangesTable = this.differentialService.sort(this.usageChangesTable, this.selectedSort.value);
     this.igs.forEach(ig => {
       if (this.profilesChangesTable[ig.id]) {
@@ -82,10 +78,10 @@ export class SummariesOverviewViewerComponent implements OnInit {
 
       }
     });
-
   }
+
   validateFilter(item) {
-    return this.selectedFilter.find(x => x.value === item.type);
+    return this.selectedFilter.find(x => x.value === item.type && (this.usageSearch ? item.name.toLowerCase().includes(this.usageSearch.toLowerCase()) : true));
   }
 
 }

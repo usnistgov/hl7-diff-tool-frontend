@@ -63,6 +63,17 @@
                   ></p-multiSelect>
                 </div>
               </div>
+
+              <div style="padding: 0px 10px;">
+                <div>Search</div>
+                <div>
+                  <input
+                    type="text"
+                    pInputText
+                    [(ngModel)]="allProfileSearch"
+                  />
+                </div>
+              </div>
             </div>
 
             <table>
@@ -71,7 +82,7 @@
                 <th *ngFor="let ig of igs">{{ ig.title }}</th>
               </tr>
               <ng-container *ngFor="let item of totalChangesTable">
-                <tr *ngIf="validateFilter(item)">
+                <tr *ngIf="validateAllProfileFilter(item)">
                   <td>
                     <div style="display: flex">
                       <app-data-badge [type]="item.type"></app-data-badge>
@@ -115,6 +126,12 @@
                   ></p-multiSelect>
                 </div>
               </div>
+              <div style="padding: 0px 10px;">
+                <div>Search</div>
+                <div>
+                  <input type="text" pInputText [(ngModel)]="allSearch" />
+                </div>
+              </div>
             </div>
 
             <table>
@@ -126,7 +143,7 @@
                 <th>Data type</th>
               </tr>
               <ng-container *ngFor="let item of totalChangesTable">
-                <tr *ngIf="validateFilter(item)">
+                <tr *ngIf="validateAllFilter(item)">
                   <td>
                     <div style="display: flex">
                       <app-data-badge [type]="item.type"></app-data-badge>
@@ -208,6 +225,12 @@
                 ></p-multiSelect>
               </div>
             </div>
+            <div style="padding: 0px 10px;">
+                <div>Search</div>
+                <div>
+                  <input type="text" pInputText [(ngModel)]="profileSearch" />
+                </div>
+              </div>
           </div>
         </div>
         <div>
@@ -220,7 +243,7 @@
               <th>Data type</th>
             </tr>
             <ng-container *ngFor="let item of profilesChangesTable[ig.id]">
-              <tr *ngIf="validateFilter(item)">
+              <tr *ngIf="validateProfileFilter(item)">
                 <td>
                   <div style="display: flex">
                     <app-data-badge [type]="item.type"></app-data-badge>
