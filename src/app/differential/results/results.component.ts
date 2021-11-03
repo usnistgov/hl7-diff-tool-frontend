@@ -48,7 +48,10 @@ export class ResultsComponent implements OnInit {
   }
   exportHtml() {
     let html = this.startFile();
-    html += this.changesCountTable();
+    html += this.overviewSection();
+    html += this.complianceSection();
+
+    // html += this.changesCountTable();
     html += this.usageChangesTable();
     html += this.endFile();
 
@@ -157,7 +160,9 @@ export class ResultsComponent implements OnInit {
     </style>
     <body>
     <div>
-      <h1 style="text-align: center;">Comparison summary against ${this.results.srcIg.title}</h1>
+      <h1 style="text-align: center;">Profile Aggregate Comparison Tool (PACT)</h1>
+
+      <h2>I. Overview</h2>
     </div>
     `;
     return html;
@@ -166,6 +171,192 @@ export class ResultsComponent implements OnInit {
     return "</body></html>";
   }
 
+  overviewSection() {
+    let html = "";
+    if (this.results.profiles[0]) {
+      const profile = this.results.profiles[0];
+      html += `
+      <div style="padding: 0 15px;">
+          <h3>1. Profiles</h3>
+          <div>
+            <div>
+              <div>Reference</div>
+              <ul>
+                <li style="font-weight: bold;">${this.results.srcIg.title}</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div>
+              <div>Comparing</div>
+              <ul> 
+      `;
+      this.results.derivedIgs.forEach(ig => {
+        html += `<li style="font-weight: bold;">${ig.title}</li>`;
+      });
+      html += `
+              </ul>
+              </div>
+            </div>
+            <h3>2. Total changes</h3>
+            <table>
+                  <tr>
+                    <th>Profile</th>
+                    <th>Total</th>
+                    <th>Usage</th>
+                    <th>Cardinality</th>
+                    <th>Data type</th>
+                  </tr>
+      `;
+      this.results.derivedIgs.forEach(ig => {
+        html += `
+        <tr>
+        <td>
+          <div style="display: flex">
+            ${ig.title}
+          </div>
+        </td>
+        <td>
+          ${
+            profile.summaries.overview[ig.id].total
+              ? profile.summaries.overview[ig.id].total
+              : 0
+          }
+        </td>
+        <td>
+          ${
+            profile.summaries.overview[ig.id].usage
+              ? profile.summaries.overview[ig.id].usage
+              : 0
+          }
+        </td>
+        <td>
+          ${
+            profile.summaries.overview[ig.id].cardinality
+              ? profile.summaries.overview[ig.id].cardinality
+              : 0
+          }
+        </td>
+        <td>
+          ${
+            profile.summaries.overview[ig.id].datatype
+              ? profile.summaries.overview[ig.id].datatype
+              : 0
+          }
+        </td>
+      </tr>
+        `;
+      });
+      html += `
+          </table>
+        </div>
+      `;
+    }
+    console.log(html);
+    return html;
+  }
+  complianceSection() {
+    let html = "";
+    if (this.results.profiles[0]) {
+      const profile = this.results.profiles[0];
+      html += `
+      <div style="padding: 0 15px;">
+          <h3>3. Compliance</h3>
+          <div style="padding: 0 15px;">
+              <h4>a. Overview</h4>
+              <table>
+                  <tr>
+                    <th>Profile</th>
+                    <th>Errors</th>
+                    <th>Warnings</th>
+                    <th>Informational</th>
+                  </tr>
+      `;
+      this.results.derivedIgs.forEach(ig => {
+        html += `
+        <tr>
+        <td>
+          <div style="display: flex">
+            ${ig.title}
+          </div>
+        </td>
+        <td>
+          ${
+            profile.compliance[ig.id].total
+              ? profile.compliance[ig.id].total.error
+              : 0
+          }
+        </td>
+        <td>
+          ${
+            profile.compliance[ig.id].total
+              ? profile.compliance[ig.id].total.warning
+              : 0
+          }
+        </td>
+        <td>
+          ${
+            profile.compliance[ig.id].total
+              ? profile.compliance[ig.id].total.info
+              : 0
+          }
+        </td>
+
+      </tr>
+        `;
+      });
+      html += `
+          </table>
+        </div>
+      `;
+      html += `
+          <div style="padding: 0 15px;">
+              <h4>b. Compliance errors</h4>
+              <table>
+                  <tr>
+                    <th>Name</th>
+                    <th>${this.results.srcIg.title}</th>
+      `;
+
+      this.results.derivedIgs.forEach(ig => {
+        html += `
+          <th>${ig.title}</th>        
+        `;
+      });
+      html += `</tr>`;
+      if (profile.summaries.complianceErrorTable) {
+        let tableData = Object.keys(profile.summaries.complianceErrorTable).map(
+          key => profile.summaries.complianceErrorTable[key]
+        );
+        tableData.forEach(row => {
+          html += `
+        <tr>
+          <td>
+            <div style="display: flex">
+              ${this.getBadge(row.type)}
+              <div style="padding: 2px 6px;">
+                ${row.path}.${row.name}
+              </div>
+            </div>
+          </td>
+          <td>
+            ${row.src}
+          </td>
+          ${this.getChangeData(row)}
+        </tr>
+        `;
+        });
+      } else {
+        // add no errors message
+      }
+
+      html += `
+          </table>
+        </div>
+      `;
+    }
+    return html;
+  }
   changesCountTable() {
     let html = "";
     if (this.results.profiles[0]) {
@@ -236,7 +427,7 @@ export class ResultsComponent implements OnInit {
       );
       tableData = this.differentialService.sort(tableData, "globalPath");
       html = `<div>
-                <h3>Usage</h3>
+                <h2>II. Usage</h2>
                 <table>
                   <tr>
                     <th></th>
@@ -284,7 +475,6 @@ export class ResultsComponent implements OnInit {
     return html;
   }
   getBadge(type) {
-
     switch (type) {
       case "group": {
         return `<span class="badge entity-badge-dark entity-badge-group">G</span>`;
