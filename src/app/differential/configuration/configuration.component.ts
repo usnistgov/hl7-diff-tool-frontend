@@ -4,7 +4,7 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Router } from '@angular/router';
 import { TreeNode } from 'primeng/api';
-import {parse, stringify} from 'flatted';
+import { parse, stringify } from 'flatted';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -23,13 +23,14 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     cardinality: true,
     datatype: true,
     valueset: true
-  
+
   }
+
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private spinner: NgxSpinnerService, private toastr: ToastrService, private differentialService: DifferentialService, private router: Router) {}
+  constructor(private spinner: NgxSpinnerService, private toastr: ToastrService, private differentialService: DifferentialService, private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
   ngOnDestroy() {
     this.destroy$.next(true);
     // Unsubscribe from the subject
@@ -85,12 +86,12 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
 
     let formData: FormData = new FormData();
     let self = this;
-    if(this.report){
+    if (this.report) {
       const data = parse(this.report.data)
       self.differentialService.differentialResults = <TreeNode[]>data;
       self.spinner.hide();
       self.router.navigate(['/differential']);
-    } 
+    }
     if (this.sourceIg && this.derivedIgs.length > 0) {
       formData.append("source", this.sourceIg, this.sourceIg.name);
       this.derivedIgs.forEach((ig, index) => {
@@ -110,8 +111,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         }, error => {
           self.spinner.hide();
           this.toastr.error("Error while calculating. Please check profiles structure")
-        },);
+        });
     }
-   
+
   }
 }

@@ -1,29 +1,18 @@
+
+
 <div class="page-container">
   <div class="config-card">
     <div class="row ">
       <div class="col-6 center">
         <div class="source-upload">
-          <div
-            class="upload-container pointer"
-            (click)="fileInput.click()"
-            *ngIf="!sourceIg"
-          >
-            <input
-              #fileInput
-              type="file"
-              (change)="uploadSourceIg($event)"
-              style="display:none;"
-              accept="text/xml, text/plain"
-            />
+          <div class="upload-container pointer" (click)="fileInput.click()" *ngIf="!sourceIg">
+            <input #fileInput type="file" (change)="uploadSourceIg($event)" style="display:none;"
+              accept="text/xml, text/plain" />
             <div>
               Upload source Profile
             </div>
           </div>
-          <div
-            class="upload-container"
-            *ngIf="sourceIg"
-            style="text-align: left"
-          >
+          <div class="upload-container" *ngIf="sourceIg" style="text-align: left">
             <div>
               <strong>Source Profile: </strong>
               {{ sourceIg.name }}
@@ -35,20 +24,10 @@
             </div>
           </div>
         </div>
-        <div
-          class="derived-upload"
-          (click)="fileInputs.click()"
-          *ngIf="derivedIgs.length === 0"
-        >
+        <div class="derived-upload" (click)="fileInputs.click()" *ngIf="derivedIgs.length === 0">
           <div class="upload-container pointer">
-            <input
-              #fileInputs
-              type="file"
-              multiple="multiple"
-              (change)="uploadDerivedIgs($event)"
-              style="display:none;"
-              accept="text/xml, text/plain"
-            />
+            <input #fileInputs type="file" multiple="multiple" (change)="uploadDerivedIgs($event)" style="display:none;"
+              accept="text/xml, text/plain" />
             <div>
               Upload derived Profile(s)
             </div>
@@ -59,15 +38,9 @@
             <div style="text-align: left;">
               <strong>Derived Profile(s): </strong>
               <ul>
-                <li
-                  *ngFor="let ig of derivedIgs; let i = index"
-                  style="display: flex;"
-                >
+                <li *ngFor="let ig of derivedIgs; let i = index" style="display: flex;">
                   {{ ig.name }}
-                  <div
-                    class="remove-derived pointer"
-                    (click)="removeDerivedIg(i)"
-                  >
+                  <div class="remove-derived pointer" (click)="removeDerivedIg(i)">
                     <div>
                       <fa-icon [icon]="['fas', 'trash']"></fa-icon>
                     </div>
@@ -75,19 +48,9 @@
                 </li>
               </ul>
             </div>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="fileInputs.click()"
-            >
-              <input
-                #fileInputs
-                type="file"
-                multiple="multiple"
-                (change)="uploadDerivedIgs($event)"
-                style="display:none;"
-                accept="text/xml, text/plain"
-              />
+            <button type="button" class="btn btn-primary" (click)="fileInputs.click()">
+              <input #fileInputs type="file" multiple="multiple" (change)="uploadDerivedIgs($event)"
+                style="display:none;" accept="text/xml, text/plain" />
               Add Profile(s)
             </button>
           </div>
@@ -99,46 +62,26 @@
           <div>
             <h5>Compliance</h5>
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="usage"
-                [(ngModel)]="configuration.usage"
-              />
+              <input class="form-check-input" type="checkbox" id="usage" [(ngModel)]="configuration.usage" />
               <label class="form-check-label" for="usage">
                 Usage
               </label>
             </div>
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="card"
-                [(ngModel)]="configuration.datatype"
-              />
+              <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.datatype" />
               <label class="form-check-label" for="datatype">
                 Data Type
               </label>
             </div>
 
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="card"
-                [(ngModel)]="configuration.cardinality"
-              />
+              <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.cardinality" />
               <label class="form-check-label" for="min">
                 Cardinality
               </label>
             </div>
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="card"
-                [(ngModel)]="configuration.valueset"
-              />
+              <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.valueset" />
               <label class="form-check-label" for="valueset">
                 Value set
               </label>
@@ -149,52 +92,35 @@
     </div>
     <div class="strike">
       <span>Or</span>
-  </div>
+    </div>
     <div class="row">
       <div class="col-6 center">
-          <div class="source-upload">
-              <div
-                class="upload-container pointer"
-                (click)="savedReport.click()"
-                *ngIf="!report"
-              >
-                <input
-                  #savedReport
-                  type="file"
-                  (change)="uploadSavedReport($event)"
-                  style="display:none;"
-                  accept="application/json"
-                />
-                <div>
-                  Upload saved report
-                </div>
-              </div>
-              <div
-                class="upload-container"
-                *ngIf="report"
-                style="text-align: left"
-              >
-                <div>
-                  <strong>Report: </strong>
-                  {{ report.name }}
-                </div>
-                <div class="remove-source pointer" (click)="removeSavedReport()">
-                  <div>
-                    <fa-icon [icon]="['fas', 'trash']"></fa-icon>
-                  </div>
-                </div>
+        <div class="source-upload">
+          <div class="upload-container pointer" (click)="savedReport.click()" *ngIf="!report">
+            <input #savedReport type="file" (change)="uploadSavedReport($event)" style="display:none;"
+              accept="application/json" />
+            <div>
+              Upload saved report
+            </div>
+          </div>
+          <div class="upload-container" *ngIf="report" style="text-align: left">
+            <div>
+              <strong>Report: </strong>
+              {{ report.name }}
+            </div>
+            <div class="remove-source pointer" (click)="removeSavedReport()">
+              <div>
+                <fa-icon [icon]="['fas', 'trash']"></fa-icon>
               </div>
             </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <div class="submit-btn">
-    <button
-      type="button"
-      class="btn btn-primary"
-      (click)="analyze()"
-      [disabled]="(!report && (!sourceIg || derivedIgs.length <= 0))"
-    >
+    <button type="button" class="btn btn-primary" (click)="analyze()"
+      [disabled]="(!report && (!sourceIg || derivedIgs.length <= 0))">
       Analyze
     </button>
   </div>

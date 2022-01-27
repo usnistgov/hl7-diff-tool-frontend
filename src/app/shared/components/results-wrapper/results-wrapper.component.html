@@ -19,7 +19,7 @@
       <div class="data-dd">
         <!-- <h5 style="line-height: 40px;padding-right: 15px;">Data</h5> -->
         <p-dropdown
-          [options]="results.configuration"
+          [options]="(active === 1) ? fullConfigOptions : segmentConfigOptions"
           [(ngModel)]="selectedConfiguration"
           optionLabel="label"
         ></p-dropdown>
@@ -46,13 +46,31 @@
       </div>
     </div>
   </div>
-  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" (navChange)="navChange($event)">
     <li [ngbNavItem]="1">
       <a ngbNavLink>Full</a>
       <ng-template ngbNavContent>
         <div>
           <div>
-            <p-treeTable [value]="profile.children">
+            <p-treeTable [value]="profile.children"  [scrollable]="true" scrollHeight="400px" [style]="{width:'100vw'}"> 
+                <ng-template pTemplate="colgroup" let-columns>
+                    <colgroup>
+                      <col style="width: 380px;">
+                      <col style="width: 200px;">
+                      <col style="width: 200px;">
+                      <col style="width: 200px;" *ngIf="showReason">
+
+                    </colgroup>
+
+                    <colgroup>
+                      <col style="width: 380px;">
+                      <col style="width: 200px;">
+                      <ng-container *ngFor="let derivedIg of igs">
+                        <col style="width: 200px;">
+                        <col style="width: 200px;" *ngIf="showReason">
+                      </ng-container>
+                    </colgroup>
+                  </ng-template>
               <ng-template pTemplate="header" let-columns>
                 <tr>
                   <th style="width: 380px;"></th>
@@ -63,14 +81,15 @@
                     </div>
                   </th>
                   <th
-                    [attr.style]="showReason ? 'width: 400px' : 'width: 200px'"
+                  style="width: 200px;"
                     [attr.colspan]="showReason ? 2 : 1"
                     *ngFor="let derivedIg of igs"
                   >
                     {{ derivedIg.title }}
                     <div
                       *ngIf="
-                        results.srcIg.profileId === derivedIg.profileOrigin && derivedIg.derived
+                        results.srcIg.profileId === derivedIg.profileOrigin &&
+                        derivedIg.derived
                       "
                       class="derived-pill derived"
                     >
@@ -78,7 +97,8 @@
                     </div>
                     <div
                       *ngIf="
-                        results.srcIg.profileId !== derivedIg.profileOrigin || !derivedIg.derived
+                        results.srcIg.profileId !== derivedIg.profileOrigin ||
+                        !derivedIg.derived
                       "
                       class="derived-pill not-derived"
                     >
@@ -97,7 +117,12 @@
               </ng-template>
               <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
                 <tr *ngIf="!compliance || (compliance && rowData.changed)">
-                  <td style="width: 380px;">
+                  <td
+                    style="width: 380px;"
+                    [ngClass]="{
+                      'row-changed': rowData.changed
+                    }"
+                  >
                     <p-treeTableToggler
                       [rowNode]="rowNode"
                     ></p-treeTableToggler>
@@ -234,8 +259,14 @@
                         <td></td>
                       </ng-container>
 
-                      <td *ngIf="showReason" [ngClass]="{'grayed': derivedIg.profileOrigin !== results.srcIg.profileId || !derivedIg.derived }">
-                      
+                      <td
+                        *ngIf="showReason"
+                        [ngClass]="{
+                          grayed:
+                            derivedIg.profileOrigin !==
+                              results.srcIg.profileId || !derivedIg.derived
+                        }"
+                      >
                         {{
                           rowData.reason &&
                           rowData.reason[derivedIg.id] &&
@@ -311,7 +342,6 @@
         </div>
       </ng-template>
     </li>
-
     <li
       *ngFor="let segment of profile.segmentRefs"
       [ngbNavItem]="segment.data.ref"

@@ -72,7 +72,7 @@ import { CommentsModalComponent } from "./components/comments-modal/comments-mod
     ButtonModule,
     InputTextModule,
     InputTextareaModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
   exports: [
     CommonModule,

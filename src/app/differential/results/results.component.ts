@@ -17,7 +17,7 @@ export class ResultsComponent implements OnInit {
   constructor(
     private differentialService: DifferentialService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.results = this.differentialService.differentialResults;
@@ -40,7 +40,7 @@ export class ResultsComponent implements OnInit {
     //   this.selectedProfile = null;
     // }
   }
-  updateConfig() {}
+  updateConfig() { }
 
   save() {
     const blob = new Blob([stringify(this.results)], { type: "text/json" });
@@ -170,6 +170,28 @@ export class ResultsComponent implements OnInit {
   endFile() {
     return "</body></html>";
   }
+  createReport() {
+    let html = "";
+    if (this.results.profiles[0]) {
+      const profile = this.results.profiles[0];
+      html += `
+      <div >
+          <h3>2. Report</h3>
+          <div style="padding: 0 15px;">
+              <h4>a. Overview</h4>
+              <ul>
+                  <li> P-ACT is reporting that <strong>${profile.usageReport.stronger.total}</strong> instances where in the local IG, where the requirements were stronger than recommendations in the National IG </li>
+                  <li> P-ACT is reporting that <strong>${profile.usageReport.weaker.total}</strong> instances where in the local IG, where the requirements were weaker than recommendations in the National IG </li>
+              
+                  </ul>
+          </div>
+      </div>
+
+      `;
+
+    }
+    return html;
+  }
 
   overviewSection() {
     let html = "";
@@ -194,11 +216,13 @@ export class ResultsComponent implements OnInit {
       this.results.derivedIgs.forEach(ig => {
         html += `<li style="font-weight: bold;">${ig.title}</li>`;
       });
-      html += `
-              </ul>
+      html += ` </ul>
               </div>
-            </div>
-            <h3>2. Total changes</h3>
+            </div>`;
+      html += this.createReport();
+      html += `
+           
+            <h3>3. Total changes</h3>
             <table>
                   <tr>
                     <th>Profile</th>
@@ -218,30 +242,30 @@ export class ResultsComponent implements OnInit {
         </td>
         <td>
           ${
-            profile.summaries.overview[ig.id].total
-              ? profile.summaries.overview[ig.id].total
-              : 0
+          profile.summaries.overview[ig.id].total
+            ? profile.summaries.overview[ig.id].total
+            : 0
           }
         </td>
         <td>
           ${
-            profile.summaries.overview[ig.id].usage
-              ? profile.summaries.overview[ig.id].usage
-              : 0
+          profile.summaries.overview[ig.id].usage
+            ? profile.summaries.overview[ig.id].usage
+            : 0
           }
         </td>
         <td>
           ${
-            profile.summaries.overview[ig.id].cardinality
-              ? profile.summaries.overview[ig.id].cardinality
-              : 0
+          profile.summaries.overview[ig.id].cardinality
+            ? profile.summaries.overview[ig.id].cardinality
+            : 0
           }
         </td>
         <td>
           ${
-            profile.summaries.overview[ig.id].datatype
-              ? profile.summaries.overview[ig.id].datatype
-              : 0
+          profile.summaries.overview[ig.id].datatype
+            ? profile.summaries.overview[ig.id].datatype
+            : 0
           }
         </td>
       </tr>
@@ -261,7 +285,7 @@ export class ResultsComponent implements OnInit {
       const profile = this.results.profiles[0];
       html += `
       <div style="padding: 0 15px;">
-          <h3>3. Compliance</h3>
+          <h3>4. Compliance</h3>
           <div style="padding: 0 15px;">
               <h4>a. Overview</h4>
               <table>
@@ -282,23 +306,23 @@ export class ResultsComponent implements OnInit {
         </td>
         <td>
           ${
-            profile.compliance[ig.id].total
-              ? profile.compliance[ig.id].total.error
-              : 0
+          profile.compliance[ig.id].total
+            ? profile.compliance[ig.id].total.error
+            : 0
           }
         </td>
         <td>
           ${
-            profile.compliance[ig.id].total
-              ? profile.compliance[ig.id].total.warning
-              : 0
+          profile.compliance[ig.id].total
+            ? profile.compliance[ig.id].total.warning
+            : 0
           }
         </td>
         <td>
           ${
-            profile.compliance[ig.id].total
-              ? profile.compliance[ig.id].total.info
-              : 0
+          profile.compliance[ig.id].total
+            ? profile.compliance[ig.id].total.info
+            : 0
           }
         </td>
 
@@ -382,30 +406,30 @@ export class ResultsComponent implements OnInit {
         </td>
         <td>
           ${
-            profile.summaries.overview[ig.id].total
-              ? profile.summaries.overview[ig.id].total
-              : 0
+          profile.summaries.overview[ig.id].total
+            ? profile.summaries.overview[ig.id].total
+            : 0
           }
         </td>
         <td>
           ${
-            profile.summaries.overview[ig.id].usage
-              ? profile.summaries.overview[ig.id].usage
-              : 0
+          profile.summaries.overview[ig.id].usage
+            ? profile.summaries.overview[ig.id].usage
+            : 0
           }
         </td>
         <td>
           ${
-            profile.summaries.overview[ig.id].cardinality
-              ? profile.summaries.overview[ig.id].cardinality
-              : 0
+          profile.summaries.overview[ig.id].cardinality
+            ? profile.summaries.overview[ig.id].cardinality
+            : 0
           }
         </td>
         <td>
           ${
-            profile.summaries.overview[ig.id].datatype
-              ? profile.summaries.overview[ig.id].datatype
-              : 0
+          profile.summaries.overview[ig.id].datatype
+            ? profile.summaries.overview[ig.id].datatype
+            : 0
           }
         </td>
       </tr>

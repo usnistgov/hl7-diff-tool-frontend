@@ -16,6 +16,7 @@ import { DifferentialService } from '../../services/differential.service';
 export class SummariesViewerComponent implements OnInit {
   @Input() profiles;
   @Input() igs;
+  @Input() igsMap;
   Object = Object;
   totalChangesTable;
   profilesChangesTable;
@@ -59,6 +60,8 @@ export class SummariesViewerComponent implements OnInit {
   allProfileSearch;
   allSearch;
   profileSearch;
+  openedUsageReport;
+  usageReport
   constructor(private differentialService: DifferentialService,) {}
 
   ngOnInit(): void {}
@@ -81,11 +84,18 @@ export class SummariesViewerComponent implements OnInit {
         }
       });
       this.profilesChangesTable = profile.summaries.changesTable;
-      console.log(this.profilesChangesTable)
+      this.usageReport = profile.usageReport
+      console.log(this.usageReport)
 
     });
   }
-
+  openUsageReport(type) {
+    if (this.openedUsageReport !== type) {
+      this.openedUsageReport = type;
+    } else {
+      this.openedUsageReport = null;
+    }
+  }
 
 
   selectProfile(profile) {

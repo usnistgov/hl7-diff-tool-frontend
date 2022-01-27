@@ -12,28 +12,58 @@
     </div>
   </div> -->
 <div style="margin: 5px;">
+  <p-panel header="Report" [toggleable]="true" [collapsed]="true">
+    <ul *ngIf="usageReport">
+      <li style="    list-style-type: disclosure-closed;cursor:pointer;" (click)="openUsageReport('stronger')">
+        P-ACT is reporting that <strong>{{usageReport.stronger.total}} </strong>instances where in the local IG, where the
+        requirements were
+        stronger than recommendations in the National IG
+
+        <div *ngIf="openedUsageReport === 'stronger'">
+
+          <ul>
+            <li *ngFor="let item of usageReport.stronger.list">
+              In the <strong>{{igsMap[item.ig]}}</strong> IG, the <strong>{{item.profile}}</strong> profile
+              <strong>{{item.path}}</strong> usage = <strong>{{item.usage}}</strong>, while it is
+              <strong>{{item.srcUsage}}</strong> in national IG.
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li style="    list-style-type: disclosure-closed;cursor:pointer;" (click)="openUsageReport('weaker')">
+        P-ACT is reporting that <strong>{{usageReport.weaker.total}}</strong> instances where in the local IG, where the requirements were
+        weaker than recommendations in the National IG
+        <div *ngIf="openedUsageReport === 'weaker'">
+
+          <ul>
+            <li *ngFor="let item of usageReport.weaker.list">
+              In the <strong>{{igsMap[item.ig]}}</strong> IG, the <strong>{{item.profile}}</strong> profile
+              <strong>{{item.path}}</strong> usage = <strong>{{item.usage}}</strong>, while it is
+              <strong>{{item.srcUsage}}</strong> in national IG.
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </p-panel>
+</div>
+<div style="margin: 5px;">
   <p-panel header="All profiles" [toggleable]="true" [collapsed]="true">
     <ng-container *ngIf="profiles">
       <div *ngFor="let profile of profiles" style="padding: 10px;">
         <div style="margin: 5px;">
           <p-panel header="Usage" [toggleable]="true">
-            <app-usage-percentage
-              [percentage]="profile.totalPercentage"
-            ></app-usage-percentage>
+            <app-usage-percentage [percentage]="profile.totalPercentage"></app-usage-percentage>
           </p-panel>
         </div>
         <div style="margin: 5px;">
           <p-panel header="Cardinality" [toggleable]="true">
-            <app-cardinality-percentage
-              [percentage]="profile.totalPercentage"
-            ></app-cardinality-percentage>
+            <app-cardinality-percentage [percentage]="profile.totalPercentage"></app-cardinality-percentage>
           </p-panel>
         </div>
         <div style="margin: 5px;">
           <p-panel header="Value set binding" [toggleable]="true">
-            <app-binding-percentage
-              [percentage]="profile.totalPercentage"
-            ></app-binding-percentage>
+            <app-binding-percentage [percentage]="profile.totalPercentage"></app-binding-percentage>
           </p-panel>
         </div>
         <div style="margin: 5px;">
@@ -42,36 +72,22 @@
               <div style="margin: 0 10px;">
                 <div>Sort By</div>
                 <div>
-                  <p-dropdown
-                    [options]="sortingList"
-                    [(ngModel)]="selectedSort"
-                    optionLabel="label"
-                    (ngModelChange)="sortChanged($event)"
-                  ></p-dropdown>
+                  <p-dropdown [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label"
+                    (ngModelChange)="sortChanged($event)"></p-dropdown>
                 </div>
               </div>
               <div>
                 <div>Filter By</div>
                 <div>
-                  <p-multiSelect
-                    display="chip"
-                    [options]="filterList"
-                    [(ngModel)]="selectedFilter"
-                    (ngModelChange)="filterChanged($event)"
-                    optionValue="value"
-                    optionLabel="label"
-                  ></p-multiSelect>
+                  <p-multiSelect display="chip" [options]="filterList" [(ngModel)]="selectedFilter"
+                    (ngModelChange)="filterChanged($event)" optionValue="value" optionLabel="label"></p-multiSelect>
                 </div>
               </div>
 
               <div style="padding: 0px 10px;">
                 <div>Search</div>
                 <div>
-                  <input
-                    type="text"
-                    pInputText
-                    [(ngModel)]="allProfileSearch"
-                  />
+                  <input type="text" pInputText [(ngModel)]="allProfileSearch" />
                 </div>
               </div>
             </div>
@@ -105,25 +121,15 @@
               <div style="margin: 0 10px;">
                 <div>Sort By</div>
                 <div>
-                  <p-dropdown
-                    [options]="sortingList"
-                    [(ngModel)]="selectedSort"
-                    optionLabel="label"
-                    (ngModelChange)="sortChanged($event)"
-                  ></p-dropdown>
+                  <p-dropdown [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label"
+                    (ngModelChange)="sortChanged($event)"></p-dropdown>
                 </div>
               </div>
               <div>
                 <div>Filter By</div>
                 <div>
-                  <p-multiSelect
-                    display="chip"
-                    [options]="filterList"
-                    [(ngModel)]="selectedFilter"
-                    (ngModelChange)="filterChanged($event)"
-                    optionValue="value"
-                    optionLabel="label"
-                  ></p-multiSelect>
+                  <p-multiSelect display="chip" [options]="filterList" [(ngModel)]="selectedFilter"
+                    (ngModelChange)="filterChanged($event)" optionValue="value" optionLabel="label"></p-multiSelect>
                 </div>
               </div>
               <div style="padding: 0px 10px;">
@@ -178,23 +184,17 @@
   <p-panel [header]="ig.title" [toggleable]="true" [collapsed]="true">
     <div style="margin: 5px;">
       <p-panel header="Usage" [toggleable]="true">
-        <app-usage-percentage
-          [percentage]="profiles[0].percentage[ig.id]"
-        ></app-usage-percentage>
+        <app-usage-percentage [percentage]="profiles[0].percentage[ig.id]"></app-usage-percentage>
       </p-panel>
     </div>
     <div style="margin: 5px;">
       <p-panel header="Cardinality" [toggleable]="true">
-        <app-cardinality-percentage
-          [percentage]="profiles[0].percentage[ig.id]"
-        ></app-cardinality-percentage>
+        <app-cardinality-percentage [percentage]="profiles[0].percentage[ig.id]"></app-cardinality-percentage>
       </p-panel>
     </div>
     <div style="margin: 5px;">
       <p-panel header="Value set binding" [toggleable]="true">
-        <app-binding-percentage
-          [percentage]="profiles[0].percentage[ig.id]"
-        ></app-binding-percentage>
+        <app-binding-percentage [percentage]="profiles[0].percentage[ig.id]"></app-binding-percentage>
       </p-panel>
     </div>
     <div style="margin: 5px;">
@@ -204,33 +204,23 @@
             <div style="margin: 0 10px;">
               <div>Sort By</div>
               <div>
-                <p-dropdown
-                  [options]="sortingList"
-                  [(ngModel)]="selectedSort"
-                  optionLabel="label"
-                  (ngModelChange)="sortChanged($event)"
-                ></p-dropdown>
+                <p-dropdown [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label"
+                  (ngModelChange)="sortChanged($event)"></p-dropdown>
               </div>
             </div>
             <div>
               <div>Filter By</div>
               <div>
-                <p-multiSelect
-                  display="chip"
-                  [options]="filterList"
-                  [(ngModel)]="selectedFilter"
-                  (ngModelChange)="filterChanged($event)"
-                  optionValue="value"
-                  optionLabel="label"
-                ></p-multiSelect>
+                <p-multiSelect display="chip" [options]="filterList" [(ngModel)]="selectedFilter"
+                  (ngModelChange)="filterChanged($event)" optionValue="value" optionLabel="label"></p-multiSelect>
               </div>
             </div>
             <div style="padding: 0px 10px;">
-                <div>Search</div>
-                <div>
-                  <input type="text" pInputText [(ngModel)]="profileSearch" />
-                </div>
+              <div>Search</div>
+              <div>
+                <input type="text" pInputText [(ngModel)]="profileSearch" />
               </div>
+            </div>
           </div>
         </div>
         <div>

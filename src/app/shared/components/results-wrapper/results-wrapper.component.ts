@@ -20,6 +20,9 @@ export class ResultsWrapperComponent implements OnInit {
   @Input() results;
   @Input() igs;
   active = 1;
+  fullConfigOptions;
+  segmentConfigOptions;
+
   selectedConfiguration;
   showReason = false;
   compliance = false;
@@ -43,18 +46,23 @@ export class ResultsWrapperComponent implements OnInit {
       label: "Datatype (COMPONENT)"
     }
   ];
-  constructor(public dialogService: DialogService) {}
+  constructor(public dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.active = 1;
+    this.fullConfigOptions = this.results.configuration;
+    this.segmentConfigOptions = this.results.configuration.filter(c => c.name !== 'label');
+
     this.selectedConfiguration = this.results.configuration[0];
     console.log(this.results);
   }
   ngOnChanges(changes: SimpleChanges) {
     this.active = 1;
     const self = this;
-    const derivedProfiles = this.igs.filter(ig => self.results.srcIg.profileId === ig.profileOrigin && ig.derived) 
-    if(derivedProfiles && derivedProfiles.length > 0){
+    const derivedProfiles = this.igs.filter(
+      ig => self.results.srcIg.profileId === ig.profileOrigin && ig.derived
+    );
+    if (derivedProfiles && derivedProfiles.length > 0) {
       this.removeReason = false;
     } else {
       this.removeReason = true;
@@ -64,10 +72,15 @@ export class ResultsWrapperComponent implements OnInit {
   selectProfile(profile) {
     this.onClick.emit(profile);
   }
+  navChange(event) {
+    if (event.nextId !== 1 && event.activeId === 1 && this.selectedConfiguration.name === 'label') {
+      this.selectedConfiguration = this.results.configuration[0];
+    }
+  }
 
-  getBinding(data) {}
+  getBinding(data) { }
 
-  reasonChanged(event) {}
+  reasonChanged(event) { }
   comment(rowData, param, igId) {
     const ref = this.dialogService.open(CommentsModalComponent, {
       header: "Comments",
