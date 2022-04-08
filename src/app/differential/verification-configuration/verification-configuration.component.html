@@ -24,7 +24,9 @@
             <div>
                 <strong>Value sets: </strong>
               <div>
-                  <button type="button" class="btn btn-primary" (click)="fileInputs.click()">
+                  <button type="button" class="btn btn-primary" (click)="vsInput.click()">
+                      <input #vsInput type="file" multiple="multiple" (change)="uploadDerivedIgs($event)" style="display:none;"
+                      accept="text/xml, text/plain" />
                       <fa-icon [icon]="['fas', 'plus']"></fa-icon>
                     </button>
               </div>
