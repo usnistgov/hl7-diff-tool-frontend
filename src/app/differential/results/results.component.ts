@@ -181,7 +181,7 @@ export class ResultsComponent implements OnInit {
               <h4>a. Overview</h4>
               <ul>
                   <li> P-ACT is reporting that <strong>${profile.usageReport.stronger.total}</strong> instances where in the local IG, where the requirements were stronger than recommendations in the National IG </li>
-                  <li> P-ACT is reporting that <strong>${profile.usageReport.weaker.total}</strong> instances where in the local IG, where the requirements were weaker than recommendations in the National IG </li>
+                  <li> P-ACT is reporting that <strong>${profile.usageReport.relaxed.total}</strong> instances where in the local IG, where the requirements were relaxed compared to the recommendations in the National IG </li>
               
                   </ul>
           </div>

@@ -14,7 +14,9 @@ import {
   faSquare,
   faCheckSquare,
   faTrash,
-  faEye
+  faEye,
+  faExclamationTriangle,
+  faPlus
 } from "@fortawesome/free-solid-svg-icons";
 import { ToastrModule } from 'ngx-toastr';
 
@@ -34,6 +36,6 @@ import { ToastrModule } from 'ngx-toastr';
 })
 export class AppModule {
   constructor(private library: FaIconLibrary) {
-    library.addIcons(faSquare, faCheckSquare, faTrash, faEye);
+    library.addIcons(faSquare, faCheckSquare, faTrash, faEye, faExclamationTriangle, faPlus);
   }
 }

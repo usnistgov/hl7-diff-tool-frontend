@@ -58,7 +58,7 @@
       </ng-container>
       <ng-container *ngIf="!valueset.valuesets.derived[igId]">
         <td
-          [attr.rowspan]="valueset.valuesets.src.value.length + 1"
+          [attr.rowspan]="valueset.valuesets.src.value?.length + 1"
           style="width: 10px;"
           class="binding-vs"
           [ngClass]="{'valueset': valueset.type === 'valueset', 'single-code': valueset.type === 'single_code'}"

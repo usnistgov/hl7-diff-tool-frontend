@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import { DialogService } from "primeng/dynamicdialog";
 import { CommentsModalComponent } from "../comments-modal/comments-modal.component";
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: "app-results-wrapper",
@@ -26,7 +27,25 @@ export class ResultsWrapperComponent implements OnInit {
   selectedConfiguration;
   showReason = false;
   compliance = false;
+  consequential = {
+    name: 'consequential',
+    label: 'Consequential',
+
+  };
   removeReason = false;
+  consequentialOptions = [{
+    name: 'consequential',
+    label: 'Consequential',
+
+  }, {
+    name: 'non-consequential',
+    label: 'Non-consequential',
+
+  }, {
+    name: 'all-changes',
+    label: 'All changes',
+
+  },]
   @Output() onClick = new EventEmitter();
   legend = [
     {
@@ -46,6 +65,7 @@ export class ResultsWrapperComponent implements OnInit {
       label: "Datatype (COMPONENT)"
     }
   ];
+  faExclamationTriangle = faExclamationTriangle;
   constructor(public dialogService: DialogService) { }
 
   ngOnInit(): void {
@@ -115,4 +135,5 @@ export class ResultsWrapperComponent implements OnInit {
       }
     });
   }
+
 }

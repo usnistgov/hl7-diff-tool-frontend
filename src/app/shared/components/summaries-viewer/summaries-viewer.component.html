@@ -30,13 +30,13 @@
           </ul>
         </div>
       </li>
-      <li style="    list-style-type: disclosure-closed;cursor:pointer;" (click)="openUsageReport('weaker')">
-        P-ACT is reporting that <strong>{{usageReport.weaker.total}}</strong> instances where in the local IG, where the requirements were
-        weaker than recommendations in the National IG
-        <div *ngIf="openedUsageReport === 'weaker'">
+      <li style="    list-style-type: disclosure-closed;cursor:pointer;" (click)="openUsageReport('relaxed')">
+        P-ACT is reporting that <strong>{{usageReport.relaxed.total}}</strong> instances where in the local IG, where the requirements were
+        relaxed compared to the recommendations in the National IG
+        <div *ngIf="openedUsageReport === 'relaxed'">
 
           <ul>
-            <li *ngFor="let item of usageReport.weaker.list">
+            <li *ngFor="let item of usageReport.relaxed.list">
               In the <strong>{{igsMap[item.ig]}}</strong> IG, the <strong>{{item.profile}}</strong> profile
               <strong>{{item.path}}</strong> usage = <strong>{{item.usage}}</strong>, while it is
               <strong>{{item.srcUsage}}</strong> in national IG.
@@ -44,6 +44,34 @@
           </ul>
         </div>
       </li>
+      <li style="    list-style-type: disclosure-closed;cursor:pointer;" (click)="openUsageReport('removed')">
+          P-ACT is reporting that <strong>{{usageReport.removed.total}}</strong> instances where in the local IG, where the requirements were
+          removed compared to the recommendations in the National IG
+          <div *ngIf="openedUsageReport === 'removed'">
+  
+            <ul>
+              <li *ngFor="let item of usageReport.removed.list">
+                In the <strong>{{igsMap[item.ig]}}</strong> IG, the <strong>{{item.profile}}</strong> profile
+                <strong>{{item.path}}</strong> usage = <strong>{{item.usage}}</strong>, while it is
+                <strong>{{item.srcUsage}}</strong> in national IG.
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li style="    list-style-type: disclosure-closed;cursor:pointer;" (click)="openUsageReport('allowance')">
+            P-ACT is reporting that <strong>{{usageReport.allowance.total}}</strong> instances where in the local IG, where the requirements were
+            allowed compared to the recommendations in the National IG
+            <div *ngIf="openedUsageReport === 'allowance'">
+    
+              <ul>
+                <li *ngFor="let item of usageReport.allowance.list">
+                  In the <strong>{{igsMap[item.ig]}}</strong> IG, the <strong>{{item.profile}}</strong> profile
+                  <strong>{{item.path}}</strong> usage = <strong>{{item.usage}}</strong>, while it is
+                  <strong>{{item.srcUsage}}</strong> in national IG.
+                </li>
+              </ul>
+            </div>
+          </li>
     </ul>
   </p-panel>
 </div>

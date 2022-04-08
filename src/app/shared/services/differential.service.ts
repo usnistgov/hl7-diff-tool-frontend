@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
   providedIn: "root"
 })
 export class DifferentialService {
-  // apiEndPoint = "https://hit-dev.nist.gov:8085/api";
   apiEndPoint = environment.api_url;
 
   differentialResults;
@@ -19,6 +18,17 @@ export class DifferentialService {
     let options = { headers: headers };
     return this.http.post(
       `${this.apiEndPoint}/differential`,
+      formData,
+      options
+    );
+  }
+  calculateVerificationDifferential(formData) {
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "multipart/form-data");
+    headers.append("Accept", "application/json");
+    let options = { headers: headers };
+    return this.http.post(
+      `${this.apiEndPoint}/differential/verification`,
       formData,
       options
     );

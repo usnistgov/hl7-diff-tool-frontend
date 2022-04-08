@@ -1,0 +1,98 @@
+.page-container {
+  height: 100%;
+}
+.config-card {
+  background: white;
+  min-height: 420px;
+  margin: 8% auto 2% auto;
+  width: 90%;
+  border-radius: 5px;
+  -webkit-box-shadow: 3px 3px 5px 6px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 3px 3px 5px 6px #ccc; /* Firefox 3.5 - 3.6 */
+  box-shadow: 3px 3px 5px 6px #ccc;
+}
+
+.center {
+  margin: auto;
+  text-align: center;
+}
+
+.upload-container {
+  width: 90%;
+  margin: auto;
+  padding: 30px;
+  background: #f2f2f2;
+  border: 1px #c6a0a0 dashed;
+  border-radius: 5px;
+  position: relative;
+  
+}
+
+.source-upload {
+  padding: 15px;
+  
+}
+
+.derived-upload {
+  padding: 15px;
+}
+.remove-source {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  color: red;
+}
+
+.remove-derived {
+  margin-left: 10px;
+  color: red;
+}
+
+.border-left {
+  border-left: 1px solid #dacece;
+}
+.border-bottom {
+  border-bottom: 1px solid #dee2e6 !important;
+}
+.strike {
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap; 
+  height: 25px;
+}
+
+.strike > span {
+  position: relative;
+  display: inline-block;
+}
+
+.strike > span:before,
+.strike > span:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 9999px;
+  height: 1px;
+  background: #dee2e6;
+}
+
+.strike > span:before {
+  right: 100%;
+  margin-right: 15px;
+}
+
+.strike > span:after {
+  left: 100%;
+  margin-left: 15px;
+}
+
+.submit-btn {
+    text-align: right;
+    padding: 0 5% 0 0;
+}
+
+.update-btn {
+  text-align: right;
+  padding: 10px 20px 0px 0px;
+}
