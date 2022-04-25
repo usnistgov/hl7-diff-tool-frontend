@@ -12,8 +12,9 @@
           </div>
           <div class="upload-container" *ngIf="sourceIg" style="text-align: left">
             <div style="display: flex">
-              <strong>Source Profile: </strong>
-              <p-dropdown style="width: 65%;" placeholder="Select Profile" [options]="srcProfilesList" [(ngModel)]="srcProfile" optionLabel="label" ></p-dropdown>
+              <strong style="line-height: 40px;padding: 0 7px;">Source Profile: </strong>
+              <p-dropdown style="width: 65%;" placeholder="Select Profile" [options]="srcProfilesList"
+                [(ngModel)]="srcProfile" optionLabel="label"></p-dropdown>
 
             </div>
             <div class="remove-source pointer" (click)="removeSourceIg()">
@@ -21,14 +22,20 @@
                 <fa-icon [icon]="['fas', 'trash']"></fa-icon>
               </div>
             </div>
-            <div>
-                <strong>Value sets: </strong>
-              <div>
-                  <button type="button" class="btn btn-primary" (click)="vsInput.click()">
-                      <input #vsInput type="file" multiple="multiple" (change)="uploadDerivedIgs($event)" style="display:none;"
-                      accept="text/xml, text/plain" />
-                      <fa-icon [icon]="['fas', 'plus']"></fa-icon>
-                    </button>
+            <div style="display: flex">
+              <strong style="line-height: 40px;padding: 0 7px;">Value sets: </strong>
+              <div *ngIf="!sourceVs">
+                <button type="button" class="btn btn-primary" (click)="vsInput.click()">
+                  <input #vsInput type="file" multiple="multiple" (change)="uploadSrcVs($event)" style="display:none;"
+                    accept="text/xml, text/plain" />
+                  <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+                </button>
+              </div>
+              <div *ngIf="sourceVs" style="display: flex">
+                <div style="line-height: 40px;padding: 0 7px;">{{sourceVs.name}}</div>
+                <fa-icon style="color: red;line-height: 40px;" [icon]="['fas', 'trash']" (click)="removeSrcVs()">
+                </fa-icon>
+
               </div>
             </div>
           </div>
@@ -47,19 +54,35 @@
             <div style="text-align: left;">
               <strong>Derived Profile(s): </strong>
               <ul style="padding-left: 0">
-                <li *ngFor="let ig of derivedIgs; let i = index" >
-                  <div style="display: flex;">
-                    {{ ig.name }}
+                <li *ngFor="let ig of derivedIgs; let i = index" [ngClass]="{'top-sep': i> 0}">
+                  <div style="display: flex">
+                    <strong style="line-height: 40px;padding: 0 7px;">Profile: </strong>
+                    <p-dropdown style="width: 65%;" placeholder="Select Profile" [options]="derivedProfilesList"
+                      [(ngModel)]="derivedProfiles[i]" optionLabel="label"></p-dropdown>
                     <div class="remove-derived pointer" (click)="removeDerivedIg(i)">
                       <div>
                         <fa-icon [icon]="['fas', 'trash']"></fa-icon>
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <p-dropdown placeholder="Select Profile" [options]="derivedProfilesList" [(ngModel)]="derivedProfile" optionLabel="label" ></p-dropdown>
+                  <div style="display: flex">
+                    <strong style="line-height: 40px;padding: 0 7px;">Value sets: </strong>
+                    <div *ngIf="!derivedVs[i]">
+                      <button type="button" class="btn btn-primary" (click)="derivedVsInput.click()">
+                        <input #derivedVsInput type="file" multiple="multiple" (change)="uploadDerivedVs($event, i)"
+                          style="display:none;" accept="text/xml, text/plain" />
+                        <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+                      </button>
+                    </div>
+                    <div *ngIf="derivedVs[i]" style="display: flex">
+                      <div style="line-height: 40px;padding: 0 7px;">{{derivedVs[i].name}}</div>
+                      <fa-icon style="color: red;line-height: 40px;" [icon]="['fas', 'trash']"
+                        (click)="removeDerivedVs(i)">
+                      </fa-icon>
+
+                    </div>
                   </div>
-                
+
                 </li>
               </ul>
             </div>

@@ -82,7 +82,7 @@
             </td>
             <td
               [ngClass]="{
-                changed: item.description.status === 'changed',
+                changed: item.description?.status === 'changed',
                 added: item.status === 'added'
               }"
             >
@@ -112,7 +112,7 @@
             </td>
             <td
               [ngClass]="{
-                changed: item.comment.status === 'changed',
+                changed: item.comment?.status === 'changed',
                 added: item.status === 'added'
               }"
             >

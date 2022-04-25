@@ -17,8 +17,11 @@ import * as xml2js from 'xml2js';
 export class VerificationConfigurationComponent implements OnInit, OnDestroy {
 
   sourceIg;
+  sourceVs;
   report;
   derivedIgs = [];
+  derivedVs = [];
+
   configuration = {
     usage: true,
     cardinality: true,
@@ -30,9 +33,8 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   srcProfile;
   srcProfilesList = [{ id: "1", label: "Profile 1" }, { id: "2", label: "Profile 2" }];
-  derivedProfile
   derivedProfilesList = [{ id: "1", label: "Profile 1" }, { id: "2", label: "Profile 2" }];
-
+  derivedProfiles = []
   constructor(private spinner: NgxSpinnerService, private toastr: ToastrService, private differentialService: DifferentialService, private router: Router) { }
 
   ngOnInit() { }
@@ -59,6 +61,17 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
   }
   removeSavedReport() {
     this.report = null;
+  }
+  uploadSrcVs(event) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+      this.sourceVs = file;
+
+    }
+  }
+  removeSrcVs(){
+    this.sourceVs = null;
   }
   async uploadSourceIg(event) {
     let self = this;
@@ -91,6 +104,19 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
   }
   removeSourceIg() {
     this.sourceIg = null;
+    this.sourceVs = null;
+  }
+
+  uploadDerivedVs(event, index){
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+      this.derivedVs[index] = file;
+
+    }
+  }
+  removeDerivedVs(index){
+    this.derivedVs[index] = null;
   }
   uploadDerivedIgs(event) {
     let self = this;
@@ -108,10 +134,14 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
         fileReader.readAsText(file);
       }
       this.derivedIgs.push(...files);
+      this.derivedProfiles.push(null)
     }
   }
   removeDerivedIg(i) {
     this.derivedIgs.splice(i, 1);
+    this.derivedProfiles.splice(i, 1);
+    this.derivedVs.splice(i, 1);
+
   }
   analyze() {
     this.spinner.show();
@@ -129,13 +159,20 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
       formData.append("source", this.sourceIg, this.sourceIg.name);
       this.derivedIgs.forEach((ig, index) => {
         formData.append(`ig${index}`, ig, ig.name);
+        formData.append(`derivedProfile${index}`, this.derivedProfiles[index].id);
+
+        if(this.derivedVs[index]){
+          formData.append(`vs${index}`, this.derivedVs[index]);
+        }
+
       });
       formData.append("configuration", JSON.stringify(this.configuration))
       if(this.srcProfile){
         formData.append("srcProfile", this.srcProfile.id)
       }
-      if(this.derivedProfile){
-        formData.append("derivedProfile", this.derivedProfile.id)
+   
+      if(this.sourceVs){
+        formData.append("sourceVs", this.sourceVs)
       }
 
 
@@ -147,6 +184,7 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
             self.differentialService.differentialResults = <TreeNode[]>data.data;
             console.log(self.differentialService.differentialResults)
             self.spinner.hide();
+            
             self.router.navigate(['/differential']);
           }
         }, error => {
