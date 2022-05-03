@@ -18,15 +18,18 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
 
   sourceIg;
   sourceVs;
+  sourceCt;
   report;
   derivedIgs = [];
   derivedVs = [];
+  derivedCt = [];
 
   configuration = {
     usage: true,
     cardinality: true,
     datatype: true,
-    valueset: true
+    valueset: true,
+    predicate: true
 
   }
 
@@ -70,8 +73,19 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
 
     }
   }
-  removeSrcVs(){
+  removeSrcVs() {
     this.sourceVs = null;
+  }
+  uploadSrcCt(event) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+      this.sourceCt = file;
+
+    }
+  }
+  removeSrcCt() {
+    this.sourceCt = null;
   }
   async uploadSourceIg(event) {
     let self = this;
@@ -82,7 +96,7 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
       this.sourceIg = file;
       let fileReader = new FileReader();
       fileReader.onload = async (e) => {
-        const res = await xml2js.parseStringPromise(fileReader.result, {explicitChildren: true, preserveChildrenOrder:true});
+        const res = await xml2js.parseStringPromise(fileReader.result, { explicitChildren: true, preserveChildrenOrder: true });
         self.srcProfilesList = this.getProfilesFromXML(res);
         console.log(res)
       }
@@ -105,9 +119,11 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
   removeSourceIg() {
     this.sourceIg = null;
     this.sourceVs = null;
+    this.sourceCt = null;
+
   }
 
-  uploadDerivedVs(event, index){
+  uploadDerivedVs(event, index) {
     let fileList: FileList = event.target.files;
     if (fileList.length > 0) {
       let file: File = fileList[0];
@@ -115,8 +131,19 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
 
     }
   }
-  removeDerivedVs(index){
+  removeDerivedVs(index) {
     this.derivedVs[index] = null;
+  }
+  uploadDerivedCt(event, index) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+      this.derivedCt[index] = file;
+
+    }
+  }
+  removeDerivedCt(index) {
+    this.derivedCt[index] = null;
   }
   uploadDerivedIgs(event) {
     let self = this;
@@ -141,6 +168,8 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
     this.derivedIgs.splice(i, 1);
     this.derivedProfiles.splice(i, 1);
     this.derivedVs.splice(i, 1);
+    this.derivedCt.splice(i, 1);
+
 
   }
   analyze() {
@@ -159,20 +188,29 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
       formData.append("source", this.sourceIg, this.sourceIg.name);
       this.derivedIgs.forEach((ig, index) => {
         formData.append(`ig${index}`, ig, ig.name);
+        if (!this.derivedProfiles[index]) {
+          self.spinner.hide();
+          return
+        }
         formData.append(`derivedProfile${index}`, this.derivedProfiles[index].id);
 
-        if(this.derivedVs[index]){
+        if (this.derivedVs[index]) {
           formData.append(`vs${index}`, this.derivedVs[index]);
         }
-
+        if (this.derivedCt[index]) {
+          formData.append(`ct${index}`, this.derivedCt[index]);
+        }
       });
       formData.append("configuration", JSON.stringify(this.configuration))
-      if(this.srcProfile){
+      if (this.srcProfile) {
         formData.append("srcProfile", this.srcProfile.id)
       }
-   
-      if(this.sourceVs){
+
+      if (this.sourceVs) {
         formData.append("sourceVs", this.sourceVs)
+      }
+      if (this.sourceCt) {
+        formData.append("sourceCt", this.sourceCt)
       }
 
 
@@ -184,7 +222,7 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
             self.differentialService.differentialResults = <TreeNode[]>data.data;
             console.log(self.differentialService.differentialResults)
             self.spinner.hide();
-            
+
             self.router.navigate(['/differential']);
           }
         }, error => {
