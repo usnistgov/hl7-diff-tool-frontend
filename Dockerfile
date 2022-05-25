@@ -2,7 +2,7 @@
 #Stage 1
 # Create image based on the official Node 8 image from dockerhub
 
-FROM node:12 as node
+FROM node:18 as node
 
 # Create a directory where our app will be placed
 RUN mkdir -p /usr/src/app
