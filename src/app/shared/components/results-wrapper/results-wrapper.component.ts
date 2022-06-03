@@ -20,6 +20,7 @@ export class ResultsWrapperComponent implements OnInit {
   @Input() profile;
   @Input() results;
   @Input() igs;
+  activeTab = 'profiles'
   active = 1;
   fullConfigOptions;
   segmentConfigOptions;

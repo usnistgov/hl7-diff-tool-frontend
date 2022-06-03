@@ -23,7 +23,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     cardinality: true,
     datatype: true,
     valueset: true,
-    predicate: true
+    predicate: true,
+    conformanceStatement: true
 
   }
 

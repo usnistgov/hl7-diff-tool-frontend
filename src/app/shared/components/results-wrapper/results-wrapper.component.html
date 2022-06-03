@@ -12,7 +12,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row" style="border-bottom: 1px solid #d9ecf7;">
     <div class="col-12" style="display: flex;padding: 5px 40px;">
       <div class="data-dd">
         <!-- <h5 style="line-height: 40px;padding-right: 15px;">Data</h5> -->
@@ -36,54 +36,441 @@
       </div>
     </div>
   </div>
-  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" (navChange)="navChange($event)">
-    <li [ngbNavItem]="1">
-      <a ngbNavLink>Full</a>
-      <ng-template ngbNavContent>
-        <div>
-          <div>
-            <p-treeTable [value]="profile.children" [scrollable]="true" scrollHeight="400px" [style]="{width:'100vw'}">
-              <ng-template pTemplate="colgroup" let-columns>
-                <colgroup>
-                  <col style="width: 380px;">
-                  <col style="width: 200px;">
-                  <col style="width: 200px;">
-                  <col style="width: 200px;" *ngIf="showReason">
+  <ul class="nav nav-pills" style="padding: 15px 10px;">
+    <li style="cursor: pointer;" class="nav-item">
+      <span class="nav-link active" [ngClass]="{ 'active':  activeTab === 'profiles' }"
+        (click)="activeTab = 'profiles'">Profiles</span>
+    </li>
+    <li style="cursor: pointer;" class="nav-item">
+      <span class="nav-link active" [ngClass]="{ 'active':  activeTab === 'segments' }"
+        (click)="activeTab = 'segments';active = profile.segmentRefs[0].data.ref">Segments</span>
+    </li>
+    <li style="cursor: pointer;" class="nav-item">
+      <span class="nav-link active" [ngClass]="{ 'active':  activeTab === 'datatypes' }"
+        (click)="activeTab = 'datatypes'">Data types</span>
+    </li>
+  </ul>
+  <ng-container *ngIf="activeTab === 'profiles' ">
 
-                </colgroup>
+    <div *ngIf="selectedConfiguration.name !== 'conformanceStatement'  ">
+      <div>
+        <p-treeTable [value]="profile.children" [scrollable]="true" scrollHeight="400px" [style]="{width:'100vw'}">
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col style="width: 380px;">
+              <col style="width: 200px;">
+              <col style="width: 200px;">
+              <col style="width: 200px;" *ngIf="showReason">
 
-                <colgroup>
-                  <col style="width: 380px;">
-                  <col style="width: 200px;">
-                  <ng-container *ngFor="let derivedIg of igs">
-                    <col style="width: 200px;">
-                    <col style="width: 200px;" *ngIf="showReason">
+            </colgroup>
+
+            <colgroup>
+              <col style="width: 380px;">
+              <col style="width: 200px;">
+              <ng-container *ngFor="let derivedIg of igs">
+                <col style="width: 200px;">
+                <col style="width: 200px;" *ngIf="showReason">
+              </ng-container>
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th style="width: 380px;"></th>
+              <th style="width: 200px;">
+                {{ results.srcIg.title }}
+                <div class="derived-pill reference">
+                  Reference
+                </div>
+              </th>
+              <th style="width: 200px;" [attr.colspan]="showReason ? 2 : 1" *ngFor="let derivedIg of igs">
+                {{ derivedIg.title }}
+                <div *ngIf="
+                          results.srcIg.profileId === derivedIg.profileOrigin &&
+                          derivedIg.derived
+                        " class="derived-pill derived">
+                  Derived
+                </div>
+                <div *ngIf="
+                          results.srcIg.profileId !== derivedIg.profileOrigin ||
+                          !derivedIg.derived
+                        " class="derived-pill not-derived">
+                  Not derived
+                </div>
+              </th>
+            </tr>
+            <tr>
+              <th style="width: 380px;">Name</th>
+              <th style="width: 200px;">Value</th>
+              <ng-container *ngFor="let derivedIg of igs">
+                <th style="width: 200px;">Value</th>
+                <th style="width: 200px;" *ngIf="showReason">Reason</th>
+              </ng-container>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+
+
+            <!-- <pre *ngIf="rowData.type === 'segmentRef'">ss {{rowNode.parent.data.consequential.src}}</pre> -->
+            <!-- *ngIf="(!compliance && !consequential) || (compliance && rowData.changed) || (consequential && rowData?.consequential?.src)" -->
+            <!-- <tr
+                    *ngIf="(!compliance && !consequential) ||
+                     (compliance && rowData.changed && (!consequential ||    (consequential && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.src))))) ||
+                      (consequential && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.src)))"> -->
+            <tr
+              *ngIf="consequential.name === 'all-changes' ||
+                         (consequential.name === 'consequential' && ((!rowNode.parent && rowData?.consequential?.src) || (rowNode.parent && rowNode?.parent?.data?.consequential?.src && rowData?.consequential?.src))) ||
+                         (consequential.name === 'non-consequential' && ((!rowNode.parent && !rowData?.consequential?.src) || (rowNode.parent && !rowNode?.parent?.data?.consequential?.src && !rowData?.consequential?.src)))">
+              <td style="width: 380px;" [ngClass]="{
+                        'row-changed': rowData.changed
+                      }">
+                <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                <app-data-badge [type]="rowData.type"></app-data-badge>
+                {{ rowData.position }}.
+                <ng-container *ngIf="rowData.type === 'segmentRef'">
+                  {{ rowData.ref }}
+                </ng-container>
+                <ng-container *ngIf="
+                          rowData.type === 'group' ||
+                          rowData.type === 'field' ||
+                          rowData.type === 'component' ||
+                          rowData.type === 'subcomponent'
+                        ">
+                  {{ rowData.name }}
+                </ng-container>
+              </td>
+              <td *ngIf="selectedConfiguration.name !== 'valueset'">
+                {{ rowData[selectedConfiguration.name]?.src.value }}
+              </td>
+              <td *ngIf="selectedConfiguration.name === 'valueset'">
+                <div *ngIf="rowData.bindings">
+                  <div *ngFor="let binding of rowData.bindings">
+                    <app-valueset-table [valueset]="binding.data" [source]="true"></app-valueset-table>
+                  </div>
+                </div>
+              </td>
+
+              <ng-container *ngFor="let derivedIg of igs">
+                <ng-container *ngIf="selectedConfiguration.name !== 'valueset'">
+                  <ng-container *ngIf="
+                            rowData[selectedConfiguration.name] &&
+                            rowData[selectedConfiguration.name].derived &&
+                            rowData[selectedConfiguration.name].derived[
+                              derivedIg.id
+                            ]
+                          ">
+                    <td style="position: relative;" [ngClass]="{
+                              info:
+                              (consequential.name === 'all-changes' || 
+                              (consequential.name === 'consequential'  && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.derived[derivedIg.id])))
+                                || (consequential.name === 'non-consequential'  && (!rowNode.parent || (rowNode.parent && !rowNode?.parent?.data?.consequential?.derived[derivedIg.id]))))&&
+                                compliance &&
+                                rowData[selectedConfiguration.name].derived[
+                                  derivedIg.id
+                                ].compliance === 'info',
+                              warning:
+                              (consequential.name === 'all-changes' || 
+                              (consequential.name === 'consequential'  && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.derived[derivedIg.id])))
+                                || (consequential.name === 'non-consequential'  && (!rowNode.parent || (rowNode.parent && !rowNode?.parent?.data?.consequential?.derived[derivedIg.id]))))&&
+                                compliance &&
+                                rowData[selectedConfiguration.name].derived[
+                                  derivedIg.id
+                                ].compliance === 'warning',
+                              error:
+                              (consequential.name === 'all-changes' || 
+                              (consequential.name === 'consequential'  && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.derived[derivedIg.id])))
+                                || (consequential.name === 'non-consequential'  && (!rowNode.parent || (rowNode.parent && !rowNode?.parent?.data?.consequential?.derived[derivedIg.id]))))&&
+                                compliance &&
+                                rowData[selectedConfiguration.name].derived[
+                                  derivedIg.id
+                                ].compliance === 'error'
+                            }">
+
+                      <ng-container
+                        *ngIf="consequential.name === 'all-changes' || 
+                            (consequential.name === 'consequential'  && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.derived[derivedIg.id])))
+                              || (consequential.name === 'non-consequential'  && (!rowNode.parent || (rowNode.parent && !rowNode?.parent?.data?.consequential?.derived[derivedIg.id]))) ">
+                        {{
+                                rowData[selectedConfiguration.name].derived[
+                                  derivedIg.id
+                                ].value
+                              }}
+                        <ng-container
+                          *ngIf="selectedConfiguration.name === 'usage' && rowData[selectedConfiguration.name].derived[derivedIg.id].value === 'C(A/B)'">
+
+
+                          <fa-icon [icon]="faExclamationTriangle" pTooltip="Profile verification error"
+                            tooltipPosition="top" style="color: red"></fa-icon>
+
+                        </ng-container>
+
+                        <div style="position: absolute;right: 15px;top: 7px;cursor: pointer;" (click)="
+                                  comment(
+                                    rowData,
+                                    selectedConfiguration.name,
+                                    derivedIg.id
+                                  )
+                                ">
+                          <i class="pi pi-comments p-mr-4 p-text-secondary" pBadge style="font-size: 2rem"></i>
+                          <div class="comment-badge">
+                            <div style="margin: auto">
+                              {{
+                                      rowData[selectedConfiguration.name].derived[
+                                        derivedIg.id
+                                      ].comments
+                                        ? rowData[selectedConfiguration.name]
+                                            .derived[derivedIg.id].comments.length
+                                        : 0
+                                    }}
+                            </div>
+                          </div>
+
+                          <!-- <p-button
+                                  label="Comments"
+                                  [badge]="
+                                    rowData[selectedConfiguration.name].derived[
+                                      derivedIg.id
+                                    ].comments
+                                      ? rowData[selectedConfiguration.name].derived[
+                                          derivedIg.id
+                                        ].comments.length
+                                      : 0
+                                  "
+                                  styleClass="p-mr-2"
+                                ></p-button> -->
+                        </div>
+                      </ng-container>
+
+                    </td>
                   </ng-container>
-                </colgroup>
-              </ng-template>
+                  <ng-container *ngIf="
+                            !rowData[selectedConfiguration.name] ||
+                            !rowData[selectedConfiguration.name].derived ||
+                            !rowData[selectedConfiguration.name].derived[
+                              derivedIg.id
+                            ]
+                          ">
+                    <td></td>
+                  </ng-container>
+
+                  <td *ngIf="showReason" [ngClass]="{
+                            grayed:
+                              derivedIg.profileOrigin !==
+                                results.srcIg.profileId || !derivedIg.derived
+                          }">
+                    {{
+                            rowData.reason &&
+                            rowData.reason[derivedIg.id] &&
+                            rowData.reason[derivedIg.id][
+                              selectedConfiguration.name
+                            ]
+                              ? rowData.reason[derivedIg.id][
+                                  selectedConfiguration.name
+                                ]
+                              : ""
+                          }}
+                    <!-- {{
+                            rowData[selectedConfiguration.name]?.derived
+                              ? (rowData[selectedConfiguration.name]?.derived)[
+                                  derivedIg.id
+                                ]?.reason
+                              : ""
+                          }} -->
+                  </td>
+                </ng-container>
+                <ng-container *ngIf="selectedConfiguration.name === 'valueset'">
+                  <td style="position: relative;">
+                    <div *ngIf="rowData.bindings">
+                      <div *ngFor="let binding of rowData.bindings">
+                        <div *ngIf="binding.changed">
+                          <app-valueset-table [valueset]="binding.data" [changed]="true" [source]="false"
+                            [igId]="derivedIg.id"></app-valueset-table>
+                        </div>
+
+                        <!-- {{
+                                binding.data.strength?.derived
+                                  ? (binding.data.strength?.derived)[derivedIg.id]
+                                      ?.value
+                                  : ""
+                              }} -->
+                      </div>
+                      <div style="position: absolute;right: 15px;top: 7px;cursor: pointer;"
+                        (click)="commentVs(rowData, derivedIg.id)">
+                        <i class="pi pi-comments p-mr-4 p-text-secondary" pBadge style="font-size: 2rem"></i>
+                        <div class="comment-badge">
+                          <div style="margin: auto">
+                            {{
+                                    rowData.bindingsComments &&
+                                    rowData.bindingsComments[derivedIg.id]
+                                      ? rowData.bindingsComments[derivedIg.id]
+                                          .length
+                                      : 0
+                                  }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td *ngIf="showReason"></td>
+                </ng-container>
+              </ng-container>
+            </tr>
+          </ng-template>
+        </p-treeTable>
+      </div>
+    </div>
+    <div *ngIf="selectedConfiguration.name === 'conformanceStatement'  ">
+      <div>
+        <p-treeTable [value]="profile.conformanceStatements" [scrollable]="true" scrollHeight="400px"
+          [style]="{width:'100vw'}">
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col style="width: 380px;">
+              <col style="width: 200px;">
+              <col style="width: 200px;">
+
+            </colgroup>
+
+            <colgroup>
+              <col style="width: 380px;">
+              <col style="width: 200px;">
+              <ng-container *ngFor="let derivedIg of igs">
+                <col style="width: 200px;">
+              </ng-container>
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th style="width: 380px;"></th>
+              <th style="width: 200px;">
+                {{ results.srcIg.title }}
+                <div class="derived-pill reference">
+                  Reference
+                </div>
+              </th>
+              <th style="width: 200px;" attr.colspan="1" *ngFor="let derivedIg of igs">
+                {{ derivedIg.title }}
+                <div *ngIf="
+                              results.srcIg.profileId === derivedIg.profileOrigin &&
+                              derivedIg.derived
+                            " class="derived-pill derived">
+                  Derived
+                </div>
+                <div *ngIf="
+                              results.srcIg.profileId !== derivedIg.profileOrigin ||
+                              !derivedIg.derived
+                            " class="derived-pill not-derived">
+                  Not derived
+                </div>
+              </th>
+            </tr>
+            <tr>
+              <th style="width: 380px;">ID</th>
+              <th style="width: 200px;">Description</th>
+              <ng-container *ngFor="let derivedIg of igs">
+                <th style="width: 200px;">Description</th>
+              </ng-container>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+
+
+            <tr *ngIf="rowData && rowData.changed">
+              <td style="width: 380px;" >
+                <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+
+                {{ rowData.id }}
+              </td>
+              <td>
+                {{ rowData.description.src.value }}
+              </td>
+
+              <ng-container *ngFor="let derivedIg of igs">
+                  <ng-container *ngIf="
+                                rowData.description &&
+                                rowData.description.derived &&
+                                rowData.description.derived[
+                                  derivedIg.id
+                                ]
+                              ">
+                    <td style="position: relative;" [ngClass]="{
+                      'changed': rowData.description.derived[derivedIg.id].status === 'changed','added': rowData.description.derived[derivedIg.id].status === 'added','deleted': rowData.description.derived[derivedIg.id].status === 'deleted'
+                    }">
+
+                      <ng-container>
+                        {{
+                          rowData.description.derived[
+                                      derivedIg.id
+                                    ].value
+                                  }}
+
+
+                        <div style="position: absolute;right: 15px;top: 7px;cursor: pointer;" (click)="
+                                      comment(
+                                        rowData,
+                                        selectedConfiguration.name,
+                                        derivedIg.id
+                                      )
+                                    ">
+                          <i class="pi pi-comments p-mr-4 p-text-secondary" pBadge style="font-size: 2rem"></i>
+                          <div class="comment-badge">
+                            <div style="margin: auto">
+                              {{
+                                rowData.description.derived[
+                                            derivedIg.id
+                                          ].comments
+                                            ? rowData.description
+                                                .derived[derivedIg.id].comments.length
+                                            : 0
+                                        }}
+                            </div>
+                          </div>
+
+
+                        </div>
+                      </ng-container>
+
+                    </td>
+                  </ng-container>
+                  <ng-container *ngIf="
+                                !rowData.description ||
+                                !rowData.description.derived ||
+                                !rowData.description.derived[
+                                  derivedIg.id
+                                ]
+                              ">
+                    <td></td>
+                  </ng-container>
+
+
+
+              </ng-container>
+            </tr>
+          </ng-template>
+        </p-treeTable>
+      </div>
+    </div>
+
+
+  </ng-container>
+  <ng-container *ngIf="activeTab === 'segments' ">
+    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" (navChange)="navChange($event)">
+
+      <li *ngFor="let segment of profile.segmentRefs" [ngbNavItem]="segment.data.ref">
+        <a ngbNavLink>{{ segment.data.ref }}</a>
+        <ng-template ngbNavContent>
+          <div *ngIf="selectedConfiguration.name !== 'conformanceStatement'  ">
+            <p-treeTable [value]="segment.children">
               <ng-template pTemplate="header" let-columns>
                 <tr>
                   <th style="width: 380px;"></th>
-                  <th style="width: 200px;">
+                  <th>
+                    {{ segment.data.label.src.value }} From
                     {{ results.srcIg.title }}
-                    <div class="derived-pill reference">
-                      Reference
-                    </div>
                   </th>
-                  <th style="width: 200px;" [attr.colspan]="showReason ? 2 : 1" *ngFor="let derivedIg of igs">
+                  <th [attr.style]="showReason ? 'width: 400px' : 'width: 200px'" [attr.colspan]="showReason ? 2 : 1"
+                    *ngFor="let derivedIg of igs">
+                    {{ segment.data.label.derived[derivedIg.id].value }} From
                     {{ derivedIg.title }}
-                    <div *ngIf="
-                        results.srcIg.profileId === derivedIg.profileOrigin &&
-                        derivedIg.derived
-                      " class="derived-pill derived">
-                      Derived
-                    </div>
-                    <div *ngIf="
-                        results.srcIg.profileId !== derivedIg.profileOrigin ||
-                        !derivedIg.derived
-                      " class="derived-pill not-derived">
-                      Not derived
-                    </div>
                   </th>
                 </tr>
                 <tr>
@@ -96,35 +483,13 @@
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-
-
-                <!-- <pre *ngIf="rowData.type === 'segmentRef'">ss {{rowNode.parent.data.consequential.src}}</pre> -->
-                <!-- *ngIf="(!compliance && !consequential) || (compliance && rowData.changed) || (consequential && rowData?.consequential?.src)" -->
-                <!-- <tr
-                  *ngIf="(!compliance && !consequential) ||
-                   (compliance && rowData.changed && (!consequential ||    (consequential && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.src))))) ||
-                    (consequential && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.src)))"> -->
-                <tr
-                  *ngIf="consequential.name === 'all-changes' ||
-                       (consequential.name === 'consequential' && ((!rowNode.parent && rowData?.consequential?.src) || (rowNode.parent && rowNode?.parent?.data?.consequential?.src && rowData?.consequential?.src))) ||
-                       (consequential.name === 'non-consequential' && ((!rowNode.parent && !rowData?.consequential?.src) || (rowNode.parent && !rowNode?.parent?.data?.consequential?.src && !rowData?.consequential?.src)))">
-                  <td style="width: 380px;" [ngClass]="{
-                      'row-changed': rowData.changed
-                    }">
+                <tr>
+                  <td class="table-td" style="width: 380px;">
                     <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                     <app-data-badge [type]="rowData.type"></app-data-badge>
+
                     {{ rowData.position }}.
-                    <ng-container *ngIf="rowData.type === 'segmentRef'">
-                      {{ rowData.ref }}
-                    </ng-container>
-                    <ng-container *ngIf="
-                        rowData.type === 'group' ||
-                        rowData.type === 'field' ||
-                        rowData.type === 'component' ||
-                        rowData.type === 'subcomponent'
-                      ">
-                      {{ rowData.name }}
-                    </ng-container>
+                    {{ rowData.name }}
                   </td>
                   <td *ngIf="selectedConfiguration.name !== 'valueset'">
                     {{ rowData[selectedConfiguration.name]?.src.value }}
@@ -136,137 +501,38 @@
                       </div>
                     </div>
                   </td>
-
                   <ng-container *ngFor="let derivedIg of igs">
                     <ng-container *ngIf="selectedConfiguration.name !== 'valueset'">
-                      <ng-container *ngIf="
-                          rowData[selectedConfiguration.name] &&
-                          rowData[selectedConfiguration.name].derived &&
-                          rowData[selectedConfiguration.name].derived[
-                            derivedIg.id
-                          ]
-                        ">
-                        <td style="position: relative;" [ngClass]="{
-                            info:
-                            (consequential.name === 'all-changes' || 
-                            (consequential.name === 'consequential'  && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.derived[derivedIg.id])))
-                              || (consequential.name === 'non-consequential'  && (!rowNode.parent || (rowNode.parent && !rowNode?.parent?.data?.consequential?.derived[derivedIg.id]))))&&
-                              compliance &&
-                              rowData[selectedConfiguration.name].derived[
-                                derivedIg.id
-                              ].compliance === 'info',
-                            warning:
-                            (consequential.name === 'all-changes' || 
-                            (consequential.name === 'consequential'  && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.derived[derivedIg.id])))
-                              || (consequential.name === 'non-consequential'  && (!rowNode.parent || (rowNode.parent && !rowNode?.parent?.data?.consequential?.derived[derivedIg.id]))))&&
-                              compliance &&
-                              rowData[selectedConfiguration.name].derived[
-                                derivedIg.id
-                              ].compliance === 'warning',
-                            error:
-                            (consequential.name === 'all-changes' || 
-                            (consequential.name === 'consequential'  && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.derived[derivedIg.id])))
-                              || (consequential.name === 'non-consequential'  && (!rowNode.parent || (rowNode.parent && !rowNode?.parent?.data?.consequential?.derived[derivedIg.id]))))&&
-                              compliance &&
-                              rowData[selectedConfiguration.name].derived[
-                                derivedIg.id
-                              ].compliance === 'error'
-                          }">
-
-                          <ng-container
-                            *ngIf="consequential.name === 'all-changes' || 
-                          (consequential.name === 'consequential'  && (!rowNode.parent || (rowNode.parent && rowNode?.parent?.data?.consequential?.derived[derivedIg.id])))
-                            || (consequential.name === 'non-consequential'  && (!rowNode.parent || (rowNode.parent && !rowNode?.parent?.data?.consequential?.derived[derivedIg.id]))) ">
-                            {{
-                              rowData[selectedConfiguration.name].derived[
-                                derivedIg.id
-                              ].value
-                            }}
-                            <ng-container
-                              *ngIf="selectedConfiguration.name === 'usage' && rowData[selectedConfiguration.name].derived[derivedIg.id].value === 'C(A/B)'">
-
-
-                              <fa-icon [icon]="faExclamationTriangle" pTooltip="Profile verification error"
-                                tooltipPosition="top" style="color: red"></fa-icon>
-
-                            </ng-container>
-
-                            <div style="position: absolute;right: 15px;top: 7px;cursor: pointer;" (click)="
-                                comment(
-                                  rowData,
-                                  selectedConfiguration.name,
-                                  derivedIg.id
-                                )
-                              ">
-                              <i class="pi pi-comments p-mr-4 p-text-secondary" pBadge style="font-size: 2rem"></i>
-                              <div class="comment-badge">
-                                <div style="margin: auto">
-                                  {{
-                                    rowData[selectedConfiguration.name].derived[
-                                      derivedIg.id
-                                    ].comments
-                                      ? rowData[selectedConfiguration.name]
-                                          .derived[derivedIg.id].comments.length
-                                      : 0
-                                  }}
-                                </div>
-                              </div>
-
-                              <!-- <p-button
-                                label="Comments"
-                                [badge]="
-                                  rowData[selectedConfiguration.name].derived[
-                                    derivedIg.id
-                                  ].comments
-                                    ? rowData[selectedConfiguration.name].derived[
-                                        derivedIg.id
-                                      ].comments.length
-                                    : 0
-                                "
-                                styleClass="p-mr-2"
-                              ></p-button> -->
-                            </div>
-                          </ng-container>
-
-                        </td>
-                      </ng-container>
-                      <ng-container *ngIf="
-                          !rowData[selectedConfiguration.name] ||
-                          !rowData[selectedConfiguration.name].derived ||
-                          !rowData[selectedConfiguration.name].derived[
-                            derivedIg.id
-                          ]
-                        ">
-                        <td></td>
-                      </ng-container>
-
-                      <td *ngIf="showReason" [ngClass]="{
-                          grayed:
-                            derivedIg.profileOrigin !==
-                              results.srcIg.profileId || !derivedIg.derived
-                        }">
+                      <td>
                         {{
-                          rowData.reason &&
-                          rowData.reason[derivedIg.id] &&
-                          rowData.reason[derivedIg.id][
-                            selectedConfiguration.name
-                          ]
-                            ? rowData.reason[derivedIg.id][
-                                selectedConfiguration.name
-                              ]
-                            : ""
-                        }}
+                              rowData[selectedConfiguration.name]?.derived
+                                ? (rowData[selectedConfiguration.name]?.derived)[
+                                    derivedIg.id
+                                  ]?.value
+                                : ""
+                            }}
+                      </td>
+                      <td *ngIf="showReason">
+                        {{
+                              rowData.reason &&
+                              rowData.reason[derivedIg.id] &&
+                              rowData.reason[derivedIg.id][selectedConfiguration.name]
+                                ? rowData.reason[derivedIg.id][
+                                    selectedConfiguration.name
+                                  ]
+                                : ""
+                            }}
                         <!-- {{
-                          rowData[selectedConfiguration.name]?.derived
-                            ? (rowData[selectedConfiguration.name]?.derived)[
-                                derivedIg.id
-                              ]?.reason
-                            : ""
-                        }} -->
+                              rowData[selectedConfiguration.name]?.derived
+                                ? (rowData[selectedConfiguration.name]?.derived)[
+                                    derivedIg.id
+                                  ]?.reason
+                                : ""
+                            }} -->
                       </td>
                     </ng-container>
                     <ng-container *ngIf="selectedConfiguration.name === 'valueset'">
-                      <td style="position: relative;">
+                      <td>
                         <div *ngIf="rowData.bindings">
                           <div *ngFor="let binding of rowData.bindings">
                             <div *ngIf="binding.changed">
@@ -275,26 +541,11 @@
                             </div>
 
                             <!-- {{
-                              binding.data.strength?.derived
-                                ? (binding.data.strength?.derived)[derivedIg.id]
-                                    ?.value
-                                : ""
-                            }} -->
-                          </div>
-                          <div style="position: absolute;right: 15px;top: 7px;cursor: pointer;"
-                            (click)="commentVs(rowData, derivedIg.id)">
-                            <i class="pi pi-comments p-mr-4 p-text-secondary" pBadge style="font-size: 2rem"></i>
-                            <div class="comment-badge">
-                              <div style="margin: auto">
-                                {{
-                                  rowData.bindingsComments &&
-                                  rowData.bindingsComments[derivedIg.id]
-                                    ? rowData.bindingsComments[derivedIg.id]
-                                        .length
-                                    : 0
-                                }}
-                              </div>
-                            </div>
+                                  binding.data.strength?.derived
+                                    ? (binding.data.strength?.derived)[derivedIg.id]
+                                        ?.value
+                                    : ""
+                                }} -->
                           </div>
                         </div>
                       </td>
@@ -305,113 +556,142 @@
               </ng-template>
             </p-treeTable>
           </div>
-        </div>
-      </ng-template>
-    </li>
-    <li *ngFor="let segment of profile.segmentRefs" [ngbNavItem]="segment.data.ref">
-      <a ngbNavLink>{{ segment.data.ref }}</a>
-      <ng-template ngbNavContent>
-        <div>
-          <p-treeTable [value]="segment.children">
-            <ng-template pTemplate="header" let-columns>
-              <tr>
-                <th style="width: 380px;"></th>
-                <th>
-                  {{ segment.data.label.src.value }} From
-                  {{ results.srcIg.title }}
-                </th>
-                <th [attr.style]="showReason ? 'width: 400px' : 'width: 200px'" [attr.colspan]="showReason ? 2 : 1"
-                  *ngFor="let derivedIg of igs">
-                  {{ segment.data.label.derived[derivedIg.id].value }} From
-                  {{ derivedIg.title }}
-                </th>
-              </tr>
-              <tr>
-                <th style="width: 380px;">Name</th>
-                <th style="width: 200px;">Value</th>
-                <ng-container *ngFor="let derivedIg of igs">
-                  <th style="width: 200px;">Value</th>
-                  <th style="width: 200px;" *ngIf="showReason">Reason</th>
-                </ng-container>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-              <tr>
-                <td class="table-td" style="width: 380px;">
-                  <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-                  <app-data-badge [type]="rowData.type"></app-data-badge>
+          <div *ngIf="selectedConfiguration.name === 'conformanceStatement'  ">
+            <div>
+              <p-treeTable [value]="segment.conformanceStatements" [scrollable]="true" scrollHeight="400px"
+                [style]="{width:'100vw'}">
+                <ng-template pTemplate="colgroup" let-columns>
+                  <colgroup>
+                    <col style="width: 380px;">
+                    <col style="width: 200px;">
+                    <col style="width: 200px;">
 
-                  {{ rowData.position }}.
-                  {{ rowData.name }}
-                </td>
-                <td *ngIf="selectedConfiguration.name !== 'valueset'">
-                  {{ rowData[selectedConfiguration.name]?.src.value }}
-                </td>
-                <td *ngIf="selectedConfiguration.name === 'valueset'">
-                  <div *ngIf="rowData.bindings">
-                    <div *ngFor="let binding of rowData.bindings">
-                      <app-valueset-table [valueset]="binding.data" [source]="true"></app-valueset-table>
-                    </div>
-                  </div>
-                </td>
-                <ng-container *ngFor="let derivedIg of igs">
-                  <ng-container *ngIf="selectedConfiguration.name !== 'valueset'">
-                    <td>
-                      {{
-                        rowData[selectedConfiguration.name]?.derived
-                          ? (rowData[selectedConfiguration.name]?.derived)[
-                              derivedIg.id
-                            ]?.value
-                          : ""
-                      }}
-                    </td>
-                    <td *ngIf="showReason">
-                      {{
-                        rowData.reason &&
-                        rowData.reason[derivedIg.id] &&
-                        rowData.reason[derivedIg.id][selectedConfiguration.name]
-                          ? rowData.reason[derivedIg.id][
-                              selectedConfiguration.name
-                            ]
-                          : ""
-                      }}
-                      <!-- {{
-                        rowData[selectedConfiguration.name]?.derived
-                          ? (rowData[selectedConfiguration.name]?.derived)[
-                              derivedIg.id
-                            ]?.reason
-                          : ""
-                      }} -->
-                    </td>
-                  </ng-container>
-                  <ng-container *ngIf="selectedConfiguration.name === 'valueset'">
-                    <td>
-                      <div *ngIf="rowData.bindings">
-                        <div *ngFor="let binding of rowData.bindings">
-                          <div *ngIf="binding.changed">
-                            <app-valueset-table [valueset]="binding.data" [changed]="true" [source]="false"
-                              [igId]="derivedIg.id"></app-valueset-table>
-                          </div>
+                  </colgroup>
 
-                          <!-- {{
-                            binding.data.strength?.derived
-                              ? (binding.data.strength?.derived)[derivedIg.id]
-                                  ?.value
-                              : ""
-                          }} -->
-                        </div>
+                  <colgroup>
+                    <col style="width: 380px;">
+                    <col style="width: 200px;">
+                    <ng-container *ngFor="let derivedIg of igs">
+                      <col style="width: 200px;">
+                    </ng-container>
+                  </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th style="width: 380px;"></th>
+                    <th style="width: 200px;">
+                      {{ results.srcIg.title }}
+                      <div class="derived-pill reference">
+                        Reference
                       </div>
-                    </td>
-                    <td *ngIf="showReason"></td>
-                  </ng-container>
-                </ng-container>
-              </tr>
-            </ng-template>
-          </p-treeTable>
-        </div>
-      </ng-template>
-    </li>
-  </ul>
+                    </th>
+                    <th style="width: 200px;" attr.colspan="1" *ngFor="let derivedIg of igs">
+                      {{ derivedIg.title }}
+                      <div *ngIf="
+                                      results.srcIg.profileId === derivedIg.profileOrigin &&
+                                      derivedIg.derived
+                                    " class="derived-pill derived">
+                        Derived
+                      </div>
+                      <div *ngIf="
+                                      results.srcIg.profileId !== derivedIg.profileOrigin ||
+                                      !derivedIg.derived
+                                    " class="derived-pill not-derived">
+                        Not derived
+                      </div>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th style="width: 380px;">ID</th>
+                    <th style="width: 200px;">Description</th>
+                    <ng-container *ngFor="let derivedIg of igs">
+                      <th style="width: 200px;">Description</th>
+                    </ng-container>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
 
-  <div [ngbNavOutlet]="nav"></div>
+
+                  <tr *ngIf="rowData.changed">
+                    <td style="width: 380px;">
+                      <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+
+                      {{ rowData.id }}
+                    </td>
+                    <td>
+                      {{ rowData.description.src.value }}
+                    </td>
+
+                    <ng-container *ngFor="let derivedIg of igs">
+                      <ng-container *ngIf="
+                                        rowData.description &&
+                                        rowData.description.derived &&
+                                        rowData.description.derived[
+                                          derivedIg.id
+                                        ]
+                                      ">
+                        <td style="position: relative;" [ngClass]="{
+                              'changed': rowData.description.derived[derivedIg.id].status === 'changed','added': rowData.description.derived[derivedIg.id].status === 'added','deleted': rowData.description.derived[derivedIg.id].status === 'deleted'
+                            }">
+                          <ng-container>
+                            {{
+                                  rowData.description.derived[
+                                              derivedIg.id
+                                            ].value
+                                          }}
+
+
+                            <div style="position: absolute;right: 15px;top: 7px;cursor: pointer;" (click)="
+                                              comment(
+                                                rowData,
+                                                selectedConfiguration.name,
+                                                derivedIg.id
+                                              )
+                                            ">
+                              <i class="pi pi-comments p-mr-4 p-text-secondary" pBadge style="font-size: 2rem"></i>
+                              <div class="comment-badge">
+                                <div style="margin: auto">
+                                  {{
+                                        rowData.description.derived[
+                                                    derivedIg.id
+                                                  ].comments
+                                                    ? rowData.description
+                                                        .derived[derivedIg.id].comments.length
+                                                    : 0
+                                                }}
+                                </div>
+                              </div>
+
+
+                            </div>
+                          </ng-container>
+
+                        </td>
+                      </ng-container>
+                      <ng-container *ngIf="
+                                        !rowData.description ||
+                                        !rowData.description.derived ||
+                                        !rowData.description.derived[
+                                          derivedIg.id
+                                        ]
+                                      ">
+                        <td></td>
+                      </ng-container>
+
+
+
+                    </ng-container>
+                  </tr>
+                </ng-template>
+              </p-treeTable>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+
+  </ng-container>
+
+
 </p-panel>

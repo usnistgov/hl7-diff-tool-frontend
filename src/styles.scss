@@ -105,6 +105,8 @@ $comformance_profile_color: rgb(167, 90, 1);
 
 .added {
   background: #3dc43d !important;
+  color: black;
+
 }
 
 .changed {
@@ -112,7 +114,9 @@ $comformance_profile_color: rgb(167, 90, 1);
 }
 
 .deleted {
-  background: #b6006a;
+  background: #ff0100!important;
+  text-decoration: line-through;
+  color: black;
 }
 
 .p-dialog .p-dialog-content {
