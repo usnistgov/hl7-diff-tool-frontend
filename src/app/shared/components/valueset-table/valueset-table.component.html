@@ -44,7 +44,7 @@
   <table
     class="table table-striped table-sm table-bordered"
     style="text-align: center; margin-bottom: 0;width: 80%;"
-    [ngClass]="{'added': valueset.status === 'added'}"
+    [ngClass]="{'added': valueset.status === 'added', 'deleted': valueset.derived && valueset.derived[igId]?.status === 'deleted'}"
   >
     <tr>
       <ng-container *ngIf="valueset.valuesets.derived[igId]">
@@ -108,7 +108,7 @@
     <ng-container *ngIf="valueset.valuesets.derived[igId]">
       <tr
         *ngFor="let item of valueset.valuesets.derived[igId]?.value"
-        [ngClass]="{'changed': item.status === 'changed', 'added': item.status === 'added' || !valueset.valuesets.src.value}"
+        [ngClass]="{'changed': item.status === 'changed','deleted': item.status === 'deleted', 'added': item.status === 'added' || !valueset.valuesets.src.value}"
       >
         <td colspan="3">
           <div
@@ -136,8 +136,7 @@
     </ng-container>
   </table>
 
-  <div (click)="codeViewer()" style="text-align: center;">
+  <div (click)="codeViewer()" style="text-align: center;" *ngIf="valueset.showCodes">
       <fa-icon [icon]="['fas', 'eye']"></fa-icon>
-
   </div>
 </div>

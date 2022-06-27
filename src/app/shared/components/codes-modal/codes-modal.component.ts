@@ -26,6 +26,13 @@ export class CodesModalComponent implements OnInit {
       this.derivedValuesets = this.config.data.valueset.valuesets.derived[
         this.config.data.igId
       ].value;
+      if(this.srcValuesets.length === 1 ){
+        this.selectedSrc = this.srcValuesets[0]
+      }
+      if(this.derivedValuesets.length === 1 ){
+        this.selectedDerived = this.derivedValuesets[0]
+      }
+      this.derivedChanged(null)
 
     }
   }
@@ -70,6 +77,18 @@ export class CodesModalComponent implements OnInit {
         } else {
           //code added
           codes.push({ ...derivedCode, status: "added" });
+        }
+      });
+      srcCodes.forEach(code => {
+        const c = derivedCodes.find(
+          x => x.codeSystem === code.codeSystem && x.value === code.value
+        );
+        if (!c) {
+          //code deleted
+          codes.push({
+            ...code,
+            status: "deleted"
+          });
         }
       });
     }

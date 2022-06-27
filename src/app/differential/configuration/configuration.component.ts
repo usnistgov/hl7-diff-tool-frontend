@@ -24,9 +24,11 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     datatype: true,
     valueset: true,
     predicate: true,
-    conformanceStatement: true
-
-  }
+    conformanceStatement: true,
+    name: true,
+    segmentRef: true
+  };
+  selectedConfig;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 

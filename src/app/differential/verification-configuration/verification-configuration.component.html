@@ -13,7 +13,7 @@
           <div class="upload-container" *ngIf="sourceIg" style="text-align: left">
             <div style="display: flex">
               <strong style="line-height: 40px;padding: 0 7px;">Source Profile: </strong>
-              <p-dropdown style="width: 65%;" placeholder="Select Profile" [options]="srcProfilesList"
+              <p-dropdown style="width: 65%;" placeholder="Select Profile" [options]="srcProfilesList" appendTo="body"
                 [(ngModel)]="srcProfile" optionLabel="label"></p-dropdown>
 
             </div>
@@ -73,7 +73,7 @@
                 <li *ngFor="let ig of derivedIgs; let i = index" [ngClass]="{'top-sep': i> 0}">
                   <div style="display: flex">
                     <strong style="line-height: 40px;padding: 0 7px;">Profile: </strong>
-                    <p-dropdown style="width: 65%;" placeholder="Select Profile" [options]="derivedProfilesList"
+                    <p-dropdown style="width: 65%;" placeholder="Select Profile" [options]="derivedProfilesList" appendTo="body"
                       [(ngModel)]="derivedProfiles[i]" optionLabel="label"></p-dropdown>
                     <div class="remove-derived pointer" (click)="removeDerivedIg(i)">
                       <div>
@@ -127,43 +127,69 @@
         </div>
       </div>
       <div class="col-6 border-left p-20">
-        <div>
-          <h3>Configuration</h3>
           <div>
-            <h5>Compliance</h5>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="usage" [(ngModel)]="configuration.usage" />
-              <label class="form-check-label" for="usage">
-                Usage
-              </label>
+              <h3>Configuration</h3>
+              <div style="display: flex;">
+                <div>
+                  <h5>Structure</h5>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="segmentRef" [(ngModel)]="configuration.segmentRef"
+                      (click)="selectedConfig = 'segmentRef'" />
+                    <label class="form-check-label" for="segmentRef">
+                      Segment Ref.
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.datatype"
+                      (click)="selectedConfig = 'datatype'" />
+                    <label class="form-check-label" for="datatype">
+                      Data Type
+                    </label>
+                  </div>
+                  <h5>Metrics</h5>
+    
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="usage" [(ngModel)]="configuration.usage"
+                      (click)="selectedConfig = 'usage'" />
+                    <label class="form-check-label" for="usage">
+                      Usage
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.cardinality"
+                      (click)="selectedConfig = 'cardinality'" />
+                    <label class="form-check-label" for="min">
+                      Cardinality
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.valueset"
+                      (click)="selectedConfig = 'valueset'" />
+                    <label class="form-check-label" for="valueset">
+                      Value set
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.predicate"
+                      (click)="selectedConfig = 'predicate'" />
+                    <label class="form-check-label" for="predicates">
+                      Predicate
+                    </label>
+                  </div>
+               
+    
+                </div>
+                <div style="width: 60%;padding: 25px 50px;color: red;font-weight: bold;">
+                  <div *ngIf="selectedConfig === 'segmentRef' && !configuration.segmentRef">
+                    Un-checking Segment Ref. will prevent the comparison of fields, components and sub-components.
+                  </div>
+                  <div *ngIf="selectedConfig === 'datatype' && !configuration.datatype">
+                    Un-checking Data type will prevent the comparison of components and sub-components.
+                  </div>
+                </div>
+              </div>
+    
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.datatype" />
-              <label class="form-check-label" for="datatype">
-                Data Type
-              </label>
-            </div>
-
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.cardinality" />
-              <label class="form-check-label" for="min">
-                Cardinality
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.valueset" />
-              <label class="form-check-label" for="valueset">
-                Value set
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.predicate" />
-              <label class="form-check-label" for="valueset">
-                Predicate
-              </label>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <div class="strike">

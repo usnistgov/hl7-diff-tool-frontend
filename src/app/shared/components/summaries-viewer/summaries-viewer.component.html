@@ -100,7 +100,7 @@
               <div style="margin: 0 10px;">
                 <div>Sort By</div>
                 <div>
-                  <p-dropdown [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label"
+                  <p-dropdown [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label" appendTo="body"
                     (ngModelChange)="sortChanged($event)"></p-dropdown>
                 </div>
               </div>
@@ -149,7 +149,7 @@
               <div style="margin: 0 10px;">
                 <div>Sort By</div>
                 <div>
-                  <p-dropdown [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label"
+                  <p-dropdown [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label" appendTo="body"
                     (ngModelChange)="sortChanged($event)"></p-dropdown>
                 </div>
               </div>
@@ -232,7 +232,7 @@
             <div style="margin: 0 10px;">
               <div>Sort By</div>
               <div>
-                <p-dropdown [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label"
+                <p-dropdown [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label" appendTo="body"
                   (ngModelChange)="sortChanged($event)"></p-dropdown>
               </div>
             </div>

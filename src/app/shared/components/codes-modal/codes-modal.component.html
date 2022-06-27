@@ -17,6 +17,7 @@
           optionValue="bindingIdentifier"
           (ngModelChange)="srcChanged($event)"
           placeholder="Value set"
+          appendTo="body"
         ></p-dropdown>
       </div>
       <div *ngIf="selectedSrc">
@@ -54,6 +55,7 @@
           optionValue="bindingIdentifier"
           (ngModelChange)="derivedChanged($event)"
           placeholder="Value set"
+          appendTo="body"
         ></p-dropdown>
       </div>
       <div *ngIf="selectedDerived">
@@ -72,49 +74,39 @@
             <th>Usage</th>
             <th>Comments</th>
           </tr>
-          <tr *ngFor="let item of comparedCodes; index as i">
-            <td
-              [ngClass]="{
-                added: item.status === 'added'
-              }"
-            >
+          <tr *ngFor="let item of comparedCodes; index as i"  [ngClass]="{
+            deleted: item.status === 'deleted', added: item.status === 'added'
+          }">
+            <td>
               {{ item.value }}
             </td>
             <td
               [ngClass]="{
-                changed: item.description?.status === 'changed',
-                added: item.status === 'added'
-              }"
+                changed: item.description?.status === 'changed'}"
             >
               {{ item.description }}
             </td>
             <td
-              [ngClass]="{
-                added: item.status === 'added'
-              }"
+           
             >
               {{ item.codeSystem }}
             </td>
             <td
               [ngClass]="{
-                changed: item.usage.status === 'changed',
-                added: item.status === 'added'
-              }"
+                changed: item.usage?.status === 'changed' }"
             >
-            <ng-container *ngIf="item.usage.value">
+            <ng-container *ngIf="item.usage?.value">
                 {{ item.usage.value}} 
 
             </ng-container>
-            <ng-container *ngIf="!item.usage.value">
+            <ng-container *ngIf="!item.usage?.value">
                 {{ item.usage }}
 
             </ng-container>
             </td>
             <td
               [ngClass]="{
-                changed: item.comment?.status === 'changed',
-                added: item.status === 'added'
-              }"
+                changed: item.comment?.status === 'changed' }"
             >
               {{ item.comment }}
             </td>

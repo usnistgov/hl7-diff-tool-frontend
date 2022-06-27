@@ -29,10 +29,14 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
     cardinality: true,
     datatype: true,
     valueset: true,
-    predicate: true
+    predicate: true,
+    name: true,
+    segmentRef: true
+
+
 
   }
-
+  selectedConfig;
   destroy$: Subject<boolean> = new Subject<boolean>();
   srcProfile;
   srcProfilesList = [{ id: "1", label: "Profile 1" }, { id: "2", label: "Profile 2" }];
