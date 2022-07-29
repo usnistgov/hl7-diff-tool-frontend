@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="percentage && percentage.cardinality">
   <table *ngIf="percentage.cardinality.min.total > 0">
       <tr>
           <th>Min. Cardinality</th>

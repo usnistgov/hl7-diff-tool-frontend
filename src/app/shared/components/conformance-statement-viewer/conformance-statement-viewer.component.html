@@ -1,0 +1,107 @@
+<div>
+    <p-treeTable [value]="conformanceStatements" [scrollable]="true" scrollHeight="400px"
+    [style]="{width:'100vw'}">
+    <ng-template pTemplate="colgroup" let-columns>
+      <colgroup>
+        <col style="width: 380px;">
+        <col style="width: 200px;">
+        <col style="width: 200px;">
+
+      </colgroup>
+
+      <colgroup>
+        <col style="width: 380px;">
+        <col style="width: 200px;">
+        <ng-container *ngFor="let derivedIg of igs">
+          <col style="width: 200px;">
+        </ng-container>
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 380px;"></th>
+        <th style="width: 200px;">
+          {{ results.srcIg.title }}
+          <div class="derived-pill reference">
+            Reference
+          </div>
+        </th>
+        <th style="width: 200px;" attr.colspan="1" *ngFor="let derivedIg of igs">
+          {{ derivedIg.title }}
+          <div *ngIf="
+                        results.srcIg.profileId === derivedIg.profileOrigin &&
+                        derivedIg.derived
+                      " class="derived-pill derived">
+            Derived
+          </div>
+          <div *ngIf="
+                        results.srcIg.profileId !== derivedIg.profileOrigin ||
+                        !derivedIg.derived
+                      " class="derived-pill not-derived">
+            Not derived
+          </div>
+        </th>
+      </tr>
+      <tr>
+        <th style="width: 380px;">ID</th>
+        <th style="width: 200px;">Description</th>
+        <ng-container *ngFor="let derivedIg of igs">
+          <th style="width: 200px;">Description</th>
+        </ng-container>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+
+
+      <tr *ngIf="rowData && rowData.changed">
+        <td style="width: 380px;">
+          <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+
+          {{ rowData.id }}
+        </td>
+        <td>
+          {{ rowData.description.src.value }}
+        </td>
+
+        <ng-container *ngFor="let derivedIg of igs">
+          <ng-container *ngIf="
+                          rowData.description &&
+                          rowData.description.derived &&
+                          rowData.description.derived[
+                            derivedIg.id
+                          ]
+                        ">
+            <td style="position: relative;" [ngClass]="{
+                'changed': rowData.description.derived[derivedIg.id].status === 'changed','added': rowData.description.derived[derivedIg.id].status === 'added','deleted': rowData.description.derived[derivedIg.id].status === 'deleted'
+              }">
+
+              <ng-container>
+                {{
+                    rowData.description.derived[
+                                derivedIg.id
+                              ].value
+                            }}
+
+
+               
+              </ng-container>
+
+            </td>
+          </ng-container>
+          <ng-container *ngIf="
+                          !rowData.description ||
+                          !rowData.description.derived ||
+                          !rowData.description.derived[
+                            derivedIg.id
+                          ]
+                        ">
+            <td></td>
+          </ng-container>
+
+
+
+        </ng-container>
+      </tr>
+    </ng-template>
+  </p-treeTable>
+  </div>

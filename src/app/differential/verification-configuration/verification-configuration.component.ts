@@ -30,11 +30,9 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
     datatype: true,
     valueset: true,
     predicate: true,
+    conformanceStatement: true,
     name: true,
     segmentRef: true
-
-
-
   }
   selectedConfig;
   destroy$: Subject<boolean> = new Subject<boolean>();

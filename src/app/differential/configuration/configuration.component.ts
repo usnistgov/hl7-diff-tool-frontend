@@ -106,11 +106,14 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         .calculateDifferential(formData)
         .pipe(takeUntil(this.destroy$))
         .subscribe((data: any) => {
-          if (data.success) {
+          if (data &&data.success) {
             self.differentialService.differentialResults = <TreeNode[]>data.data;
             console.log(self.differentialService.differentialResults)
             self.spinner.hide();
             self.router.navigate(['/differential']);
+          } else {
+            self.spinner.hide();
+            this.toastr.error("Error while calculating.")
           }
         }, error => {
           self.spinner.hide();

@@ -34,6 +34,8 @@ import { SummariesOverviewViewerComponent } from "./components/summaries-overvie
 import { CardinalityPercentageComponent } from "./components/cardinality-percentage/cardinality-percentage.component";
 import { BindingPercentageComponent } from "./components/binding-percentage/binding-percentage.component";
 import { CommentsModalComponent } from "./components/comments-modal/comments-modal.component";
+import { ConformanceStatementModalComponent } from './components/conformance-statement-modal/conformance-statement-modal.component';
+import { ConformanceStatementViewerComponent } from './components/conformance-statement-viewer/conformance-statement-viewer.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { CommentsModalComponent } from "./components/comments-modal/comments-mod
     BindingBadgeComponent,
     UsagePercentageComponent,
     CardinalityPercentageComponent,
-    BindingPercentageComponent
+    BindingPercentageComponent,
+    ConformanceStatementModalComponent,
+    ConformanceStatementViewerComponent
   ],
   entryComponents: [],
   providers: [],
@@ -105,7 +109,9 @@ import { CommentsModalComponent } from "./components/comments-modal/comments-mod
     UsagePercentageComponent,
     NgxSpinnerModule,
     CardinalityPercentageComponent,
-    BindingPercentageComponent
+    BindingPercentageComponent,
+    ConformanceStatementModalComponent,
+    ConformanceStatementViewerComponent
   ]
 })
 export class SharedModule {}

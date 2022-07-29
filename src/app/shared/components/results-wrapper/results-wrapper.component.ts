@@ -9,6 +9,7 @@ import {
 import { DialogService } from "primeng/dynamicdialog";
 import { CommentsModalComponent } from "../comments-modal/comments-modal.component";
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { ConformanceStatementModalComponent } from '../conformance-statement-modal/conformance-statement-modal.component';
 
 @Component({
   selector: "app-results-wrapper",
@@ -118,7 +119,6 @@ export class ResultsWrapperComponent implements OnInit {
     });
   }
   commentVs(rowData, igId) {
-    console.log(rowData);
     if (!rowData.bindingsComments) {
       rowData.bindingsComments = {};
     }
@@ -133,6 +133,22 @@ export class ResultsWrapperComponent implements OnInit {
     ref.onClose.subscribe(c => {
       if (c) {
         rowData.bindingsComments[igId] = c;
+      }
+    });
+  }
+  showConfStatements(conformanceStatements){
+    const ref = this.dialogService.open(ConformanceStatementModalComponent, {
+      header: "Conformance statements",
+      width: "100%",
+      height: "600px",
+      data: {
+        conformanceStatements: conformanceStatements,
+        igs: this.igs,
+        results: this.results
+      }
+    });
+    ref.onClose.subscribe(c => {
+      if (c) {
       }
     });
   }
