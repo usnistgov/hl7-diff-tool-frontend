@@ -111,6 +111,13 @@
                   Conformance Statement
                 </label>
               </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="card"
+                  [(ngModel)]="configuration.coConstraint" (click)="selectedConfig = 'coConstraint'" />
+                <label class="form-check-label" for="coConstraint">
+                  Co-constraint
+                </label>
+              </div>
 
             </div>
             <div style="width: 60%;padding: 25px 50px;color: red;font-weight: bold;">

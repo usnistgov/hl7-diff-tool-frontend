@@ -1,0 +1,126 @@
+<div>
+  <p-treeTable
+    [value]="coConstraints"
+    [scrollable]="true"
+    scrollHeight="400px"
+    [style]="{ width: '100vw' }"
+  >
+    <ng-template pTemplate="colgroup" let-columns>
+      <colgroup>
+        <col style="width: 380px" />
+        <col style="width: 380px" />
+        <col style="width: 200px" />
+        <col style="width: 200px" />
+      </colgroup>
+
+      <colgroup>
+        <col style="width: 380px" />
+        <col style="width: 380px" />
+
+        <col style="width: 200px" />
+        <ng-container *ngFor="let derivedIg of igs">
+          <col style="width: 200px" />
+        </ng-container>
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 380px"></th>
+        <th style="width: 380px"></th>
+
+        <th style="width: 200px">
+          {{ results.srcIg.title }}
+          <div class="derived-pill reference">Reference</div>
+        </th>
+        <th style="width: 200px" attr.colspan="1" *ngFor="let derivedIg of igs">
+          {{ derivedIg.title }}
+          <div
+            *ngIf="
+              results.srcIg.profileId === derivedIg.profileOrigin &&
+              derivedIg.derived
+            "
+            class="derived-pill derived"
+          >
+            Derived
+          </div>
+          <div
+            *ngIf="
+              results.srcIg.profileId !== derivedIg.profileOrigin ||
+              !derivedIg.derived
+            "
+            class="derived-pill not-derived"
+          >
+            Not derived
+          </div>
+        </th>
+      </tr>
+      <tr>
+        <th style="width: 380px">Context</th>
+        <th style="width: 380px">Segment</th>
+
+        <th style="width: 200px">Tables</th>
+        <ng-container *ngFor="let derivedIg of igs">
+          <th style="width: 200px">Tables</th>
+        </ng-container>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+      <tr *ngIf="rowData">
+        <td style="width: 380px">
+          {{ rowData.context }}
+        </td>
+        <td style="width: 380px">
+          {{ rowData.segmentName }}
+        </td>
+        <td>
+          <!-- {{ rowData.description.src.value }} -->
+        </td>
+
+        <ng-container *ngFor="let derivedIg of igs">
+          <td
+            [ngClass]="{
+              deleted: rowData.tables.derived[derivedIg.id]?.status === 'deleted', added: rowData.tables.derived[derivedIg.id]?.status === 'added' , changed: rowData.tables.derived[derivedIg.id]?.status === 'changed'
+            }"
+          >
+            <div
+              (click)="
+                showCoConstraints(
+                  rowData.tables.derived[derivedIg.id]?.value, rowData.tables.src?.value
+                )
+              "
+              style="text-align: center"
+              *ngIf="rowData.tables.derived[derivedIg.id]?.value.html[0].html"
+            >
+              <fa-icon [icon]="['fas', 'eye']"></fa-icon>
+            </div>
+          </td>
+
+          <!-- <ng-container *ngIf="
+                          rowData.description &&
+                          rowData.description.derived &&
+                          rowData.description.derived[
+                            derivedIg.id
+                          ]
+                        ">
+            <td style="position: relative;" [ngClass]="{
+                'changed': rowData.description.derived[derivedIg.id].status === 'changed','added': rowData.description.derived[derivedIg.id].status === 'added','deleted': rowData.description.derived[derivedIg.id].status === 'deleted'
+              }">
+
+
+
+            </td>
+          </ng-container>
+          <ng-container *ngIf="
+                          !rowData.description ||
+                          !rowData.description.derived ||
+                          !rowData.description.derived[
+                            derivedIg.id
+                          ]
+                        ">
+            <td></td>
+          </ng-container> -->
+        </ng-container>
+      </tr>
+    </ng-template>
+  </p-treeTable>
+</div>

@@ -34,8 +34,10 @@ import { SummariesOverviewViewerComponent } from "./components/summaries-overvie
 import { CardinalityPercentageComponent } from "./components/cardinality-percentage/cardinality-percentage.component";
 import { BindingPercentageComponent } from "./components/binding-percentage/binding-percentage.component";
 import { CommentsModalComponent } from "./components/comments-modal/comments-modal.component";
-import { ConformanceStatementModalComponent } from './components/conformance-statement-modal/conformance-statement-modal.component';
-import { ConformanceStatementViewerComponent } from './components/conformance-statement-viewer/conformance-statement-viewer.component';
+import { ConformanceStatementModalComponent } from "./components/conformance-statement-modal/conformance-statement-modal.component";
+import { ConformanceStatementViewerComponent } from "./components/conformance-statement-viewer/conformance-statement-viewer.component";
+import { CoConstraintViewerComponent } from "./components/co-constraint-viewer/co-constraint-viewer.component";
+import { CoConstraintModalComponent } from "./components/co-constraint-modal/co-constraint-modal.component";
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { ConformanceStatementViewerComponent } from './components/conformance-st
     CardinalityPercentageComponent,
     BindingPercentageComponent,
     ConformanceStatementModalComponent,
-    ConformanceStatementViewerComponent
+    ConformanceStatementViewerComponent,
+    CoConstraintViewerComponent,
+    CoConstraintModalComponent,
   ],
   entryComponents: [],
   providers: [],
@@ -111,7 +115,9 @@ import { ConformanceStatementViewerComponent } from './components/conformance-st
     CardinalityPercentageComponent,
     BindingPercentageComponent,
     ConformanceStatementModalComponent,
-    ConformanceStatementViewerComponent
-  ]
+    ConformanceStatementViewerComponent,
+    CoConstraintViewerComponent,
+    CoConstraintModalComponent,
+  ],
 })
 export class SharedModule {}

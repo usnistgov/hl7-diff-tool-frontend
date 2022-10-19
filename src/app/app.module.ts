@@ -1,14 +1,14 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { HttpClientModule } from "@angular/common/http";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { SharedModule } from "./shared/shared.module";
 import {
   FontAwesomeModule,
-  FaIconLibrary
+  FaIconLibrary,
 } from "@fortawesome/angular-fontawesome";
 import {
   faSquare,
@@ -16,9 +16,10 @@ import {
   faTrash,
   faEye,
   faExclamationTriangle,
-  faPlus
+  faPlus,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import { ToastrModule } from 'ngx-toastr';
+import { ToastrModule } from "ngx-toastr";
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,13 +30,21 @@ import { ToastrModule } from 'ngx-toastr';
     SharedModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
-    ToastrModule.forRoot(), 
+    ToastrModule.forRoot(),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
   constructor(private library: FaIconLibrary) {
-    library.addIcons(faSquare, faCheckSquare, faTrash, faEye, faExclamationTriangle, faPlus);
+    library.addIcons(
+      faSquare,
+      faCheckSquare,
+      faTrash,
+      faEye,
+      faExclamationTriangle,
+      faPlus,
+      faTimes
+    );
   }
 }

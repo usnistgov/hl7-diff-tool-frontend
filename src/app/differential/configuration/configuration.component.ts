@@ -2,19 +2,18 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { DifferentialService } from "../../shared/services/differential.service";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { Router } from '@angular/router';
-import { TreeNode } from 'primeng/api';
-import { parse, stringify } from 'flatted';
-import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from "@angular/router";
+import { TreeNode } from "primeng/api";
+import { parse, stringify } from "flatted";
+import { ToastrService } from "ngx-toastr";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: "app-configuration",
   templateUrl: "./configuration.component.html",
-  styleUrls: ["./configuration.component.scss"]
+  styleUrls: ["./configuration.component.scss"],
 })
 export class ConfigurationComponent implements OnInit, OnDestroy {
-
   sourceIg;
   report;
   derivedIgs = [];
@@ -25,16 +24,22 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     valueset: true,
     predicate: true,
     conformanceStatement: true,
+    coConstraint: true,
     name: true,
-    segmentRef: true
+    segmentRef: true,
   };
   selectedConfig;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private spinner: NgxSpinnerService, private toastr: ToastrService, private differentialService: DifferentialService, private router: Router) { }
+  constructor(
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
+    private differentialService: DifferentialService,
+    private router: Router
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
   ngOnDestroy() {
     this.destroy$.next(true);
     // Unsubscribe from the subject
@@ -51,7 +56,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
 
         self.report = {
           name: input.files[index].name,
-          data: reader.result.toString()
+          data: reader.result.toString(),
         };
       };
       reader.readAsText(input.files[index]);
@@ -91,35 +96,41 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     let formData: FormData = new FormData();
     let self = this;
     if (this.report) {
-      const data = parse(this.report.data)
+      const data = parse(this.report.data);
       self.differentialService.differentialResults = <TreeNode[]>data;
       self.spinner.hide();
-      self.router.navigate(['/differential']);
+      self.router.navigate(["/differential"]);
     }
     if (this.sourceIg && this.derivedIgs.length > 0) {
       formData.append("source", this.sourceIg, this.sourceIg.name);
       this.derivedIgs.forEach((ig, index) => {
         formData.append(`ig${index}`, ig, ig.name);
       });
-      formData.append("configuration", JSON.stringify(this.configuration))
+      formData.append("configuration", JSON.stringify(this.configuration));
       this.differentialService
         .calculateDifferential(formData)
         .pipe(takeUntil(this.destroy$))
-        .subscribe((data: any) => {
-          if (data &&data.success) {
-            self.differentialService.differentialResults = <TreeNode[]>data.data;
-            console.log(self.differentialService.differentialResults)
+        .subscribe(
+          (data: any) => {
+            if (data && data.success) {
+              self.differentialService.differentialResults = <TreeNode[]>(
+                data.data
+              );
+              console.log(self.differentialService.differentialResults);
+              self.spinner.hide();
+              // self.router.navigate(["/differential"]);
+            } else {
+              self.spinner.hide();
+              this.toastr.error("Error while calculating.");
+            }
+          },
+          (error) => {
             self.spinner.hide();
-            self.router.navigate(['/differential']);
-          } else {
-            self.spinner.hide();
-            this.toastr.error("Error while calculating.")
+            this.toastr.error(
+              "Error while calculating. Please check profiles structure"
+            );
           }
-        }, error => {
-          self.spinner.hide();
-          this.toastr.error("Error while calculating. Please check profiles structure")
-        });
+        );
     }
-
   }
 }
