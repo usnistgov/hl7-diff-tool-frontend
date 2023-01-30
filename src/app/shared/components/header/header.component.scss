@@ -9,27 +9,27 @@ li {
     padding-right: 10px;
     padding-left: 10px;
   }
-  
+
   li a {
     color: $nist_dark_blue;
   }
-  
+
   .nav-item:hover {
     background-color: $nist_light_yellow;
     cursor: pointer;
   }
-  
+
   .active {
     background-color: $nist_light_yellow;
   }
-  
+
   .active-dropdown {
     background-color: $nist_light_yellow;
     color: black;
   }
 
-  
-  
+
+
 .toolbar {
   background-color: $nist_light_yellow;
 }
@@ -70,3 +70,9 @@ li {
 }
 
 
+
+
+.version {
+  font-size: 14px;
+  font-weight: 400;
+}

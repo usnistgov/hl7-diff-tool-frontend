@@ -25,12 +25,13 @@
   border: 1px #c6a0a0 dashed;
   border-radius: 5px;
   position: relative;
-  
+  text-align: center;
+
 }
 
 .source-upload {
   padding: 15px;
-  
+
 }
 
 .derived-upload {
@@ -58,7 +59,7 @@
   display: block;
   text-align: center;
   overflow: hidden;
-  white-space: nowrap; 
+  white-space: nowrap;
   height: 25px;
 }
 

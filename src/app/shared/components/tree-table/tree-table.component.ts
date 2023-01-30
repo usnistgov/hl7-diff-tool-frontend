@@ -13,27 +13,21 @@ import { ConformanceStatementModalComponent } from "../conformance-statement-mod
 import { CoConstraintModalComponent } from "../co-constraint-modal/co-constraint-modal.component";
 
 @Component({
-  selector: "app-results-wrapper",
-  templateUrl: "./results-wrapper.component.html",
-  styleUrls: ["./results-wrapper.component.scss"],
+  selector: "app-tree-table",
+  templateUrl: "./tree-table.component.html",
+  styleUrls: ["./tree-table.component.scss"],
   providers: [DialogService],
 })
-export class ResultsWrapperComponent implements OnInit {
+export class TreeTableComponent implements OnInit {
   @Input() profile;
   @Input() results;
   @Input() igs;
-  activeTab = "profiles";
-  active = 1;
   fullConfigOptions;
   segmentConfigOptions;
 
   selectedConfiguration;
   showReason = false;
   compliance = false;
-  consequential = {
-    name: "consequential",
-    label: "Consequential",
-  };
   removeReason = false;
   consequentialOptions = [
     {
@@ -49,6 +43,7 @@ export class ResultsWrapperComponent implements OnInit {
       label: "All changes",
     },
   ];
+  consequential = this.consequentialOptions[2];
   @Output() onClick = new EventEmitter();
   legend = [
     {
@@ -69,53 +64,21 @@ export class ResultsWrapperComponent implements OnInit {
     },
   ];
   faExclamationTriangle = faExclamationTriangle;
-  datatypeSummaries = [];
-  segmentSummaries = [];
-
   activeChange;
   activeChangeTitle;
   constructor(public dialogService: DialogService) {}
 
   ngOnInit(): void {
-    this.active = 1;
+    console.log(this.profile);
+
     this.fullConfigOptions = this.results.configuration;
     this.segmentConfigOptions = this.results.configuration.filter(
       (c) => c.name !== "label"
     );
 
     this.selectedConfiguration = this.results.configuration[0];
-    console.log(
-      this.results,
-      Object.keys(this.profile.summaries.datatypes),
-      this.profile.summaries
-    );
-    if (this.profile.summaries.datatypes) {
-      this.datatypeSummaries = Object.keys(
-        this.profile.summaries.datatypes
-      ).map((key) => {
-        let splits = key.split("#");
-        return {
-          id: key,
-          name: splits.join(" to "),
-          ...this.profile.summaries.datatypes[key],
-        };
-      });
-    }
-    if (this.profile.summaries.segments) {
-      this.segmentSummaries = Object.keys(this.profile.summaries.segments).map(
-        (key) => {
-          let splits = key.split("#");
-          return {
-            id: key,
-            name: splits.join(" to "),
-            ...this.profile.summaries.segments[key],
-          };
-        }
-      );
-    }
   }
   ngOnChanges(changes: SimpleChanges) {
-    this.active = 1;
     const self = this;
     const derivedProfiles = this.igs.filter(
       (ig) => self.results.srcIg.profileId === ig.profileOrigin && ig.derived
@@ -199,10 +162,6 @@ export class ResultsWrapperComponent implements OnInit {
   }
   getActiveChange(change) {
     let changesMap = this.profile.summaries.datatypes[change.id].changes;
-    return Object.keys(changesMap).map((key) => changesMap[key]);
-  }
-  getActiveSegmentChange(change) {
-    let changesMap = this.profile.summaries.segments[change.id].changes;
     return Object.keys(changesMap).map((key) => changesMap[key]);
   }
   closeDatatypeChange() {

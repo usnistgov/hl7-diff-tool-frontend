@@ -520,350 +520,134 @@
     </ng-container>
   </ng-container>
   <ng-container *ngIf="activeTab === 'segments'">
-    <ul
-      ngbNav
-      #nav="ngbNav"
-      [(activeId)]="active"
-      class="nav-tabs"
-      (navChange)="navChange($event)"
-    >
-      <li
-        *ngFor="let segment of profile.segmentRefs"
-        [ngbNavItem]="segment.data.ref"
+    <div>
+      <p-table
+        [value]="segmentSummaries"
+        dataKey="name"
+
       >
-        <a ngbNavLink>{{ segment.data.ref }}</a>
-        <ng-template ngbNavContent>
-          <div *ngIf="selectedConfiguration.name !== 'conformanceStatement'">
-            <p-treeTable [value]="segment.children">
-              <ng-template pTemplate="header" let-columns>
-                <tr>
-                  <th style="width: 380px"></th>
-                  <th>
-                    {{ segment.data.label.src.value }} From
-                    {{ results.srcIg.title }}
-                  </th>
-                  <th
-                    [attr.style]="showReason ? 'width: 400px' : 'width: 200px'"
-                    [attr.colspan]="showReason ? 2 : 1"
-                    *ngFor="let derivedIg of igs"
-                  >
-                    {{ segment.data.label.derived[derivedIg.id].value }} From
-                    {{ derivedIg.title }}
-                  </th>
-                </tr>
-                <tr>
-                  <th style="width: 380px">Name</th>
-                  <th style="width: 200px">Value</th>
-                  <ng-container *ngFor="let derivedIg of igs">
-                    <th style="width: 200px">Value</th>
-                    <th style="width: 200px" *ngIf="showReason">Reason</th>
-                  </ng-container>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-                <tr>
-                  <td class="table-td" style="width: 380px">
-                    <p-treeTableToggler
-                      [rowNode]="rowNode"
-                    ></p-treeTableToggler>
-                    <app-data-badge [type]="rowData.type"></app-data-badge>
-
-                    {{ rowData.position }}.
-                    {{ rowData.name }}
-                  </td>
-                  <td *ngIf="selectedConfiguration.name !== 'valueset'">
-                    {{ rowData[selectedConfiguration.name]?.src.value }}
-                  </td>
-                  <td *ngIf="selectedConfiguration.name === 'valueset'">
-                    <div *ngIf="rowData.bindings">
-                      <div *ngFor="let binding of rowData.bindings">
-                        <app-valueset-table
-                          [valueset]="binding.data"
-                          [source]="true"
-                        ></app-valueset-table>
-                      </div>
-                    </div>
-                  </td>
-                  <ng-container *ngFor="let derivedIg of igs">
-                    <ng-container
-                      *ngIf="selectedConfiguration.name !== 'valueset'"
-                    >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem"></th>
+            <th>Change</th>
+            <th *ngFor="let ig of igs">{{ ig.title }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row let-expanded="expanded">
+          <tr>
+            <td>
+              <button
+                type="button"
+                pButton
+                pRipple
+                [pRowToggler]="row"
+                class="p-button-text p-button-rounded p-button-plain"
+                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              ></button>
+            </td>
+            <td>{{ row.name }}</td>
+            <td *ngFor="let ig of igs">
+              {{ row[ig.id] ? row[ig.id].number : 0 }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-row>
+          <tr>
+            <td colspan="4">
+              <div class="p-3">
+                <p-table [value]="getActiveSegmentChange(row)" dataKey="id">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Name</th>
+                      <th *ngFor="let ig of igs">{{ ig.title }}</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-change>
+                    <tr>
                       <td>
-                        {{
-                          rowData[selectedConfiguration.name]?.derived
-                            ? (rowData[selectedConfiguration.name]?.derived)[
-                                derivedIg.id
-                              ]?.value
-                            : ""
-                        }}
-                      </td>
-                      <td *ngIf="showReason">
-                        {{
-                          rowData.reason &&
-                          rowData.reason[derivedIg.id] &&
-                          rowData.reason[derivedIg.id][
-                            selectedConfiguration.name
-                          ]
-                            ? rowData.reason[derivedIg.id][
-                                selectedConfiguration.name
-                              ]
-                            : ""
-                        }}
-                        <!-- {{
-                              rowData[selectedConfiguration.name]?.derived
-                                ? (rowData[selectedConfiguration.name]?.derived)[
-                                    derivedIg.id
-                                  ]?.reason
-                                : ""
-                            }} -->
-                      </td>
-                    </ng-container>
-                    <ng-container
-                      *ngIf="selectedConfiguration.name === 'valueset'"
-                    >
-                      <td>
-                        <div *ngIf="rowData.bindings">
-                          <div *ngFor="let binding of rowData.bindings">
-                            <div *ngIf="binding.changed">
-                              <app-valueset-table
-                                [valueset]="binding.data"
-                                [changed]="true"
-                                [source]="false"
-                                [igId]="derivedIg.id"
-                              ></app-valueset-table>
-                            </div>
-
-                            <!-- {{
-                                  binding.data.strength?.derived
-                                    ? (binding.data.strength?.derived)[derivedIg.id]
-                                        ?.value
-                                    : ""
-                                }} -->
-                          </div>
+                        <div style="display: flex">
+                          <app-data-badge [type]="'segmentRef'"></app-data-badge>
+                          {{ change.path }} {{ change.name }}
                         </div>
                       </td>
-                      <td *ngIf="showReason"></td>
-                    </ng-container>
-                  </ng-container>
-                </tr>
-              </ng-template>
-            </p-treeTable>
-          </div>
-          <div *ngIf="selectedConfiguration.name === 'conformanceStatement'">
-            <div>
-              <p-treeTable
-                [value]="segment.conformanceStatements"
-                [scrollable]="true"
-                scrollHeight="400px"
-                [style]="{ width: '100vw' }"
-              >
-                <ng-template pTemplate="colgroup" let-columns>
-                  <colgroup>
-                    <col style="width: 380px" />
-                    <col style="width: 200px" />
-                    <col style="width: 200px" />
-                  </colgroup>
+                      <td *ngFor="let ig of igs">
+                        {{ change.igs[ig.id] ? 'Changed' : "" }}
+                      </td>
+                    </tr>
+                  </ng-template>
 
-                  <colgroup>
-                    <col style="width: 380px" />
-                    <col style="width: 200px" />
-                    <ng-container *ngFor="let derivedIg of igs">
-                      <col style="width: 200px" />
-                    </ng-container>
-                  </colgroup>
-                </ng-template>
-                <ng-template pTemplate="header" let-columns>
-                  <tr>
-                    <th style="width: 380px"></th>
-                    <th style="width: 200px">
-                      {{ results.srcIg.title }}
-                      <div class="derived-pill reference">Reference</div>
-                    </th>
-                    <th
-                      style="width: 200px"
-                      attr.colspan="1"
-                      *ngFor="let derivedIg of igs"
-                    >
-                      {{ derivedIg.title }}
-                      <div
-                        *ngIf="
-                          results.srcIg.profileId === derivedIg.profileOrigin &&
-                          derivedIg.derived
-                        "
-                        class="derived-pill derived"
-                      >
-                        Derived
-                      </div>
-                      <div
-                        *ngIf="
-                          results.srcIg.profileId !== derivedIg.profileOrigin ||
-                          !derivedIg.derived
-                        "
-                        class="derived-pill not-derived"
-                      >
-                        Not derived
-                      </div>
-                    </th>
-                  </tr>
-                  <tr>
-                    <th style="width: 380px">ID</th>
-                    <th style="width: 200px">Description</th>
-                    <ng-container *ngFor="let derivedIg of igs">
-                      <th style="width: 200px">Description</th>
-                    </ng-container>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-                  <tr *ngIf="rowData.changed">
-                    <td style="width: 380px">
-                      <p-treeTableToggler
-                        [rowNode]="rowNode"
-                      ></p-treeTableToggler>
-
-                      {{ rowData.id }}
-                    </td>
-                    <td>
-                      {{ rowData.description.src.value }}
-                    </td>
-
-                    <ng-container *ngFor="let derivedIg of igs">
-                      <ng-container
-                        *ngIf="
-                          rowData.description &&
-                          rowData.description.derived &&
-                          rowData.description.derived[derivedIg.id]
-                        "
-                      >
-                        <td
-                          style="position: relative"
-                          [ngClass]="{
-                            changed:
-                              rowData.description.derived[derivedIg.id]
-                                .status === 'changed',
-                            added:
-                              rowData.description.derived[derivedIg.id]
-                                .status === 'added',
-                            deleted:
-                              rowData.description.derived[derivedIg.id]
-                                .status === 'deleted'
-                          }"
-                        >
-                          <ng-container>
-                            {{
-                              rowData.description.derived[derivedIg.id].value
-                            }}
-
-                            <div
-                              style="
-                                position: absolute;
-                                right: 15px;
-                                top: 7px;
-                                cursor: pointer;
-                              "
-                              (click)="
-                                comment(
-                                  rowData,
-                                  selectedConfiguration.name,
-                                  derivedIg.id
-                                )
-                              "
-                            >
-                              <i
-                                class="pi pi-comments p-mr-4 p-text-secondary"
-                                pBadge
-                                style="font-size: 2rem"
-                              ></i>
-                              <div class="comment-badge">
-                                <div style="margin: auto">
-                                  {{
-                                    rowData.description.derived[derivedIg.id]
-                                      .comments
-                                      ? rowData.description.derived[
-                                          derivedIg.id
-                                        ].comments.length
-                                      : 0
-                                  }}
-                                </div>
-                              </div>
-                            </div>
-                          </ng-container>
-                        </td>
-                      </ng-container>
-                      <ng-container
-                        *ngIf="
-                          !rowData.description ||
-                          !rowData.description.derived ||
-                          !rowData.description.derived[derivedIg.id]
-                        "
-                      >
-                        <td></td>
-                      </ng-container>
-                    </ng-container>
-                  </tr>
-                </ng-template>
-              </p-treeTable>
-            </div>
-          </div>
+                </p-table>
+              </div>
+            </td>
+          </tr>
         </ng-template>
-      </li>
-    </ul>
-    <div [ngbNavOutlet]="nav"></div>
+      </p-table>
+    </div>
   </ng-container>
   <ng-container *ngIf="activeTab === 'datatypes'">
-    <div style="padding: 10px">
-      <table *ngIf="!activeChange">
-        <tr>
-          <th>Change</th>
-          <th *ngFor="let ig of igs">{{ ig.title }}</th>
-        </tr>
-        <tr
-          *ngFor="let row of datatypeSummaries"
-          (click)="selectDatatypeChange(row)"
-          style="cursor: pointer"
-        >
-          <td>
-            <div style="display: flex">
-              {{ row.name }}
-            </div>
-          </td>
-          <td *ngFor="let ig of igs">
-            {{ row[ig.id] ? row[ig.id].number : 0 }}
-          </td>
-        </tr>
-      </table>
-      <div *ngIf="activeChange">
-        <div
-          style="
-            display: flex;
-            background: #027bfe;
-            color: white;
-            padding: 5px 10px;
-          "
-        >
-          <div style="width: 90%">{{ activeChangeTitle }}</div>
-          <div (click)="closeDatatypeChange()" style="width: 10%;cursor: pointer;">
-            <fa-icon style="float: right" [icon]="['fas', 'times']"></fa-icon>
-          </div>
-        </div>
-        <div>
-          <table>
-            <tr>
-              <th>Name</th>
-              <th *ngFor="let ig of igs">{{ ig.title }}</th>
-            </tr>
-            <tr *ngFor="let row of activeChange">
-              <td>
-                <div style="display: flex">
-                  <app-data-badge [type]="row.type"></app-data-badge> {{ row.path }} {{ row.name }}
-                </div>
-              </td>
-              <td *ngFor="let ig of igs">
-                {{ row.igs[ig.id] ? activeChangeTitle : "" }}
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
+    <div>
+      <p-table
+        [value]="datatypeSummaries"
+        dataKey="name"
+
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem"></th>
+            <th>Change</th>
+            <th *ngFor="let ig of igs">{{ ig.title }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row let-expanded="expanded">
+          <tr>
+            <td>
+              <button
+                type="button"
+                pButton
+                pRipple
+                [pRowToggler]="row"
+                class="p-button-text p-button-rounded p-button-plain"
+                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              ></button>
+            </td>
+            <td>{{ row.name }}</td>
+            <td *ngFor="let ig of igs">
+              {{ row[ig.id] ? row[ig.id].number : 0 }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-row>
+          <tr>
+            <td colspan="4">
+              <div class="p-3">
+                <p-table [value]="getActiveChange(row)" dataKey="id">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Name</th>
+                      <th *ngFor="let ig of igs">{{ ig.title }}</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-change>
+                    <tr>
+                      <td>
+                        <div style="display: flex">
+                          <app-data-badge [type]="change.type"></app-data-badge>
+                          {{ change.path }} {{ change.name }}
+                        </div>
+                      </td>
+                      <td *ngFor="let ig of igs">
+                        {{ change.igs[ig.id] ? 'Changed' : "" }}
+                      </td>
+                    </tr>
+                  </ng-template>
+
+                </p-table>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
+
   </ng-container>
 </p-panel>

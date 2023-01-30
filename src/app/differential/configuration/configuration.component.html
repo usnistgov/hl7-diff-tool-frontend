@@ -1,16 +1,27 @@
 <div class="page-container">
   <div class="config-card">
-    <div class="row ">
+    <div class="row">
       <div class="col-6 center">
         <div class="source-upload">
-          <div class="upload-container pointer" (click)="fileInput.click()" *ngIf="!sourceIg">
-            <input #fileInput type="file" (change)="uploadSourceIg($event)" style="display:none;"
-              accept="text/xml, text/plain" />
-            <div>
-              Upload source Profile
-            </div>
+          <div
+            class="upload-container pointer"
+            (click)="fileInput.click()"
+            *ngIf="!sourceIg"
+          >
+            <input
+              #fileInput
+              type="file"
+              (change)="uploadSourceIg($event)"
+              style="display: none"
+              accept="text/xml, text/plain"
+            />
+            <div>Upload source Profile</div>
           </div>
-          <div class="upload-container" *ngIf="sourceIg" style="text-align: left">
+          <div
+            class="upload-container"
+            *ngIf="sourceIg"
+            style="text-align: left"
+          >
             <div>
               <strong>Source Profile: </strong>
               {{ sourceIg.name }}
@@ -22,23 +33,37 @@
             </div>
           </div>
         </div>
-        <div class="derived-upload" (click)="fileInputs.click()" *ngIf="derivedIgs.length === 0">
+        <div
+          class="derived-upload"
+          (click)="fileInputs.click()"
+          *ngIf="derivedIgs.length === 0"
+        >
           <div class="upload-container pointer">
-            <input #fileInputs type="file" multiple="multiple" (change)="uploadDerivedIgs($event)" style="display:none;"
-              accept="text/xml, text/plain" />
-            <div>
-              Upload derived Profile(s)
-            </div>
+            <input
+              #fileInputs
+              type="file"
+              multiple="multiple"
+              (change)="uploadDerivedIgs($event)"
+              style="display: none"
+              accept="text/xml, text/plain"
+            />
+            <div>Upload derived Profile(s)</div>
           </div>
         </div>
         <div class="derived-upload" *ngIf="derivedIgs.length > 0">
           <div class="upload-container">
-            <div style="text-align: left;">
+            <div style="text-align: left">
               <strong>Derived Profile(s): </strong>
               <ul>
-                <li *ngFor="let ig of derivedIgs; let i = index" style="display: flex;">
+                <li
+                  *ngFor="let ig of derivedIgs; let i = index"
+                  style="display: flex"
+                >
                   {{ ig.name }}
-                  <div class="remove-derived pointer" (click)="removeDerivedIg(i)">
+                  <div
+                    class="remove-derived pointer"
+                    (click)="removeDerivedIg(i)"
+                  >
                     <div>
                       <fa-icon [icon]="['fas', 'trash']"></fa-icon>
                     </div>
@@ -46,9 +71,19 @@
                 </li>
               </ul>
             </div>
-            <button type="button" class="btn btn-primary" (click)="fileInputs.click()">
-              <input #fileInputs type="file" multiple="multiple" (change)="uploadDerivedIgs($event)"
-                style="display:none;" accept="text/xml, text/plain" />
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="fileInputs.click()"
+            >
+              <input
+                #fileInputs
+                type="file"
+                multiple="multiple"
+                (change)="uploadDerivedIgs($event)"
+                style="display: none"
+                accept="text/xml, text/plain"
+              />
               Add Profile(s)
             </button>
           </div>
@@ -57,19 +92,29 @@
       <div class="col-6 border-left p-20">
         <div>
           <h3>Configuration</h3>
-          <div style="display: flex;">
+          <div style="display: flex">
             <div>
               <h5>Structure</h5>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="segmentRef" [(ngModel)]="configuration.segmentRef"
-                  (click)="selectedConfig = 'segmentRef'" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="segmentRef"
+                  [(ngModel)]="configuration.segmentRef"
+                  (click)="selectedConfig = 'segmentRef'"
+                />
                 <label class="form-check-label" for="segmentRef">
                   Segment Ref.
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.datatype"
-                  (click)="selectedConfig = 'datatype'" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="card"
+                  [(ngModel)]="configuration.datatype"
+                  (click)="selectedConfig = 'datatype'"
+                />
                 <label class="form-check-label" for="datatype">
                   Data Type
                 </label>
@@ -77,59 +122,154 @@
               <h5>Metrics</h5>
 
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="usage" [(ngModel)]="configuration.usage"
-                  (click)="selectedConfig = 'usage'" />
-                <label class="form-check-label" for="usage">
-                  Usage
-                </label>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="usage"
+                  [(ngModel)]="configuration.usage"
+                  (click)="selectedConfig = 'usage'"
+                />
+                <label class="form-check-label" for="usage"> Usage </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.cardinality"
-                  (click)="selectedConfig = 'cardinality'" />
-                <label class="form-check-label" for="min">
-                  Cardinality
-                </label>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="card"
+                  [(ngModel)]="configuration.cardinality"
+                  (click)="selectedConfig = 'cardinality'"
+                />
+                <label class="form-check-label" for="min"> Cardinality </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.valueset"
-                  (click)="selectedConfig = 'valueset'" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="card"
+                  [(ngModel)]="configuration.valueset"
+                  (click)="selectedConfig = 'valueset'"
+                />
                 <label class="form-check-label" for="valueset">
                   Value set
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.predicate"
-                  (click)="selectedConfig = 'predicate'" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="card"
+                  [(ngModel)]="configuration.predicate"
+                  (click)="selectedConfig = 'predicate'"
+                />
                 <label class="form-check-label" for="predicates">
                   Predicate
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="card"
-                  [(ngModel)]="configuration.conformanceStatement" (click)="selectedConfig = 'conformanceStatement'" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="card"
+                  [(ngModel)]="configuration.conformanceStatement"
+                  (click)="selectedConfig = 'conformanceStatement'"
+                />
                 <label class="form-check-label" for="conformanceStatement">
                   Conformance Statement
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="card"
-                  [(ngModel)]="configuration.coConstraint" (click)="selectedConfig = 'coConstraint'" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="card"
+                  [(ngModel)]="configuration.coConstraint"
+                  (click)="selectedConfig = 'coConstraint'"
+                />
                 <label class="form-check-label" for="coConstraint">
                   Co-constraint
                 </label>
               </div>
-
+              <h5>Summaries</h5>
+                <div style="display: flex;">
+                  <div style="width: 50%;">
+                    <input
+                      id="default"
+                      type="radio"
+                      value="default"
+                      name="Default"
+                      [(ngModel)]="summaries"
+                    />
+                    <label style="padding: 0 5px;" for="default">Default</label>
+                  </div>
+                  <div style="width: 50%;">
+                    <input
+                    id="custom"
+                    type="radio"
+                    value="custom"
+                    name="custom"
+                    [(ngModel)]="summaries"
+                  />
+                  <label style="padding: 0 5px;" for="custom">Custom</label>
+                  </div>
+                </div>
+                <div  *ngIf="summaries === 'custom'">
+                  <div
+                    class="upload-container pointer"
+                    style="margin: 0;"
+                    (click)="summariesInput.click()"
+                    *ngIf="!summariesFile"
+                  >
+                    <input
+                      #summariesInput
+                      type="file"
+                      (change)="uploadSummariesFile($event)"
+                      style="display: none"
+                      accept="text/csv"
+                    />
+                    <div>Upload summaries configuration</div>
+                  </div>
+                  <div
+                    class="upload-container"
+                    *ngIf="summariesFile"
+                    style="text-align: left"
+                  >
+                    <div>
+                      <strong>Summaries configuration: </strong>
+                      {{ summariesFile.name }}
+                    </div>
+                    <div class="remove-source pointer" (click)="removeSummariesFile()">
+                      <div>
+                        <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
-            <div style="width: 60%;padding: 25px 50px;color: red;font-weight: bold;">
-              <div *ngIf="selectedConfig === 'segmentRef' && !configuration.segmentRef">
-                Un-checking Segment Ref. will prevent the comparison of fields, components and sub-components.
+            <div
+              style="
+                width: 60%;
+                padding: 25px 50px;
+                color: red;
+                font-weight: bold;
+              "
+              *ngIf="selectedConfig"
+            >
+              <div
+                *ngIf="
+                  selectedConfig === 'segmentRef' && !configuration.segmentRef
+                "
+              >
+                Un-checking Segment Ref. will prevent the comparison of fields,
+                components and sub-components.
               </div>
-              <div *ngIf="selectedConfig === 'datatype' && !configuration.datatype">
-                Un-checking Data type will prevent the comparison of components and sub-components.
+              <div
+                *ngIf="selectedConfig === 'datatype' && !configuration.datatype"
+              >
+                Un-checking Data type will prevent the comparison of components
+                and sub-components.
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -139,12 +279,19 @@
     <div class="row">
       <div class="col-6 center">
         <div class="source-upload">
-          <div class="upload-container pointer" (click)="savedReport.click()" *ngIf="!report">
-            <input #savedReport type="file" (change)="uploadSavedReport($event)" style="display:none;"
-              accept="application/json" />
-            <div>
-              Upload saved report
-            </div>
+          <div
+            class="upload-container pointer"
+            (click)="savedReport.click()"
+            *ngIf="!report"
+          >
+            <input
+              #savedReport
+              type="file"
+              (change)="uploadSavedReport($event)"
+              style="display: none"
+              accept="application/json"
+            />
+            <div>Upload saved report</div>
           </div>
           <div class="upload-container" *ngIf="report" style="text-align: left">
             <div>
@@ -162,8 +309,12 @@
     </div>
   </div>
   <div class="submit-btn">
-    <button type="button" class="btn btn-primary" (click)="analyze()"
-      [disabled]="(!report && (!sourceIg || derivedIgs.length <= 0))">
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="analyze()"
+      [disabled]="!report && (!sourceIg || derivedIgs.length <= 0)"
+    >
       Analyze
     </button>
   </div>

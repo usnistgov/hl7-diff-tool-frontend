@@ -1,0 +1,30 @@
+.binding-vs {
+  // background-color: #7fffd4;
+  width: 10px;
+}
+
+.valueset {
+  background-color: #7fffd4;
+
+}
+.single-code {
+  background-color: #8a2be2;
+
+}
+
+.segment-vs {
+  background-color: #001aff;
+}
+.profile-vs {
+  background-color: #a75a01;
+}
+
+.datatype-field-vs {
+  background-color: #ff9e1e;
+}
+.datatype-component-vs {
+  background-color: #ffd900;
+}
+:host ::ng-deep .p-treetable table {
+  width: 80%;
+}

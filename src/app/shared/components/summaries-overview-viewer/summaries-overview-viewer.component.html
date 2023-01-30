@@ -1,7 +1,149 @@
-<div style="margin: 5px;">
+<div style="margin: 5px">
+  <p-panel header="Data elements" [toggleable]="true">
+    <ng-container *ngIf="profiles">
+      <div style="display: flex; padding: 10px 5px">
+        <div style="margin: 0 10px">
+          <div>
+            <p-dropdown
+              [options]="changedOptions"
+              [(ngModel)]="selectedChangedOption"
+              optionLabel="label"
+              appendTo="body"
+              (ngModelChange)="onChangedOptionEdit($event)"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let profile of profiles" style="padding: 10px">
+        <table>
+          <tr>
+            <th></th>
+            <th [colSpan]="igs.length + 1">Data type</th>
+            <th [colSpan]="igs.length + 1">Usage</th>
+            <th [colSpan]="igs.length + 1">Cardinality</th>
+            <th [colSpan]="igs.length + 1">Value set</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>{{ srcIg }}</th>
+            <th *ngFor="let ig of igs">
+              <div style="display: flex">
+                {{ ig.title }}
+              </div>
+            </th>
+
+            <th>{{ srcIg }}</th>
+            <th *ngFor="let ig of igs">
+              <div style="display: flex">
+                {{ ig.title }}
+              </div>
+            </th>
+
+            <th>{{ srcIg }}</th>
+            <th *ngFor="let ig of igs">
+              <div style="display: flex">
+                {{ ig.title }}
+              </div>
+            </th>
+
+            <th>{{ srcIg }}</th>
+            <th *ngFor="let ig of igs">
+              <div style="display: flex">
+                {{ ig.title }}
+              </div>
+            </th>
+          </tr>
+          <tr *ngFor="let element of profile.summaries.dataElements">
+            <td>
+              <div style="display: flex">
+                <app-data-badge [type]="element.type"></app-data-badge>
+                <div style="padding: 2px 6px">
+                  {{ element.path }}.{{ element.name }}
+                </div>
+              </div>
+            </td>
+
+            <td>
+              {{ element.changes?.datatype?.src?.value }}
+            </td>
+            <td *ngFor="let ig of igs"  (click)="selectDatatype(element.location)">
+              <div style="display: flex" >
+                <ng-container
+                  *ngIf="
+                    showUnchanged ||
+                    (!showUnchanged &&
+                      element.changes?.datatype?.src?.value !==
+                        element.changes?.datatype?.derived[ig.id].value)
+                  "
+
+                >
+                  {{ element.changes?.datatype?.derived[ig.id].value }}
+                </ng-container>
+              </div>
+            </td>
+
+            <td>
+              {{ element.changes?.usage?.src?.value }}
+            </td>
+            <td *ngFor="let ig of igs">
+              <div style="display: flex">
+                <ng-container
+                  *ngIf="
+                    showUnchanged ||
+                    (!showUnchanged &&
+                      element.changes?.usage?.src?.value !==
+                        element.changes?.usage?.derived[ig.id].value)
+                  "
+                >
+                  {{ element.changes?.usage?.derived[ig.id].value }}
+                </ng-container>
+              </div>
+            </td>
+
+            <td>
+              {{ element.changes?.cardinality?.src?.value }}
+            </td>
+            <td *ngFor="let ig of igs">
+              <div style="display: flex">
+                <ng-container
+                  *ngIf="
+                    showUnchanged ||
+                    (!showUnchanged &&
+                      element.changes?.cardinality?.src?.value !==
+                        element.changes?.cardinality?.derived[ig.id].value)
+                  "
+                >
+                  {{ element.changes?.cardinality?.derived[ig.id].value }}
+                </ng-container>
+              </div>
+            </td>
+
+            <td>
+              {{ element.changes?.valueset?.src?.value }}
+            </td>
+            <td *ngFor="let ig of igs">
+              <div style="display: flex">
+                <ng-container
+                  *ngIf="
+                    showUnchanged ||
+                    (!showUnchanged &&
+                      element.changes?.valueset?.src?.value !==
+                        element.changes?.valueset?.derived[ig.id].value)
+                  "
+
+                >
+                  {{ element.changes?.valueset?.derived[ig.id].value }}
+                </ng-container>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </ng-container>
+  </p-panel>
   <p-panel header="Total changes" [toggleable]="true">
     <ng-container *ngIf="profiles">
-      <div *ngFor="let profile of profiles" style="padding: 10px;">
+      <div *ngFor="let profile of profiles" style="padding: 10px">
         <table>
           <tr>
             <th>Profile</th>
@@ -51,24 +193,35 @@
   </p-panel>
 </div>
 
-<div style="margin: 5px;">
+<div style="margin: 5px">
   <p-panel header="Usage" [toggleable]="true">
-    <div style="display: flex;padding: 10px 5px;">
-      <div style="margin: 0 10px;">
+    <div style="display: flex; padding: 10px 5px">
+      <div style="margin: 0 10px">
         <div>Sort By</div>
         <div>
-          <p-dropdown appendTo="body" [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label"
-            (ngModelChange)="sortChanged($event)"></p-dropdown>
+          <p-dropdown
+            appendTo="body"
+            [options]="sortingList"
+            [(ngModel)]="selectedSort"
+            optionLabel="label"
+            (ngModelChange)="sortChanged($event)"
+          ></p-dropdown>
         </div>
       </div>
       <div>
         <div>Filter By</div>
         <div>
-          <p-multiSelect appendTo="body" display="chip" [options]="filterList" [(ngModel)]="selectedFilter"
-            optionValue="value" optionLabel="label"></p-multiSelect>
+          <p-multiSelect
+            appendTo="body"
+            display="chip"
+            [options]="filterList"
+            [(ngModel)]="selectedFilter"
+            optionValue="value"
+            optionLabel="label"
+          ></p-multiSelect>
         </div>
       </div>
-      <div style="padding: 0px 10px;">
+      <div style="padding: 0px 10px">
         <div>Search</div>
         <div>
           <input type="text" pInputText [(ngModel)]="usageSearch" />
@@ -87,7 +240,7 @@
           <td>
             <div style="display: flex">
               <app-data-badge [type]="item.type"></app-data-badge>
-              <div style="padding: 2px 6px;">
+              <div style="padding: 2px 6px">
                 {{ item.path }}.{{ item.name }}
               </div>
             </div>

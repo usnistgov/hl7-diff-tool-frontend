@@ -1,0 +1,79 @@
+:host ::ng-deep .p-panel-header {
+  color: #3a87ad;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  padding: 10px;
+}
+
+
+:host ::ng-deep .p-panel .p-panel-content {
+  padding: 0px;
+}
+
+:host ::ng-deep .p-treetable .p-treetable-tbody > tr > td  {
+    padding: .571em .857em;
+    background-color: inherit;
+    border: 1px solid #c8c8c8;
+
+}
+:host ::ng-deep .p-treetable .p-treetable-thead > tr > th {
+    padding: .571em .857em;
+    border: 1px solid #c8c8c8;
+    font-weight: 700;
+    color: #333;
+    background-color: #f4f4f4;
+    font-size: 14px;
+}
+
+:host ::ng-deep .p-panel .p-panel-content {
+    overflow: scroll;
+}
+
+.data-dd {
+    display: flex;
+    text-align: right;
+    padding: 5px 20px 0 20px;
+}
+
+.check-label {
+  padding: 8px 10px 0px 0;
+  font-weight: 500;
+}
+
+
+.comment-badge {
+  position: absolute;
+  right: -12px;
+  display: flex;
+  top: -6px;
+  background: #037bfe;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 13px;
+  text-align: center;
+}
+
+.derived-pill {
+  font-size: 10px;
+  color: white;
+  padding: 0px 5px;
+  border-radius: 10px;
+  width: 75px;
+  text-align: center;
+}
+.derived {
+  background: green;
+}
+.not-derived {
+  background: red;
+}
+.reference{
+  background: blue;
+}
+
+.grayed{
+  background-color: #c8c8c8 !important;
+  color: #c8c8c8 !important;
+}

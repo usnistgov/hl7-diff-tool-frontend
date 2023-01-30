@@ -4,6 +4,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 import { TreeTableModule } from "primeng/treetable";
+import { TableModule } from "primeng/table";
 import { PanelModule } from "primeng/panel";
 import { MultiSelectModule } from "primeng/multiselect";
 import { CheckboxModule } from "primeng/checkbox";
@@ -16,6 +17,8 @@ import { RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { ProfileSelectorComponent } from "./components/profile-selector/profile-selector.component";
 import { ResultsWrapperComponent } from "./components/results-wrapper/results-wrapper.component";
+import { TreeTableComponent } from "./components/tree-table/tree-table.component";
+import { ComparisonModalComponent } from "./components/comparison-modal/comparison-modal.component";
 import { DataBadgeComponent } from "./components/data-badge/data-badge.component";
 import { ValuesetTableComponent } from "./components/valueset-table/valueset-table.component";
 import { CodesModalComponent } from "./components/codes-modal/codes-modal.component";
@@ -59,6 +62,8 @@ import { CoConstraintModalComponent } from "./components/co-constraint-modal/co-
     ConformanceStatementViewerComponent,
     CoConstraintViewerComponent,
     CoConstraintModalComponent,
+    TreeTableComponent,
+    ComparisonModalComponent,
   ],
   entryComponents: [],
   providers: [],
@@ -68,6 +73,7 @@ import { CoConstraintModalComponent } from "./components/co-constraint-modal/co-
     NgbModule,
     FontAwesomeModule,
     TreeTableModule,
+    TableModule,
     MultiSelectModule,
     CheckboxModule,
     DropdownModule,
@@ -87,6 +93,7 @@ import { CoConstraintModalComponent } from "./components/co-constraint-modal/co-
     NgbModule,
     FontAwesomeModule,
     TreeTableModule,
+    TableModule,
     MultiSelectModule,
     CheckboxModule,
     DropdownModule,
@@ -118,6 +125,8 @@ import { CoConstraintModalComponent } from "./components/co-constraint-modal/co-
     ConformanceStatementViewerComponent,
     CoConstraintViewerComponent,
     CoConstraintModalComponent,
+    TreeTableComponent,
+    ComparisonModalComponent,
   ],
 })
 export class SharedModule {}

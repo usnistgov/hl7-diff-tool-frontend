@@ -29,7 +29,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     segmentRef: true,
   };
   selectedConfig;
-
+  summaries = "default";
+  summariesFile;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -64,6 +65,17 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   }
   removeSavedReport() {
     this.report = null;
+  }
+  uploadSummariesFile(event) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+
+      this.summariesFile = file;
+    }
+  }
+  removeSummariesFile() {
+    this.summariesFile = null;
   }
   uploadSourceIg(event) {
     let fileList: FileList = event.target.files;
@@ -107,6 +119,13 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         formData.append(`ig${index}`, ig, ig.name);
       });
       formData.append("configuration", JSON.stringify(this.configuration));
+      if (this.summaries && this.summariesFile) {
+        formData.append(
+          "configurationFile",
+          this.summariesFile,
+          this.summariesFile.name
+        );
+      }
       this.differentialService
         .calculateDifferential(formData)
         .pipe(takeUntil(this.destroy$))
@@ -118,7 +137,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
               );
               console.log(self.differentialService.differentialResults);
               self.spinner.hide();
-              // self.router.navigate(["/differential"]);
+              self.router.navigate(["/differential"]);
             } else {
               self.spinner.hide();
               this.toastr.error("Error while calculating.");
