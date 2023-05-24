@@ -90,7 +90,7 @@ export class SummariesOverviewViewerComponent implements OnInit {
       this.selectedSort.value
     );
     this.igs.forEach((ig) => {
-      if (this.profilesChangesTable[ig.id]) {
+      if (this.profilesChangesTable && this.profilesChangesTable[ig.id]) {
         this.profilesChangesTable[ig.id] = this.differentialService.sort(
           this.profilesChangesTable[ig.id],
           this.selectedSort.value

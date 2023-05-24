@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import {
   DialogService,
   DynamicDialogConfig,
-  DynamicDialogRef
+  DynamicDialogRef,
 } from "primeng/dynamicdialog";
 import { NgbButtonLabel } from "@ng-bootstrap/ng-bootstrap";
 
@@ -12,19 +12,13 @@ import { NgbButtonLabel } from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ["./conformance-statement-viewer.component.scss"],
 })
 export class ConformanceStatementViewerComponent implements OnInit {
+  @Input() conformanceStatements = [];
+  @Input() igs;
+  @Input() results;
 
-  @Input()  conformanceStatements = [];
-  @Input()  igs;
-  @Input() results
-
-  constructor(
-
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
-
-
+    console.log(this.conformanceStatements);
   }
-
-
 }

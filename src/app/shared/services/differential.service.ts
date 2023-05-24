@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environment } from 'src/environments/environment';
+import { environment } from "src/environments/environment";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class DifferentialService {
   apiEndPoint = environment.api_url;
@@ -34,13 +34,47 @@ export class DifferentialService {
     );
   }
   sort(list, selectedSort) {
-    return list.sort((a, b) => {
-      if (typeof a[selectedSort] === "string") {
-        return a[selectedSort].localeCompare(b[selectedSort]);
-      }
-      if (typeof a[selectedSort] === "number") {
-        return b[selectedSort] - a[selectedSort];
-      }
-    });
+    // return list.sort(this.customSort(selectedSort));
+
+    if (selectedSort === "globalPath") {
+      console.log("---", selectedSort);
+      return list.sort(this.customSort(selectedSort));
+    } else {
+      return list.sort((a, b) => {
+        if (typeof a[selectedSort] === "string") {
+          return a[selectedSort].localeCompare(b[selectedSort]);
+        }
+        if (typeof a[selectedSort] === "number") {
+          return b[selectedSort] - a[selectedSort];
+        }
+      });
+    }
   }
+  // Custom sorting function
+  customSort = (fieldName: string) => (a, b) => {
+    const pathA = String(a[fieldName]).split(".").map(Number);
+    const pathB = String(b[fieldName]).split(".").map(Number);
+
+    const minLength = Math.min(pathA.length, pathB.length);
+
+    for (let i = 0; i < minLength; i++) {
+      if (pathA[i] < pathB[i]) {
+        return -1;
+      }
+
+      if (pathA[i] > pathB[i]) {
+        return 1;
+      }
+    }
+
+    if (pathA.length < pathB.length) {
+      return -1;
+    }
+
+    if (pathA.length > pathB.length) {
+      return 1;
+    }
+
+    return 0;
+  };
 }

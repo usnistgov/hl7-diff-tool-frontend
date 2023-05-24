@@ -7,7 +7,7 @@ import { parse, stringify } from "flatted";
 @Component({
   selector: "app-results",
   templateUrl: "./results.component.html",
-  styleUrls: ["./results.component.scss"]
+  styleUrls: ["./results.component.scss"],
 })
 export class ResultsComponent implements OnInit {
   results;
@@ -17,7 +17,7 @@ export class ResultsComponent implements OnInit {
   constructor(
     private differentialService: DifferentialService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.results = this.differentialService.differentialResults;
@@ -40,7 +40,7 @@ export class ResultsComponent implements OnInit {
     //   this.selectedProfile = null;
     // }
   }
-  updateConfig() { }
+  updateConfig() {}
 
   save() {
     const blob = new Blob([stringify(this.results)], { type: "text/json" });
@@ -182,13 +182,12 @@ export class ResultsComponent implements OnInit {
               <ul>
                   <li> P-ACT is reporting that <strong>${profile.usageReport.stronger.total}</strong> instances where in the local IG, where the requirements were stronger than recommendations in the National IG </li>
                   <li> P-ACT is reporting that <strong>${profile.usageReport.relaxed.total}</strong> instances where in the local IG, where the requirements were relaxed compared to the recommendations in the National IG </li>
-              
+
                   </ul>
           </div>
       </div>
 
       `;
-
     }
     return html;
   }
@@ -211,9 +210,9 @@ export class ResultsComponent implements OnInit {
           <div>
             <div>
               <div>Comparing</div>
-              <ul> 
+              <ul>
       `;
-      this.results.derivedIgs.forEach(ig => {
+      this.results.derivedIgs.forEach((ig) => {
         html += `<li style="font-weight: bold;">${ig.title}</li>`;
       });
       html += ` </ul>
@@ -221,7 +220,7 @@ export class ResultsComponent implements OnInit {
             </div>`;
       html += this.createReport();
       html += `
-           
+
             <h3>3. Total changes</h3>
             <table>
                   <tr>
@@ -232,7 +231,7 @@ export class ResultsComponent implements OnInit {
                     <th>Data type</th>
                   </tr>
       `;
-      this.results.derivedIgs.forEach(ig => {
+      this.results.derivedIgs.forEach((ig) => {
         html += `
         <tr>
         <td>
@@ -242,30 +241,30 @@ export class ResultsComponent implements OnInit {
         </td>
         <td>
           ${
-          profile.summaries.overview[ig.id].total
-            ? profile.summaries.overview[ig.id].total
-            : 0
+            profile.summaries.overview[ig.id].total
+              ? profile.summaries.overview[ig.id].total
+              : 0
           }
         </td>
         <td>
           ${
-          profile.summaries.overview[ig.id].usage
-            ? profile.summaries.overview[ig.id].usage
-            : 0
+            profile.summaries.overview[ig.id].usage
+              ? profile.summaries.overview[ig.id].usage
+              : 0
           }
         </td>
         <td>
           ${
-          profile.summaries.overview[ig.id].cardinality
-            ? profile.summaries.overview[ig.id].cardinality
-            : 0
+            profile.summaries.overview[ig.id].cardinality
+              ? profile.summaries.overview[ig.id].cardinality
+              : 0
           }
         </td>
         <td>
           ${
-          profile.summaries.overview[ig.id].datatype
-            ? profile.summaries.overview[ig.id].datatype
-            : 0
+            profile.summaries.overview[ig.id].datatype
+              ? profile.summaries.overview[ig.id].datatype
+              : 0
           }
         </td>
       </tr>
@@ -296,7 +295,7 @@ export class ResultsComponent implements OnInit {
                     <th>Informational</th>
                   </tr>
       `;
-      this.results.derivedIgs.forEach(ig => {
+      this.results.derivedIgs.forEach((ig) => {
         html += `
         <tr>
         <td>
@@ -306,23 +305,23 @@ export class ResultsComponent implements OnInit {
         </td>
         <td>
           ${
-          profile.compliance[ig.id].total
-            ? profile.compliance[ig.id].total.error
-            : 0
+            profile.compliance[ig.id].total
+              ? profile.compliance[ig.id].total.error
+              : 0
           }
         </td>
         <td>
           ${
-          profile.compliance[ig.id].total
-            ? profile.compliance[ig.id].total.warning
-            : 0
+            profile.compliance[ig.id].total
+              ? profile.compliance[ig.id].total.warning
+              : 0
           }
         </td>
         <td>
           ${
-          profile.compliance[ig.id].total
-            ? profile.compliance[ig.id].total.info
-            : 0
+            profile.compliance[ig.id].total
+              ? profile.compliance[ig.id].total.info
+              : 0
           }
         </td>
 
@@ -342,17 +341,17 @@ export class ResultsComponent implements OnInit {
                     <th>${this.results.srcIg.title}</th>
       `;
 
-      this.results.derivedIgs.forEach(ig => {
+      this.results.derivedIgs.forEach((ig) => {
         html += `
-          <th>${ig.title}</th>        
+          <th>${ig.title}</th>
         `;
       });
       html += `</tr>`;
       if (profile.summaries.complianceErrorTable) {
         let tableData = Object.keys(profile.summaries.complianceErrorTable).map(
-          key => profile.summaries.complianceErrorTable[key]
+          (key) => profile.summaries.complianceErrorTable[key]
         );
-        tableData.forEach(row => {
+        tableData.forEach((row) => {
           html += `
         <tr>
           <td>
@@ -396,7 +395,7 @@ export class ResultsComponent implements OnInit {
                     <th>Data type</th>
                   </tr>
       `;
-      this.results.derivedIgs.forEach(ig => {
+      this.results.derivedIgs.forEach((ig) => {
         html += `
         <tr>
         <td>
@@ -406,30 +405,30 @@ export class ResultsComponent implements OnInit {
         </td>
         <td>
           ${
-          profile.summaries.overview[ig.id].total
-            ? profile.summaries.overview[ig.id].total
-            : 0
+            profile.summaries.overview[ig.id].total
+              ? profile.summaries.overview[ig.id].total
+              : 0
           }
         </td>
         <td>
           ${
-          profile.summaries.overview[ig.id].usage
-            ? profile.summaries.overview[ig.id].usage
-            : 0
+            profile.summaries.overview[ig.id].usage
+              ? profile.summaries.overview[ig.id].usage
+              : 0
           }
         </td>
         <td>
           ${
-          profile.summaries.overview[ig.id].cardinality
-            ? profile.summaries.overview[ig.id].cardinality
-            : 0
+            profile.summaries.overview[ig.id].cardinality
+              ? profile.summaries.overview[ig.id].cardinality
+              : 0
           }
         </td>
         <td>
           ${
-          profile.summaries.overview[ig.id].datatype
-            ? profile.summaries.overview[ig.id].datatype
-            : 0
+            profile.summaries.overview[ig.id].datatype
+              ? profile.summaries.overview[ig.id].datatype
+              : 0
           }
         </td>
       </tr>
@@ -442,12 +441,13 @@ export class ResultsComponent implements OnInit {
     }
     return html;
   }
+
   usageChangesTable() {
     let html = "";
     if (this.results.profiles[0]) {
       const profile = this.results.profiles[0];
       let tableData = Object.keys(profile.summaries.usageChangesOverview).map(
-        key => profile.summaries.usageChangesOverview[key]
+        (key) => profile.summaries.usageChangesOverview[key]
       );
       tableData = this.differentialService.sort(tableData, "globalPath");
       html = `<div>
@@ -457,13 +457,13 @@ export class ResultsComponent implements OnInit {
                     <th></th>
                     <th>${this.results.srcIg.title}</th>
       `;
-      this.results.derivedIgs.forEach(ig => {
+      this.results.derivedIgs.forEach((ig) => {
         html += `
-          <th>${ig.title}</th>        
+          <th>${ig.title}</th>
         `;
       });
       html += `</tr>`;
-      tableData.forEach(row => {
+      tableData.forEach((row) => {
         html += `
         <tr>
           <td>
@@ -491,9 +491,9 @@ export class ResultsComponent implements OnInit {
   }
   getChangeData(row) {
     let html = "";
-    this.results.derivedIgs.forEach(ig => {
+    this.results.derivedIgs.forEach((ig) => {
       html += `
-        <td> ${row[ig.id] ? row[ig.id] : ""}</td>        
+        <td> ${row[ig.id] ? row[ig.id] : ""}</td>
       `;
     });
     return html;
