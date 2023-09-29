@@ -203,7 +203,6 @@
                     rowData.changeTypes.includes(selectedConfiguration.name)
                 }"
               >
-
                 <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                 <app-data-badge [type]="rowData.type"></app-data-badge>
                 {{ rowData.position }}.
@@ -224,7 +223,8 @@
               <td
                 *ngIf="
                   selectedConfiguration.name !== 'valueset' &&
-                  selectedConfiguration.name !== 'conformanceStatement'
+                  selectedConfiguration.name !== 'conformanceStatement' &&
+                  selectedConfiguration.name !== 'slicing'
                 "
               >
                 {{
@@ -255,9 +255,19 @@
                   </div>
                 </div>
               </td>
+              <td *ngIf="selectedConfiguration.name === 'slicing'">
+                <!-- <div *ngIf="rowData.slicing && rowData.slicing.slice">
+                  <div *ngFor="let slice of rowData.slicing.slice">Slice</div>
+                </div> -->
+              </td>
 
               <ng-container *ngFor="let derivedIg of igs">
-                <ng-container *ngIf="selectedConfiguration.name !== 'valueset'">
+                <ng-container
+                  *ngIf="
+                    selectedConfiguration.name !== 'valueset' &&
+                    selectedConfiguration.name !== 'slicing'
+                  "
+                >
                   <ng-container
                     *ngIf="
                       rowData[selectedConfiguration.name] &&
@@ -503,6 +513,27 @@
                   </td>
                   <td *ngIf="showReason"></td>
                 </ng-container>
+                <ng-container *ngIf="selectedConfiguration.name === 'slicing'">
+                  <td>
+                    <div *ngIf="rowData.slicing && rowData.slicing.changed">
+                      <button
+                        class="btn btn-sm btn-i"
+                        (click)="showSlicing(rowData.slicing, derivedIg.id)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="1em"
+                          viewBox="0 0 512 512"
+                        >
+                          <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                          <path
+                            d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </ng-container>
               </ng-container>
             </tr>
           </ng-template>
@@ -522,11 +553,7 @@
   </ng-container>
   <ng-container *ngIf="activeTab === 'segments'">
     <div>
-      <p-table
-        [value]="segmentSummaries"
-        dataKey="name"
-
-      >
+      <p-table [value]="segmentSummaries" dataKey="name">
         <ng-template pTemplate="header">
           <tr>
             <th style="width: 3rem"></th>
@@ -567,16 +594,17 @@
                     <tr>
                       <td>
                         <div style="display: flex">
-                          <app-data-badge [type]="'segmentRef'"></app-data-badge>
+                          <app-data-badge
+                            [type]="'segmentRef'"
+                          ></app-data-badge>
                           {{ change.path }} {{ change.name }}
                         </div>
                       </td>
                       <td *ngFor="let ig of igs">
-                        {{ change.igs[ig.id] ? 'Changed' : "" }}
+                        {{ change.igs[ig.id] ? "Changed" : "" }}
                       </td>
                     </tr>
                   </ng-template>
-
                 </p-table>
               </div>
             </td>
@@ -587,11 +615,7 @@
   </ng-container>
   <ng-container *ngIf="activeTab === 'datatypes'">
     <div>
-      <p-table
-        [value]="datatypeSummaries"
-        dataKey="name"
-
-      >
+      <p-table [value]="datatypeSummaries" dataKey="name">
         <ng-template pTemplate="header">
           <tr>
             <th style="width: 3rem"></th>
@@ -637,11 +661,10 @@
                         </div>
                       </td>
                       <td *ngFor="let ig of igs">
-                        {{ change.igs[ig.id] ? 'Changed' : "" }}
+                        {{ change.igs[ig.id] ? "Changed" : "" }}
                       </td>
                     </tr>
                   </ng-template>
-
                 </p-table>
               </div>
             </td>
@@ -649,6 +672,5 @@
         </ng-template>
       </p-table>
     </div>
-
   </ng-container>
 </p-panel>

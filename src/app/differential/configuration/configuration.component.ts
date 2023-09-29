@@ -27,6 +27,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     coConstraint: true,
     name: true,
     segmentRef: true,
+    slicing: true,
   };
   selectedConfig;
   summaries = "default";

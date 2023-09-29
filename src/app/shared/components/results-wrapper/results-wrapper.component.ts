@@ -11,6 +11,7 @@ import { CommentsModalComponent } from "../comments-modal/comments-modal.compone
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { ConformanceStatementModalComponent } from "../conformance-statement-modal/conformance-statement-modal.component";
 import { CoConstraintModalComponent } from "../co-constraint-modal/co-constraint-modal.component";
+import { SlicingModalComponent } from "../slicing-modal/slicing-modal.component";
 
 @Component({
   selector: "app-results-wrapper",
@@ -208,5 +209,17 @@ export class ResultsWrapperComponent implements OnInit {
   closeDatatypeChange() {
     this.activeChange = null;
     this.activeChangeTitle = null;
+  }
+
+  showSlicing(slicing, ig) {
+    const ref = this.dialogService.open(SlicingModalComponent, {
+      header: "Slicing viewer",
+      width: "100%",
+      height: "600px",
+      data: {
+        ig: ig,
+        slicing: slicing,
+      },
+    });
   }
 }
