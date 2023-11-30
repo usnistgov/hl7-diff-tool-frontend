@@ -85,12 +85,12 @@ export class ResultsWrapperComponent implements OnInit {
     );
 
     this.selectedConfiguration = this.results.configuration[0];
-    console.log(
-      this.results,
-      Object.keys(this.profile.summaries.datatypes),
-      this.profile.summaries
-    );
-    if (this.profile.summaries.datatypes) {
+    // console.log(
+    //   this.results,
+    //   Object.keys(this.profile.summaries.datatypes),
+    //   this.profile.summaries
+    // );
+    if (this.profile.summaries && this.profile.summaries.datatypes) {
       this.datatypeSummaries = Object.keys(
         this.profile.summaries.datatypes
       ).map((key) => {
@@ -102,7 +102,7 @@ export class ResultsWrapperComponent implements OnInit {
         };
       });
     }
-    if (this.profile.summaries.segments) {
+    if (this.profile.summaries && this.profile.summaries.segments) {
       this.segmentSummaries = Object.keys(this.profile.summaries.segments).map(
         (key) => {
           let splits = key.split("#");
