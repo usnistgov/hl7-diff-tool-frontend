@@ -22,6 +22,8 @@ export class SummariesOverviewViewerComponent implements OnInit {
   @Input() srcIg;
   Object = Object;
   usageChangesTable;
+  oUsagesTable;
+  pUsageVSTable;
   profilesChangesTable;
 
   @Output() onClick = new EventEmitter();
@@ -65,6 +67,7 @@ export class SummariesOverviewViewerComponent implements OnInit {
   selectedSort = this.sortingList[1];
   selectedFilter = this.filterList;
   usageSearch;
+  summariesOverview;
   constructor(
     public dialogService: DialogService,
     private differentialService: DifferentialService
@@ -81,12 +84,29 @@ export class SummariesOverviewViewerComponent implements OnInit {
         this.usageChangesTable,
         this.selectedSort.value
       );
-      console.log(this.usageChangesTable);
+      this.oUsagesTable = Object.keys(profile.summaries.elementsWithOUsage).map(
+        (key) => profile.summaries.elementsWithOUsage[key]
+      );
+      this.oUsagesTable = this.differentialService.sort(
+        this.oUsagesTable,
+        this.selectedSort.value
+      );
+      this.pUsageVSTable = Object.keys(profile.summaries.VSWithPUsage).map(
+        (key) => profile.summaries.VSWithPUsage[key]
+      );
+      console.log(this.pUsageVSTable);
+
+      this.summariesOverview = profile.summaries.overview;
+      console.log(this.oUsagesTable);
     });
   }
   sortChanged(event) {
     this.usageChangesTable = this.differentialService.sort(
       this.usageChangesTable,
+      this.selectedSort.value
+    );
+    this.oUsagesTable = this.differentialService.sort(
+      this.oUsagesTable,
       this.selectedSort.value
     );
     this.igs.forEach((ig) => {

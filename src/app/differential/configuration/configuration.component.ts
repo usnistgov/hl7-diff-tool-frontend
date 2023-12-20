@@ -7,6 +7,8 @@ import { TreeNode } from "primeng/api";
 import { parse, stringify } from "flatted";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
+import { HttpEventType } from "@angular/common/http";
+import { inflateRaw, deflate } from "pako";
 
 @Component({
   selector: "app-configuration",
@@ -103,6 +105,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   removeDerivedIg(i) {
     this.derivedIgs.splice(i, 1);
   }
+  partialData = "";
   analyze() {
     this.spinner.show();
 
@@ -115,6 +118,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
       self.router.navigate(["/differential"]);
     }
     if (this.sourceIg && this.derivedIgs.length > 0) {
+      console.log(JSON.stringify(formData));
+
       formData.append("source", this.sourceIg, this.sourceIg.name);
       this.derivedIgs.forEach((ig, index) => {
         formData.append(`ig${index}`, ig, ig.name);
@@ -127,6 +132,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           this.summariesFile.name
         );
       }
+      console.log(JSON.stringify(formData.get("source")));
+
       this.differentialService
         .calculateDifferential(formData)
         .pipe(takeUntil(this.destroy$))
@@ -151,6 +158,37 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
             );
           }
         );
+
+      // this.differentialService.getDifferentialStream(formData).subscribe(
+      //   (partialData) => {
+      //     // Process the received data chunk
+      //     this.partialData = this.partialData + partialData;
+      //   },
+      //   (error) => {
+      //     // Handle errors
+      //     console.error(error);
+      //   },
+      //   () => {
+      //     // Stream completed
+      //     console.log("Stream ended", JSON.stringify(this.partialData));
+      //     console.log(this.partialData.length);
+      //     console.log(this.partialData[this.partialData.length - 1]);
+      //     self.spinner.hide();
+
+      //     console.log(parse(JSON.stringify(this.partialData)));
+
+      //     // console.log(
+      //     //   JSON.parse(inflateRaw(this.partialData, { to: "string" }))
+      //     // );
+      //   }
+      // );
+      // .subscribe((partialData) => {
+      //   self.spinner.hide();
+      //   console.log(partialData);
+      //   this.partialData += this.partialData
+      //   console.log(JSON.parse(inflate(partialData, { to: "string" })));
+      //   // console.log(parse(partialData));
+      // });
     }
   }
 }

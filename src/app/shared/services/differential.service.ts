@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "src/environments/environment";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -10,6 +11,47 @@ export class DifferentialService {
 
   differentialResults;
   constructor(private http: HttpClient) {}
+
+  getDifferentialStream1(formData) {
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "multipart/form-data");
+    headers.append("Accept", "application/json");
+    return this.http.post(`${this.apiEndPoint}/differential`, formData, {
+      observe: "events",
+      responseType: "text",
+      reportProgress: true,
+      headers: headers,
+    });
+  }
+  getDifferentialStream(formData): Observable<string> {
+    return new Observable((observer) => {
+      const xhr = new XMLHttpRequest();
+
+      // Set response type based on backend response format
+      xhr.responseType = "text";
+
+      xhr.open("POST", `${this.apiEndPoint}/differential`, true);
+
+      xhr.onprogress = (event) => {
+        console.log("PROGRESS");
+        const partialData = xhr.responseText;
+        observer.next(partialData);
+      };
+
+      xhr.onload = () => {
+        console.log("----");
+        const completeData = xhr.response; // Access full response data
+        observer.next(completeData); // Send complete data to observer
+        observer.complete(); // Signal completion of the stream
+      };
+
+      xhr.onerror = (event) => {
+        console.log(event);
+        observer.error(event);
+      };
+      xhr.send(formData);
+    });
+  }
 
   calculateDifferential(formData) {
     let headers = new HttpHeaders();
