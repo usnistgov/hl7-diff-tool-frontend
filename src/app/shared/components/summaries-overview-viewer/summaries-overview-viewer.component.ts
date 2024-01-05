@@ -8,6 +8,8 @@ import {
 } from "@angular/core";
 import { DialogService } from "primeng/dynamicdialog";
 import { DifferentialService } from "../../services/differential.service";
+import { CodeListModalComponent } from "../code-list-modal/code-list-modal.component";
+import { CodesModalComponent } from "../codes-modal/codes-modal.component";
 import { ComparisonModalComponent } from "../comparison-modal/comparison-modal.component";
 
 @Component({
@@ -167,5 +169,15 @@ export class SummariesOverviewViewerComponent implements OnInit {
         return p;
       }
     }
+  }
+  showCodes(codes) {
+    const ref = this.dialogService.open(CodeListModalComponent, {
+      header: "Codes viewer",
+      width: "100%",
+      height: "600px",
+      data: {
+        codes: codes,
+      },
+    });
   }
 }

@@ -357,7 +357,9 @@
           </td>
 
           <td *ngFor="let ig of igs">
-            {{ vs[ig.id] ? vs[ig.id] : "" }}
+            {{ vs[ig.id] ? vs[ig.id].length : "" }}
+            <fa-icon [icon]="['fas', 'eye']" (click)="showCodes(vs[ig.id])"></fa-icon>
+
           </td>
         </tr>
       </ng-container>

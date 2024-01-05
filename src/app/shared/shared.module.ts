@@ -42,6 +42,7 @@ import { ConformanceStatementViewerComponent } from "./components/conformance-st
 import { CoConstraintViewerComponent } from "./components/co-constraint-viewer/co-constraint-viewer.component";
 import { CoConstraintModalComponent } from "./components/co-constraint-modal/co-constraint-modal.component";
 import { SlicingModalComponent } from "./components/slicing-modal/slicing-modal.component";
+import { CodeListModalComponent } from "./components/code-list-modal/code-list-modal.component";
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { SlicingModalComponent } from "./components/slicing-modal/slicing-modal.
     TreeTableComponent,
     ComparisonModalComponent,
     SlicingModalComponent,
+    CodeListModalComponent,
   ],
   entryComponents: [],
   providers: [],
@@ -130,6 +132,7 @@ import { SlicingModalComponent } from "./components/slicing-modal/slicing-modal.
     TreeTableComponent,
     ComparisonModalComponent,
     SlicingModalComponent,
+    CodeListModalComponent,
   ],
 })
 export class SharedModule {}
