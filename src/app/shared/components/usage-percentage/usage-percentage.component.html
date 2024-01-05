@@ -9,28 +9,44 @@
         <ng-container *ngIf="percentage.usage[key] > 0 ">
             <tr>
                 <td>
-             
+
                     <div [ngSwitch]="key">
                             <div *ngSwitchCase="'rc'">R to C</div>
+                            <div *ngSwitchCase="'rre'">R to RE</div>
+                            <div *ngSwitchCase="'ro'">R to O</div>
+                            <div *ngSwitchCase="'rx'">R to X</div>
+                            <div *ngSwitchCase="'rix'">R to IX</div>
+
                             <div *ngSwitchCase="'cr'">C to R</div>
                             <div *ngSwitchCase="'cre'">C to RE</div>
                             <div *ngSwitchCase="'co'">C to O</div>
                             <div *ngSwitchCase="'cx'">C to X</div>
-                            <div *ngSwitchCase="'rre'">R to RE</div>
-                            <div *ngSwitchCase="'ro'">R to O</div>
-                            <div *ngSwitchCase="'rx'">R to X</div>
+                            <div *ngSwitchCase="'cix'">C to IX</div>
+
                             <div *ngSwitchCase="'rec'">RE to C</div>
                             <div *ngSwitchCase="'rer'">RE to R</div>
                             <div *ngSwitchCase="'reo'">RE to O</div>
                             <div *ngSwitchCase="'rex'">RE to X</div>
+                            <div *ngSwitchCase="'reix'">RE to IX</div>
+
                             <div *ngSwitchCase="'oc'">O to C</div>
                             <div *ngSwitchCase="'or'">O to R</div>
                             <div *ngSwitchCase="'ore'">O to RE</div>
                             <div *ngSwitchCase="'ox'">O to X</div>
+                            <div *ngSwitchCase="'oix'">O to IX</div>
+
                             <div *ngSwitchCase="'xc'">X to C</div>
                             <div *ngSwitchCase="'xr'">X to R</div>
                             <div *ngSwitchCase="'xre'">X to RE</div>
                             <div *ngSwitchCase="'xo'">X to O</div>
+                            <div *ngSwitchCase="'xix'">X to IX</div>
+
+                            <div *ngSwitchCase="'ixc'">IX to O</div>
+                            <div *ngSwitchCase="'ixr'">IX to R</div>
+                            <div *ngSwitchCase="'ixre'">IX to RE</div>
+                            <div *ngSwitchCase="'ixo'">IX to O</div>
+                            <div *ngSwitchCase="'ixx'">IX to X</div>
+
                             <div *ngSwitchCase="'total'">Total</div>
 
                         </div>
