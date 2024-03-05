@@ -87,7 +87,7 @@
               {{ item.description }}
             </td>
             <td
-           
+
             >
               {{ item.codeSystem }}
             </td>
@@ -95,11 +95,10 @@
               [ngClass]="{
                 changed: item.usage?.status === 'changed' }"
             >
-            <ng-container *ngIf="item.usage?.value">
-                {{ item.usage.value}} 
-
+            <ng-container *ngIf="item.usage?.value || item.usage?.value === ''">
+                {{ item.usage.value}}
             </ng-container>
-            <ng-container *ngIf="!item.usage?.value">
+            <ng-container *ngIf="!item.usage?.value && item.usage?.value !== ''">
                 {{ item.usage }}
 
             </ng-container>

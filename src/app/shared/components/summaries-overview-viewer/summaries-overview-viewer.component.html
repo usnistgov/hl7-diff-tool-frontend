@@ -66,8 +66,11 @@
             <td>
               {{ element.changes?.datatype?.src?.value }}
             </td>
-            <td *ngFor="let ig of igs"  (click)="selectDatatype(element.location)">
-              <div style="display: flex" >
+            <td
+              *ngFor="let ig of igs"
+              (click)="selectDatatype(element.location)"
+            >
+              <div style="display: flex">
                 <ng-container
                   *ngIf="
                     showUnchanged ||
@@ -75,7 +78,6 @@
                       element.changes?.datatype?.src?.value !==
                         element.changes?.datatype?.derived[ig.id].value)
                   "
-
                 >
                   {{ element.changes?.datatype?.derived[ig.id].value }}
                 </ng-container>
@@ -130,7 +132,6 @@
                       element.changes?.valueset?.src?.value !==
                         element.changes?.valueset?.derived[ig.id].value)
                   "
-
                 >
                   {{ element.changes?.valueset?.derived[ig.id].value }}
                 </ng-container>
@@ -263,13 +264,11 @@
       <tr>
         <th *ngFor="let ig of igs">{{ ig.title }}</th>
       </tr>
-        <tr >
-
-
-          <td *ngFor="let ig of igs">
-            {{ summariesOverview[ig.id] ? summariesOverview[ig.id].oUsage : "" }}
-          </td>
-        </tr>
+      <tr>
+        <td *ngFor="let ig of igs">
+          {{ summariesOverview[ig.id] ? summariesOverview[ig.id].oUsage : "" }}
+        </td>
+      </tr>
     </table>
     <div style="display: flex; padding: 10px 5px">
       <div style="margin: 0 10px">
@@ -333,11 +332,8 @@
   </p-panel>
 </div>
 
-
 <div style="margin: 5px">
   <p-panel header="Value sets with P usage codes" [toggleable]="true">
-
-
     <table>
       <tr>
         <th></th>
@@ -358,8 +354,13 @@
 
           <td *ngFor="let ig of igs">
             {{ vs[ig.id] ? vs[ig.id].length : "" }}
-            <fa-icon [icon]="['fas', 'eye']" (click)="showCodes(vs[ig.id])"></fa-icon>
 
+            <ng-container *ngIf="vs[ig.id]">
+              <fa-icon
+                [icon]="['fas', 'eye']"
+                (click)="showCodes(vs[ig.id])"
+              ></fa-icon>
+            </ng-container>
           </td>
         </tr>
       </ng-container>
