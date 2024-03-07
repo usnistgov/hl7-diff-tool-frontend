@@ -1,21 +1,42 @@
 <div class="page-container">
   <div class="config-card">
-    <div class="row ">
+    <div class="row">
       <div class="col-6 center">
         <div class="source-upload">
-          <div class="upload-container pointer" (click)="fileInput.click()" *ngIf="!sourceIg">
-            <input #fileInput type="file" (change)="uploadSourceIg($event)" style="display:none;"
-              accept="text/xml, text/plain" />
-            <div>
-              Upload source Profile
-            </div>
+          <div
+            class="upload-container pointer"
+            (click)="fileInput.click()"
+            *ngIf="!sourceIg"
+          >
+            <input
+              #fileInput
+              type="file"
+              (change)="uploadSourceIg($event)"
+              style="display: none"
+              accept="text/xml, text/plain"
+            />
+            <div>Upload source Profile</div>
           </div>
-          <div class="upload-container" *ngIf="sourceIg" style="text-align: left">
-            <div style="display: flex">
-              <strong style="line-height: 40px;padding: 0 7px;">Source Profile: </strong>
-              <p-dropdown style="width: 65%;" placeholder="Select Profile" [options]="srcProfilesList" appendTo="body"
-                [(ngModel)]="srcProfile" optionLabel="label"></p-dropdown>
+          <div
+            class="upload-container"
+            *ngIf="sourceIg"
+            style="text-align: left"
+          >
 
+
+            <div style="display: flex">
+              <strong style="line-height: 40px; padding: 0 7px"
+                >Source Profile:
+              </strong>
+
+              <p-dropdown
+                style="width: 65%"
+                placeholder="Select Profile"
+                [options]="srcProfilesList"
+                appendTo="body"
+                [(ngModel)]="srcProfile"
+                optionLabel="label"
+              ></p-dropdown>
             </div>
             <div class="remove-source pointer" (click)="removeSourceIg()">
               <div>
@@ -23,173 +44,376 @@
               </div>
             </div>
             <div style="display: flex">
-              <strong style="line-height: 40px;padding: 0 7px;">Value sets: </strong>
+              <strong style="line-height: 40px; padding: 0 7px"
+                >Value sets:
+              </strong>
               <div *ngIf="!sourceVs">
-                <button type="button" class="btn btn-primary" (click)="vsInput.click()">
-                  <input #vsInput type="file" multiple="multiple" (change)="uploadSrcVs($event)" style="display:none;"
-                    accept="text/xml, text/plain" />
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="vsInput.click()"
+                >
+                  <input
+                    #vsInput
+                    type="file"
+                    multiple="multiple"
+                    (change)="uploadSrcVs($event)"
+                    style="display: none"
+                    accept="text/xml, text/plain"
+                  />
                   <fa-icon [icon]="['fas', 'plus']"></fa-icon>
                 </button>
               </div>
               <div *ngIf="sourceVs" style="display: flex">
-                <div style="line-height: 40px;padding: 0 7px;">{{sourceVs.name}}</div>
-                <fa-icon style="color: red;line-height: 40px;" [icon]="['fas', 'trash']" (click)="removeSrcVs()">
+                <div style="line-height: 40px; padding: 0 7px">
+                  {{ sourceVs.name }}
+                </div>
+                <fa-icon
+                  style="color: red; line-height: 40px"
+                  [icon]="['fas', 'trash']"
+                  (click)="removeSrcVs()"
+                >
                 </fa-icon>
-
               </div>
             </div>
             <div style="display: flex">
-              <strong style="line-height: 40px;padding: 0 7px;">Constraints: </strong>
-              <div *ngIf="!sourceCt">
-                <button type="button" class="btn btn-primary" (click)="ctInput.click()">
-                  <input #ctInput type="file" multiple="multiple" (change)="uploadSrcCt($event)" style="display:none;"
-                    accept="text/xml, text/plain" />
+              <strong style="line-height: 40px; padding: 0 7px"
+                >Value set bindings:
+              </strong>
+              <div *ngIf="!sourceVsBindings">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="vsBindingInput.click()"
+                >
+                  <input
+                    #vsBindingInput
+                    type="file"
+                    (change)="uploadSrcVsBindings($event)"
+                    style="display: none"
+                    accept="text/xml, text/plain"
+                  />
                   <fa-icon [icon]="['fas', 'plus']"></fa-icon>
-                </button> 
+                </button>
+              </div>
+              <div *ngIf="sourceVsBindings" style="display: flex">
+                <div style="line-height: 40px; padding: 0 7px">
+                  {{ sourceVsBindings.name }}
+                </div>
+                <fa-icon
+                  style="color: red; line-height: 40px"
+                  [icon]="['fas', 'trash']"
+                  (click)="removeSrcVsBindings()"
+                >
+                </fa-icon>
+              </div>
+            </div>
+            <div style="display: flex">
+              <strong style="line-height: 40px; padding: 0 7px"
+                >Constraints:
+              </strong>
+              <div *ngIf="!sourceCt">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="ctInput.click()"
+                >
+                  <input
+                    #ctInput
+                    type="file"
+                    multiple="multiple"
+                    (change)="uploadSrcCt($event)"
+                    style="display: none"
+                    accept="text/xml, text/plain"
+                  />
+                  <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+                </button>
               </div>
               <div *ngIf="sourceCt" style="display: flex">
-                <div style="line-height: 40px;padding: 0 7px;">{{sourceCt.name}}</div>
-                <fa-icon style="color: red;line-height: 40px;" [icon]="['fas', 'trash']" (click)="removeSrcCt()">
+                <div style="line-height: 40px; padding: 0 7px">
+                  {{ sourceCt.name }}
+                </div>
+                <fa-icon
+                  style="color: red; line-height: 40px"
+                  [icon]="['fas', 'trash']"
+                  (click)="removeSrcCt()"
+                >
                 </fa-icon>
-
               </div>
             </div>
           </div>
         </div>
-        <div class="derived-upload" (click)="fileInputs.click()" *ngIf="derivedIgs.length === 0">
+
+        <div
+          class="derived-upload"
+          (click)="fileInputs.click()"
+          *ngIf="derivedIgs.length === 0"
+        >
           <div class="upload-container pointer">
-            <input #fileInputs type="file" multiple="multiple" (change)="uploadDerivedIgs($event)" style="display:none;"
-              accept="text/xml, text/plain" />
-            <div>
-              Upload derived Profile(s)
-            </div>
+            <input
+              #fileInputs
+              type="file"
+              multiple="multiple"
+              (change)="uploadDerivedIgs($event)"
+              style="display: none"
+              accept="text/xml, text/plain"
+            />
+            <div>Upload derived Profile(s)</div>
           </div>
         </div>
         <div class="derived-upload" *ngIf="derivedIgs.length > 0">
           <div class="upload-container">
-            <div style="text-align: left;">
+            <div style="text-align: left">
               <strong>Derived Profile(s): </strong>
+
               <ul style="padding-left: 0">
-                <li *ngFor="let ig of derivedIgs; let i = index" [ngClass]="{'top-sep': i> 0}">
+                <li
+                  *ngFor="let ig of derivedIgs; let i = index"
+                  [ngClass]="{ 'top-sep': i > 0 }"
+                >
+
                   <div style="display: flex">
-                    <strong style="line-height: 40px;padding: 0 7px;">Profile: </strong>
-                    <p-dropdown style="width: 65%;" placeholder="Select Profile" [options]="derivedProfilesList" appendTo="body"
-                      [(ngModel)]="derivedProfiles[i]" optionLabel="label"></p-dropdown>
-                    <div class="remove-derived pointer" (click)="removeDerivedIg(i)">
+                    <strong style="line-height: 40px; padding: 0 7px"
+                      >Profile:
+                    </strong>
+                    <p-dropdown
+                      style="width: 65%"
+                      placeholder="Select Profile"
+                      [options]="derivedProfilesList"
+                      appendTo="body"
+                      [(ngModel)]="derivedProfiles[i]"
+                      optionLabel="label"
+                    ></p-dropdown>
+                    <div
+                      class="remove-derived pointer"
+                      (click)="removeDerivedIg(i)"
+                    >
                       <div>
                         <fa-icon [icon]="['fas', 'trash']"></fa-icon>
                       </div>
                     </div>
                   </div>
                   <div style="display: flex">
-                    <strong style="line-height: 40px;padding: 0 7px;">Value sets: </strong>
+                    <strong style="line-height: 40px; padding: 0 7px"
+                      >Value sets:
+                    </strong>
                     <div *ngIf="!derivedVs[i]">
-                      <button type="button" class="btn btn-primary" (click)="derivedVsInput.click()">
-                        <input #derivedVsInput type="file" multiple="multiple" (change)="uploadDerivedVs($event, i)"
-                          style="display:none;" accept="text/xml, text/plain" />
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        (click)="derivedVsInput.click()"
+                      >
+                        <input
+                          #derivedVsInput
+                          type="file"
+                          multiple="multiple"
+                          (change)="uploadDerivedVs($event, i)"
+                          style="display: none"
+                          accept="text/xml, text/plain"
+                        />
                         <fa-icon [icon]="['fas', 'plus']"></fa-icon>
                       </button>
                     </div>
                     <div *ngIf="derivedVs[i]" style="display: flex">
-                      <div style="line-height: 40px;padding: 0 7px;">{{derivedVs[i].name}}</div>
-                      <fa-icon style="color: red;line-height: 40px;" [icon]="['fas', 'trash']"
-                        (click)="removeDerivedVs(i)">
+                      <div style="line-height: 40px; padding: 0 7px">
+                        {{ derivedVs[i].name }}
+                      </div>
+                      <fa-icon
+                        style="color: red; line-height: 40px"
+                        [icon]="['fas', 'trash']"
+                        (click)="removeDerivedVs(i)"
+                      >
                       </fa-icon>
-
                     </div>
                   </div>
                   <div style="display: flex">
-                    <strong style="line-height: 40px;padding: 0 7px;">Constraints: </strong>
+                    <strong style="line-height: 40px; padding: 0 7px"
+                      >Value set bindings:
+                    </strong>
+                    <div *ngIf="!derivedVsBindings[i]">
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        (click)="derivedVsBindingsInput.click()"
+                      >
+                        <input
+                          #derivedVsBindingsInput
+                          type="file"
+                          (change)="uploadDerivedVsBindings($event, i)"
+                          style="display: none"
+                          accept="text/xml, text/plain"
+                        />
+                        <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+                      </button>
+                    </div>
+                    <div *ngIf="derivedVsBindings[i]" style="display: flex">
+                      <div style="line-height: 40px; padding: 0 7px">
+                        {{ derivedVsBindings[i].name }}
+                      </div>
+                      <fa-icon
+                        style="color: red; line-height: 40px"
+                        [icon]="['fas', 'trash']"
+                        (click)="removeDerivedVsBindings(i)"
+                      >
+                      </fa-icon>
+                    </div>
+                  </div>
+                  <div style="display: flex">
+                    <strong style="line-height: 40px; padding: 0 7px"
+                      >Constraints:
+                    </strong>
                     <div *ngIf="!derivedCt[i]">
-                      <button type="button" class="btn btn-primary" (click)="derivedCtInput.click()">
-                        <input #derivedCtInput type="file" multiple="multiple" (change)="uploadDerivedCt($event, i)"
-                          style="display:none;" accept="text/xml, text/plain" />
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        (click)="derivedCtInput.click()"
+                      >
+                        <input
+                          #derivedCtInput
+                          type="file"
+                          multiple="multiple"
+                          (change)="uploadDerivedCt($event, i)"
+                          style="display: none"
+                          accept="text/xml, text/plain"
+                        />
                         <fa-icon [icon]="['fas', 'plus']"></fa-icon>
                       </button>
                     </div>
                     <div *ngIf="derivedCt[i]" style="display: flex">
-                      <div style="line-height: 40px;padding: 0 7px;">{{derivedCt[i].name}}</div>
-                      <fa-icon style="color: red;line-height: 40px;" [icon]="['fas', 'trash']"
-                        (click)="removeDerivedCt(i)">
+                      <div style="line-height: 40px; padding: 0 7px">
+                        {{ derivedCt[i].name }}
+                      </div>
+                      <fa-icon
+                        style="color: red; line-height: 40px"
+                        [icon]="['fas', 'trash']"
+                        (click)="removeDerivedCt(i)"
+                      >
                       </fa-icon>
-
                     </div>
                   </div>
                 </li>
               </ul>
             </div>
-            <button type="button" class="btn btn-primary" (click)="fileInputs.click()">
-              <input #fileInputs type="file" multiple="multiple" (change)="uploadDerivedIgs($event)"
-                style="display:none;" accept="text/xml, text/plain" />
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="fileInputs.click()"
+            >
+              <input
+                #fileInputs
+                type="file"
+                multiple="multiple"
+                (change)="uploadDerivedIgs($event)"
+                style="display: none"
+                accept="text/xml, text/plain"
+              />
               Add Profile(s)
             </button>
           </div>
         </div>
       </div>
       <div class="col-6 border-left p-20">
-          <div>
-              <h3>Configuration</h3>
-              <div style="display: flex;">
-                <div>
-                  <h5>Structure</h5>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="segmentRef" [(ngModel)]="configuration.segmentRef"
-                      (click)="selectedConfig = 'segmentRef'" />
-                    <label class="form-check-label" for="segmentRef">
-                      Segment Ref.
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.datatype"
-                      (click)="selectedConfig = 'datatype'" />
-                    <label class="form-check-label" for="datatype">
-                      Data Type
-                    </label>
-                  </div>
-                  <h5>Metrics</h5>
-    
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="usage" [(ngModel)]="configuration.usage"
-                      (click)="selectedConfig = 'usage'" />
-                    <label class="form-check-label" for="usage">
-                      Usage
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.cardinality"
-                      (click)="selectedConfig = 'cardinality'" />
-                    <label class="form-check-label" for="min">
-                      Cardinality
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.valueset"
-                      (click)="selectedConfig = 'valueset'" />
-                    <label class="form-check-label" for="valueset">
-                      Value set
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="card" [(ngModel)]="configuration.predicate"
-                      (click)="selectedConfig = 'predicate'" />
-                    <label class="form-check-label" for="predicates">
-                      Predicate
-                    </label>
-                  </div>
-               
-    
-                </div>
-                <div style="width: 60%;padding: 25px 50px;color: red;font-weight: bold;">
-                  <div *ngIf="selectedConfig === 'segmentRef' && !configuration.segmentRef">
-                    Un-checking Segment Ref. will prevent the comparison of fields, components and sub-components.
-                  </div>
-                  <div *ngIf="selectedConfig === 'datatype' && !configuration.datatype">
-                    Un-checking Data type will prevent the comparison of components and sub-components.
-                  </div>
-                </div>
+        <div>
+          <h3>Configuration</h3>
+          <div style="display: flex">
+            <div>
+              <h5>Structure</h5>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="segmentRef"
+                  [(ngModel)]="configuration.segmentRef"
+                  (click)="selectedConfig = 'segmentRef'"
+                />
+                <label class="form-check-label" for="segmentRef">
+                  Segment Ref.
+                </label>
               </div>
-    
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="card"
+                  [(ngModel)]="configuration.datatype"
+                  (click)="selectedConfig = 'datatype'"
+                />
+                <label class="form-check-label" for="datatype">
+                  Data Type
+                </label>
+              </div>
+              <h5>Metrics</h5>
+
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="usage"
+                  [(ngModel)]="configuration.usage"
+                  (click)="selectedConfig = 'usage'"
+                />
+                <label class="form-check-label" for="usage"> Usage </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="card"
+                  [(ngModel)]="configuration.cardinality"
+                  (click)="selectedConfig = 'cardinality'"
+                />
+                <label class="form-check-label" for="min"> Cardinality </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="card"
+                  [(ngModel)]="configuration.valueset"
+                  (click)="selectedConfig = 'valueset'"
+                />
+                <label class="form-check-label" for="valueset">
+                  Value set
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="card"
+                  [(ngModel)]="configuration.predicate"
+                  (click)="selectedConfig = 'predicate'"
+                />
+                <label class="form-check-label" for="predicates">
+                  Predicate
+                </label>
+              </div>
             </div>
+            <div
+              style="
+                width: 60%;
+                padding: 25px 50px;
+                color: red;
+                font-weight: bold;
+              "
+            >
+              <div
+                *ngIf="
+                  selectedConfig === 'segmentRef' && !configuration.segmentRef
+                "
+              >
+                Un-checking Segment Ref. will prevent the comparison of fields,
+                components and sub-components.
+              </div>
+              <div
+                *ngIf="selectedConfig === 'datatype' && !configuration.datatype"
+              >
+                Un-checking Data type will prevent the comparison of components
+                and sub-components.
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="strike">
@@ -198,12 +422,19 @@
     <div class="row">
       <div class="col-6 center">
         <div class="source-upload">
-          <div class="upload-container pointer" (click)="savedReport.click()" *ngIf="!report">
-            <input #savedReport type="file" (change)="uploadSavedReport($event)" style="display:none;"
-              accept="application/json" />
-            <div>
-              Upload saved report
-            </div>
+          <div
+            class="upload-container pointer"
+            (click)="savedReport.click()"
+            *ngIf="!report"
+          >
+            <input
+              #savedReport
+              type="file"
+              (change)="uploadSavedReport($event)"
+              style="display: none"
+              accept="application/json"
+            />
+            <div>Upload saved report</div>
           </div>
           <div class="upload-container" *ngIf="report" style="text-align: left">
             <div>
@@ -221,8 +452,12 @@
     </div>
   </div>
   <div class="submit-btn">
-    <button type="button" class="btn btn-primary" (click)="analyze()"
-      [disabled]="(!report && (!sourceIg || derivedIgs.length <= 0))">
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="analyze()"
+      [disabled]="!report && (!sourceIg || derivedIgs.length <= 0)"
+    >
       Analyze
     </button>
   </div>

@@ -11,6 +11,7 @@ import { CheckboxModule } from "primeng/checkbox";
 import { DropdownModule } from "primeng/dropdown";
 import { DynamicDialogModule } from "primeng/dynamicdialog";
 import { CardModule } from "primeng/card";
+import { SelectButtonModule } from "primeng/selectbutton";
 
 import { HeaderComponent } from "./components/header/header.component";
 import { RouterModule } from "@angular/router";
@@ -91,6 +92,7 @@ import { CodeListModalComponent } from "./components/code-list-modal/code-list-m
     InputTextModule,
     InputTextareaModule,
     NgxSpinnerModule,
+    SelectButtonModule,
   ],
   exports: [
     CommonModule,
@@ -133,6 +135,7 @@ import { CodeListModalComponent } from "./components/code-list-modal/code-list-m
     ComparisonModalComponent,
     SlicingModalComponent,
     CodeListModalComponent,
+    SelectButtonModule,
   ],
 })
 export class SharedModule {}
