@@ -268,7 +268,7 @@ export class VerificationConfigurationComponent implements OnInit, OnDestroy {
               console.log(self.differentialService.differentialResults);
               self.spinner.hide();
 
-              // self.router.navigate(["/differential"]);
+              self.router.navigate(["/differential"]);
             }
           },
           (error) => {
