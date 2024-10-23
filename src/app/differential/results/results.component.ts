@@ -160,7 +160,7 @@ export class ResultsComponent implements OnInit {
     </style>
     <body>
     <div>
-      <h1 style="text-align: center;">Profile Aggregate Comparison Tool (PACT)</h1>
+      <h1 style="text-align: center;">Profile Analysis and Comparison Tool (P-ACT)</h1>
 
       <h2>I. Overview</h2>
     </div>
