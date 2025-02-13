@@ -132,7 +132,6 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           this.summariesFile.name
         );
       }
-      console.log(JSON.stringify(formData.get("source")));
 
       this.differentialService
         .calculateDifferential(formData)
@@ -145,7 +144,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
               );
               console.log(self.differentialService.differentialResults);
               self.spinner.hide();
-              self.router.navigate(["/differential"]);
+              self.router.navigate(["/differential"]); 
             } else {
               self.spinner.hide();
               this.toastr.error("Error while calculating.");

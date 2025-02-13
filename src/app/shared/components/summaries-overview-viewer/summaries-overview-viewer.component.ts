@@ -27,7 +27,7 @@ export class SummariesOverviewViewerComponent implements OnInit {
   oUsagesTable;
   pUsageVSTable;
   profilesChangesTable;
-
+  consequentialOnly = { label: "Consequential", value: "consequential" };
   @Output() onClick = new EventEmitter();
   legend = [
     {
@@ -52,6 +52,10 @@ export class SummariesOverviewViewerComponent implements OnInit {
   sortingList = [
     { label: "Alphabetically", value: "path" },
     { label: "By position", value: "globalPath" },
+  ];
+  consequentialList = [
+    { label: "Consequential", value: "consequential" },
+    { label: "All", value: "all" },
   ];
   filterList = [
     { label: "Group", value: "group" },
@@ -89,6 +93,7 @@ export class SummariesOverviewViewerComponent implements OnInit {
       this.oUsagesTable = Object.keys(profile.summaries.elementsWithOUsage).map(
         (key) => profile.summaries.elementsWithOUsage[key]
       );
+      // this.oUsagesTable = this.oUsagesTable.filter((x) => x.parentUsage === "R" || x.parentUsage === "RE");
       this.oUsagesTable = this.differentialService.sort(
         this.oUsagesTable,
         this.selectedSort.value
@@ -99,7 +104,6 @@ export class SummariesOverviewViewerComponent implements OnInit {
       console.log(this.pUsageVSTable);
 
       this.summariesOverview = profile.summaries.overview;
-      console.log(this.oUsagesTable);
     });
   }
   sortChanged(event) {
@@ -130,13 +134,13 @@ export class SummariesOverviewViewerComponent implements OnInit {
         x.value === item.type &&
         (this.usageSearch
           ? item.name.toLowerCase().includes(this.usageSearch.toLowerCase())
-          : true)
+          : true) &&
+          (this.consequentialOnly.value === "consequential" ? item.parentUsage === "R" || item.parentUsage === "RE" : true)
     );
   }
   selectDatatype(location) {
     let profile = this.profiles[0];
     let row = this.getRowByLocation(profile, location);
-    console.log(this.igs, this.differentialService.differentialResults, row);
 
     const ref = this.dialogService.open(ComparisonModalComponent, {
       header: "",

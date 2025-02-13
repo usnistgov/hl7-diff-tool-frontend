@@ -4,13 +4,8 @@
       <div style="display: flex; padding: 10px 5px">
         <div style="margin: 0 10px">
           <div>
-            <p-dropdown
-              [options]="changedOptions"
-              [(ngModel)]="selectedChangedOption"
-              optionLabel="label"
-              appendTo="body"
-              (ngModelChange)="onChangedOptionEdit($event)"
-            ></p-dropdown>
+            <p-dropdown [options]="changedOptions" [(ngModel)]="selectedChangedOption" optionLabel="label"
+              appendTo="body" (ngModelChange)="onChangedOptionEdit($event)"></p-dropdown>
           </div>
         </div>
       </div>
@@ -66,19 +61,14 @@
             <td>
               {{ element.changes?.datatype?.src?.value }}
             </td>
-            <td
-              *ngFor="let ig of igs"
-              (click)="selectDatatype(element.location)"
-            >
+            <td *ngFor="let ig of igs" (click)="selectDatatype(element.location)">
               <div style="display: flex">
-                <ng-container
-                  *ngIf="
+                <ng-container *ngIf="
                     showUnchanged ||
                     (!showUnchanged &&
                       element.changes?.datatype?.src?.value !==
                         element.changes?.datatype?.derived[ig.id].value)
-                  "
-                >
+                  ">
                   {{ element.changes?.datatype?.derived[ig.id].value }}
                 </ng-container>
               </div>
@@ -89,14 +79,12 @@
             </td>
             <td *ngFor="let ig of igs">
               <div style="display: flex">
-                <ng-container
-                  *ngIf="
+                <ng-container *ngIf="
                     showUnchanged ||
                     (!showUnchanged &&
                       element.changes?.usage?.src?.value !==
                         element.changes?.usage?.derived[ig.id].value)
-                  "
-                >
+                  ">
                   {{ element.changes?.usage?.derived[ig.id].value }}
                 </ng-container>
               </div>
@@ -107,14 +95,12 @@
             </td>
             <td *ngFor="let ig of igs">
               <div style="display: flex">
-                <ng-container
-                  *ngIf="
+                <ng-container *ngIf="
                     showUnchanged ||
                     (!showUnchanged &&
                       element.changes?.cardinality?.src?.value !==
                         element.changes?.cardinality?.derived[ig.id].value)
-                  "
-                >
+                  ">
                   {{ element.changes?.cardinality?.derived[ig.id].value }}
                 </ng-container>
               </div>
@@ -125,14 +111,12 @@
             </td>
             <td *ngFor="let ig of igs">
               <div style="display: flex">
-                <ng-container
-                  *ngIf="
+                <ng-container *ngIf="
                     showUnchanged ||
                     (!showUnchanged &&
                       element.changes?.valueset?.src?.value !==
                         element.changes?.valueset?.derived[ig.id].value)
-                  "
-                >
+                  ">
                   {{ element.changes?.valueset?.derived[ig.id].value }}
                 </ng-container>
               </div>
@@ -161,30 +145,30 @@
             </td>
             <td>
               {{
-                profile.summaries.overview[ig.id]
-                  ? profile.summaries.overview[ig.id].total
-                  : 0
+              profile.summaries.overview[ig.id]
+              ? profile.summaries.overview[ig.id].total
+              : 0
               }}
             </td>
             <td>
               {{
-                profile.summaries.overview[ig.id]
-                  ? profile.summaries.overview[ig.id].usage
-                  : 0
+              profile.summaries.overview[ig.id]
+              ? profile.summaries.overview[ig.id].usage
+              : 0
               }}
             </td>
             <td>
               {{
-                profile.summaries.overview[ig.id]
-                  ? profile.summaries.overview[ig.id].cardinality
-                  : 0
+              profile.summaries.overview[ig.id]
+              ? profile.summaries.overview[ig.id].cardinality
+              : 0
               }}
             </td>
             <td>
               {{
-                profile.summaries.overview[ig.id]
-                  ? profile.summaries.overview[ig.id].datatype
-                  : 0
+              profile.summaries.overview[ig.id]
+              ? profile.summaries.overview[ig.id].datatype
+              : 0
               }}
             </td>
           </tr>
@@ -200,26 +184,15 @@
       <div style="margin: 0 10px">
         <div>Sort By</div>
         <div>
-          <p-dropdown
-            appendTo="body"
-            [options]="sortingList"
-            [(ngModel)]="selectedSort"
-            optionLabel="label"
-            (ngModelChange)="sortChanged($event)"
-          ></p-dropdown>
+          <p-dropdown appendTo="body" [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label"
+            (ngModelChange)="sortChanged($event)"></p-dropdown>
         </div>
       </div>
       <div>
         <div>Filter By</div>
         <div>
-          <p-multiSelect
-            appendTo="body"
-            display="chip"
-            [options]="filterList"
-            [(ngModel)]="selectedFilter"
-            optionValue="value"
-            optionLabel="label"
-          ></p-multiSelect>
+          <p-multiSelect appendTo="body" display="chip" [options]="filterList" [(ngModel)]="selectedFilter"
+            optionValue="value" optionLabel="label"></p-multiSelect>
         </div>
       </div>
       <div style="padding: 0px 10px">
@@ -266,7 +239,14 @@
       </tr>
       <tr>
         <td *ngFor="let ig of igs">
-          {{ summariesOverview[ig.id] ? summariesOverview[ig.id].oUsage : "" }}
+          <ul>
+            <li>All: {{ summariesOverview[ig.id] ? summariesOverview[ig.id].oUsage : "" }}</li>
+            <li>Consequential: {{ summariesOverview[ig.id] ? summariesOverview[ig.id].oUsageWithConsequentialParent : ""
+              }}</li>
+          </ul>
+
+          <!-- {{ summariesOverview[ig.id] ? summariesOverview[ig.id].oUsageWithConsequentialParent : "" }} -->
+
         </td>
       </tr>
     </table>
@@ -274,26 +254,15 @@
       <div style="margin: 0 10px">
         <div>Sort By</div>
         <div>
-          <p-dropdown
-            appendTo="body"
-            [options]="sortingList"
-            [(ngModel)]="selectedSort"
-            optionLabel="label"
-            (ngModelChange)="sortChanged($event)"
-          ></p-dropdown>
+          <p-dropdown appendTo="body" [options]="sortingList" [(ngModel)]="selectedSort" optionLabel="label"
+            (ngModelChange)="sortChanged($event)"></p-dropdown>
         </div>
       </div>
       <div>
         <div>Filter By</div>
         <div>
-          <p-multiSelect
-            appendTo="body"
-            display="chip"
-            [options]="filterList"
-            [(ngModel)]="selectedFilter"
-            optionValue="value"
-            optionLabel="label"
-          ></p-multiSelect>
+          <p-multiSelect appendTo="body" display="chip" [options]="filterList" [(ngModel)]="selectedFilter"
+            optionValue="value" optionLabel="label"></p-multiSelect>
         </div>
       </div>
       <div style="padding: 0px 10px">
@@ -301,6 +270,11 @@
         <div>
           <input type="text" pInputText [(ngModel)]="usageSearch" />
         </div>
+      </div>
+      <div style="display: flex;">
+        <!-- <p-toggleButton [onLabel]="'Consequential'" offLabel="All" [(ngModel)]="consequentialOnly"
+          inputId="consequential" style="margin-top: auto;"></p-toggleButton> -->
+        <p-dropdown appendTo="body" [options]="consequentialList" [(ngModel)]="consequentialOnly" optionLabel="label" style="margin-top: auto;"></p-dropdown>
       </div>
     </div>
 
@@ -310,7 +284,7 @@
         <th>{{ srcIg }}</th>
         <th *ngFor="let ig of igs">{{ ig.title }}</th>
       </tr>
-      <ng-container *ngFor="let item of oUsagesTable">
+      <ng-container *ngFor="let item of oUsagesTable; let i = index">
         <tr *ngIf="validateFilter(item)">
           <td>
             <div style="display: flex">
@@ -356,10 +330,7 @@
             {{ vs[ig.id] ? vs[ig.id].length : "" }}
 
             <ng-container *ngIf="vs[ig.id]">
-              <fa-icon
-                [icon]="['fas', 'eye']"
-                (click)="showCodes(vs[ig.id])"
-              ></fa-icon>
+              <fa-icon [icon]="['fas', 'eye']" (click)="showCodes(vs[ig.id])"></fa-icon>
             </ng-container>
           </td>
         </tr>
